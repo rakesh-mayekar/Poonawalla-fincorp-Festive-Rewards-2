@@ -1,0 +1,131 @@
+/* Category Navigation Grid Light Wireframe Cards (Reference Prototype Style) */
+.category-section {
+  padding: 32px 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--wf-text-primary);
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 2.2rem;
+  }
+}
+
+/* Multi-Column Grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 20px;
+}
+
+@media (min-width: 600px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Prototype Card Style (Image 2 Inspired) */
+.category-card {
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-border);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--wf-text-primary);
+}
+
+.card-top-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-badge-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background: var(--wf-surface-subtle);
+  color: var(--wf-text-primary);
+  border: 1px solid var(--wf-border);
+}
+
+.card-body-content {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-title-text {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--wf-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.card-desc-text {
+  font-size: 0.82rem;
+  color: var(--wf-text-secondary);
+  line-height: 1.35;
+}
+
+.card-footer-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+/* Reference Dark Circular Arrow Button */
+.card-circle-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--wf-text-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 800;
+  transition: var(--transition-fast);
+  margin-left: auto;
+}
+
+.category-card:hover .card-circle-btn {
+  transform: scale(1.1);
+  background: #000000;
+}

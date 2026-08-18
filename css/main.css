@@ -1,0 +1,188 @@
+/* ==========================================================================
+   POONAWALLA FINCORP FESTIVE MICROSITE - LIGHT MINIMAL WIREFRAME DESIGN
+   Inspired by Reference Prototype (Clean Gray & White Monochrome)
+   ========================================================================== */
+
+:root {
+  /* Light Minimal Wireframe Palette */
+  --wf-bg: #F2F2F5;
+  --wf-surface: #FFFFFF;
+  --wf-surface-subtle: #E6E6EA;
+  --wf-hero-bg: #D8D8DD;
+  --wf-border: #E0E0E5;
+  --wf-border-dark: #111111;
+  
+  --wf-text-primary: #111111;
+  --wf-text-secondary: #555555;
+  --wf-text-muted: #888888;
+
+  /* Typography */
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 20px rgba(0,0,0,0.06);
+  --shadow-lg: 0 16px 36px rgba(0,0,0,0.08);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Global Elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--wf-bg);
+  color: var(--wf-text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Full Width End-to-End Container */
+.microsite-container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--wf-bg);
+  padding-bottom: 140px;
+}
+
+.main-content {
+  width: 100%;
+  flex: 1;
+  padding: 24px 20px;
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    padding: 32px 40px;
+  }
+}
+
+/* Typography Utilities */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-body);
+  font-weight: 800;
+  color: var(--wf-text-primary);
+  letter-spacing: -0.02em;
+}
+
+.festive-heading {
+  font-family: var(--font-body);
+  color: var(--wf-text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* Wireframe Action Buttons */
+.btn-primary, .btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--wf-text-primary);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--wf-text-primary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-primary:hover, .btn-primary:active,
+.btn-gold:hover, .btn-gold:active {
+  background: #333333;
+  border-color: #333333;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #FFFFFF;
+  color: var(--wf-text-primary);
+  border: 1px solid var(--wf-border);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 10px 22px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-decoration: none;
+}
+
+.btn-outline:hover {
+  background: #F8F8FA;
+  border-color: var(--wf-text-primary);
+}
+
+/* Dark Circular Arrow Button (Reference Prototype Style) */
+.circle-arrow-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--wf-text-primary);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  transition: var(--transition-fast);
+  flex-shrink: 0;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+.circle-arrow-btn:hover {
+  transform: scale(1.08);
+  background: #000000;
+}
+
+/* Wireframe Badge Pills */
+.festive-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: #FFFFFF;
+  color: var(--wf-text-primary);
+  border: 1px solid var(--wf-border);
+}
+
+.glow-effect {
+  box-shadow: var(--shadow-md);
+}

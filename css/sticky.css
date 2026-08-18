@@ -1,0 +1,106 @@
+/* Sticky Footer Top Offers Scrollable Bar Light Theme (100% Theme Matched) */
+.sticky-offers-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1240px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--wf-border);
+  border-left: 1px solid var(--wf-border);
+  border-right: 1px solid var(--wf-border);
+  z-index: 90;
+  padding: 12px 24px 14px;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.06);
+}
+
+.sticky-bar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.sticky-bar-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--wf-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sticky-offers-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.sticky-offers-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.sticky-offer-chip {
+  flex: 0 0 220px;
+  background: #FFFFFF;
+  border: 1px solid var(--wf-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.sticky-offer-chip:hover {
+  border-color: var(--wf-text-primary);
+  background: #F8F8FC;
+  transform: translateY(-1px);
+}
+
+.chip-brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  background: var(--wf-surface-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--wf-text-primary);
+  flex-shrink: 0;
+  overflow: hidden;
+  padding: 2px;
+  border: 1px solid var(--wf-border);
+}
+
+.chip-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.chip-brand-name {
+  font-size: 0.65rem;
+  color: var(--wf-text-muted);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.chip-offer-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--wf-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
