@@ -7,10 +7,10 @@
   <meta name="description" content="Explore Poonawalla Fincorp Festive Loan Offers, Play Spin & Win, Scratch Cards, Check Free CIBIL Score, Calculate EMIs, and Unlock Exclusive Brand Partner Vouchers!">
   <meta name="theme-color" content="#111111">
   
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <!-- Google Fonts: Inter and Playfair Display -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,300;0,400;0,700;0,800;1,300;1,400;1,700&display=swap" rel="stylesheet">
   
   <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -27,17 +27,14 @@
   <link rel="stylesheet" href="css/sticky.css">
 </head>
 <body>
-  <div id="app" class="microsite-container">
-    <!-- Header Navigation -->
-    <header id="site-header" class="site-header"></header>
+  <!-- Header Navigation (Full Width) -->
+  <header id="site-header" class="site-header"></header>
 
+  <div id="app" class="microsite-container">
     <!-- Main Content Container -->
     <main id="main-content" class="main-content">
       <!-- Dynamic views loaded here via js/app.js -->
     </main>
-
-    <!-- Sticky Bottom Offers Bar -->
-    <div id="sticky-offers-container"></div>
 
     <!-- Global OTP Verification Modal Container -->
     <div id="otp-modal-container"></div>
@@ -45,6 +42,12 @@
     <!-- Global Reward Reveal Modal Container -->
     <div id="reward-modal-container"></div>
   </div>
+
+  <!-- Global Footer (End to End) -->
+  <div id="site-footer"></div>
+
+  <!-- Sticky Bottom Offers Bar -->
+  <div id="sticky-offers-container"></div>
 
   <!-- JavaScript Entry Point -->
   <script type="module" src="js/app.js"></script>

@@ -1,48 +1,19 @@
-// Category Navigation Grid Cards Component (Reference Prototype Styling)
-import { getClaimedDealsCount, subscribeRewards } from '../state/rewardState.js';
-
+// Category Navigation Grid Cards Component (Secondary Features)
 export function renderCategoryGrid(container, onNavigate) {
   const section = document.createElement('section');
   section.className = 'category-section';
 
   const updateGridHTML = () => {
-    const claimedCount = getClaimedDealsCount();
-
     section.innerHTML = `
       <div class="section-header">
-        <h2 class="section-title">Explore Features & Offers</h2>
+        <h2 class="section-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="section-icon"><path d="M11 4C11 8.5 7.5 11 4 11C7.5 11 11 13.5 11 18C11 13.5 14.5 11 19 11C14.5 11 11 8.5 11 4Z" /><circle cx="6" cy="17" r="1.5" /><path d="M18 5 v4 m-2 -2 h4" /></svg>
+          Explore More Features
+        </h2>
       </div>
 
       <div class="category-grid">
-        <!-- Card 1: Festive Loans -->
-        <a href="#loans" class="category-card" data-target="loans">
-          <div class="card-top-head">
-            <span class="card-badge-pill">0% Processing Fee</span>
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Festive Loans</h3>
-            <p class="card-desc-text">7 Tailored loan products with instant paperless approval & low EMIs.</p>
-          </div>
-          <div class="card-footer-row">
-            <div class="card-circle-btn">↗</div>
-          </div>
-        </a>
-
-        <!-- Card 2: Play & Win -->
-        <a href="#games" class="category-card" data-target="games">
-          <div class="card-top-head">
-            <span class="card-badge-pill">3 Games Included</span>
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Play & Win</h3>
-            <p class="card-desc-text">Spin the wheel, scratch cards & shuffle cards to win brand vouchers.</p>
-          </div>
-          <div class="card-footer-row">
-            <div class="card-circle-btn">↗</div>
-          </div>
-        </a>
-
-        <!-- Card 3: Refer & Earn -->
+        <!-- Refer & Earn -->
         <a href="#refer" class="category-card" data-target="refer">
           <div class="card-top-head">
             <span class="card-badge-pill">Cash Vouchers</span>
@@ -56,7 +27,7 @@ export function renderCategoryGrid(container, onNavigate) {
           </div>
         </a>
 
-        <!-- Card 4: Free CIBIL Check -->
+        <!-- Free CIBIL Check -->
         <a href="#cibil" class="category-card" data-target="cibil">
           <div class="card-top-head">
             <span class="card-badge-pill">+1 Bonus Spin</span>
@@ -70,63 +41,21 @@ export function renderCategoryGrid(container, onNavigate) {
           </div>
         </a>
 
-        <!-- Card 5: EMI Calculator -->
+        <!-- EMI Calculator -->
         <a href="#emi" class="category-card" data-target="emi">
           <div class="card-top-head">
-            <span class="card-badge-pill">Scratch Reward</span>
+            <span class="card-badge-pill">Smart Tool</span>
           </div>
           <div class="card-body-content">
             <h3 class="card-title-text">EMI Calculator</h3>
-            <p class="card-desc-text">Interactive EMI visualizer & unlock a surprise scratch card reward.</p>
+            <p class="card-desc-text">Interactive EMI visualizer & plan your finances better.</p>
           </div>
           <div class="card-footer-row">
             <div class="card-circle-btn">↗</div>
           </div>
         </a>
 
-        <!-- Card 6: PFIN Card -->
-        <a href="#pfin" class="category-card" data-target="pfin">
-          <div class="card-top-head">
-            <span class="card-badge-pill">Guaranteed Gift</span>
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">PFIN Card</h3>
-            <p class="card-desc-text">Consumer durable No Cost EMIs & guaranteed gift cards.</p>
-          </div>
-          <div class="card-footer-row">
-            <div class="card-circle-btn">↗</div>
-          </div>
-        </a>
 
-        <!-- Card 7: Top Offers -->
-        <a href="#offers" class="category-card" data-target="offers">
-          <div class="card-top-head">
-            <span class="card-badge-pill">150+ Partner Deals</span>
-          </div>
-          <div class="card-body-content">
-            <h3 class="card-title-text">Top Offers</h3>
-            <p class="card-desc-text">Myntra, KFC, Swiggy, Ajio & Lifestyle discount promo codes.</p>
-          </div>
-          <div class="card-footer-row">
-            <div class="card-circle-btn">↗</div>
-          </div>
-        </a>
-
-        <!-- Card 8: My Offers (Dynamic post claim) -->
-        ${claimedCount > 0 ? `
-          <a href="#myoffers" class="category-card" data-target="myoffers" style="background: var(--wf-hero-bg);">
-            <div class="card-top-head">
-              <span class="card-badge-pill" style="background: #111111; color: #FFFFFF;">${claimedCount} Claimed</span>
-            </div>
-            <div class="card-body-content">
-              <h3 class="card-title-text">My Offers</h3>
-              <p class="card-desc-text">View your ${claimedCount} won brand voucher code${claimedCount > 1 ? 's' : ''}.</p>
-            </div>
-            <div class="card-footer-row">
-              <div class="card-circle-btn">↗</div>
-            </div>
-          </a>
-        ` : ''}
       </div>
     `;
 
@@ -142,7 +71,5 @@ export function renderCategoryGrid(container, onNavigate) {
   };
 
   updateGridHTML();
-  subscribeRewards(() => updateGridHTML());
-
   container.appendChild(section);
 }

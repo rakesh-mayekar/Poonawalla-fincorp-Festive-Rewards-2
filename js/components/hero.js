@@ -12,8 +12,9 @@ export function renderHero(container, onNavigate) {
   heroWrapper.className = 'festive-hero';
 
   heroWrapper.innerHTML = `
-    <div class="festive-badge-pill">🪔 Festive Celebration Sale 2025</div>
+    <div class="festive-badge-pill">Festive Celebration Sale 2025</div>
     
+
     <h1 class="hero-title festive-heading">
       Celebrate Big Savings & Guaranteed Rewards!
     </h1>
@@ -23,17 +24,17 @@ export function renderHero(container, onNavigate) {
     </p>
 
     <div class="hero-cta-group">
-      <button class="btn-gold glow-effect" id="hero-play-win-btn">
-        🎰 Play & Win Rewards
+      <button class="hero-pill-btn hero-pill-light" id="hero-play-win-btn">
+        Play & Win Rewards
       </button>
-      <button class="btn-primary" id="hero-loans-btn">
-        💳 Explore Loans
+      <button class="hero-pill-btn hero-pill-dark" id="hero-loans-btn">
+        Explore Loans
       </button>
     </div>
 
     <!-- Live Live Winner Ticker Bar -->
-    <div style="margin-top: 18px; padding: 6px 12px; background: rgba(255,255,255,0.04); border: 1px dashed var(--wireframe-border); border-radius: var(--radius-sm); font-size: 0.75rem; color: var(--wireframe-text-secondary); display: flex; align-items: center; justify-content: center; gap: 6px;" id="hero-live-ticker">
-      <span>🎉</span> <span id="ticker-text">User from Mumbai (98***1209) won Myntra ₹250 Voucher!</span>
+    <div style="margin-top: 18px; padding: 6px 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--wf-border); border-radius: var(--radius-sm); font-size: 0.75rem; color: var(--wf-text-secondary); display: flex; align-items: center; justify-content: center; gap: 6px;" id="hero-live-ticker">
+      <span id="ticker-text">User from Mumbai (98***1209) won Myntra ₹250 Voucher!</span>
     </div>
 
     <div class="hero-stats-bar">
@@ -49,6 +50,13 @@ export function renderHero(container, onNavigate) {
         <span class="stat-value">150+</span>
         <span class="stat-label">Brand Offers</span>
       </div>
+    </div>
+    
+    <!-- New Festive Strip Line -->
+    <div class="festive-strip-line">
+      <span class="strip-text-bold">✨ SHUBH DIWALI & FESTIVE OFFERS</span>
+      <span class="strip-pill">Guaranteed Brand Rewards</span>
+      <span class="strip-text-light">• Zero Processing Fee on Pre-Approved Loans •</span>
     </div>
   `;
 

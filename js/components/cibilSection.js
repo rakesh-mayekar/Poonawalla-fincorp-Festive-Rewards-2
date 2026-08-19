@@ -8,7 +8,7 @@ import { openOtpModal } from './otpModal.js';
 
 export function renderCibilSection(container, onNavigate) {
   const wrapper = document.createElement('div');
-  wrapper.className = 'loans-container';
+  wrapper.className = 'loans-container section-wrapper';
 
   const baseCibilUrl = 'https://poonawallafincorp.com/credit-score/check-cibil-score';
   const finalCibilUrl = buildUtmUrl(baseCibilUrl, 'cibil-check');
@@ -16,41 +16,44 @@ export function renderCibilSection(container, onNavigate) {
   const userRewards = getUserRewards();
 
   wrapper.innerHTML = `
-    <div class="loans-header">
-      <div class="festive-badge-pill" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #34D399;">
-        📊 100% Free Credit Score Check
+    <div class="section-header">
+      <div class="festive-badge-pill" style="margin-bottom: 12px; display: inline-block;">
+        📊 100% Free Utility
       </div>
-      <h2 class="loans-title festive-heading">Check Free CIBIL Score & Unlock +1 Extra Spin!</h2>
-      <p class="loans-subtitle">Check your credit score instantly without impacting your credit rating. Complete your check to get an extra bonus spin on Spin & Win!</p>
+      <h2>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="section-icon"><path d="M11 4C11 8.5 7.5 11 4 11C7.5 11 11 13.5 11 18C11 13.5 14.5 11 19 11C14.5 11 11 8.5 11 4Z" /><circle cx="6" cy="17" r="1.5" /><path d="M18 5 v4 m-2 -2 h4" /></svg>
+        Check Your Free CIBIL Score
+      </h2>
+      <p class="subheading">Check your credit score instantly without impacting your credit rating. Good credit scores unlock lower interest rates!</p>
     </div>
 
-    <div class="game-card-wrapper" style="margin: 0 0 20px;">
-      <div style="font-size: 3rem; margin-bottom: 10px;">📈</div>
+    <div style="background: var(--wf-surface); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--wf-border); box-shadow: var(--shadow-sm); max-width: 800px; margin: 0 auto; text-align: center;">
+      <div style="font-size: 3.5rem; margin-bottom: 16px;">📈</div>
       
-      <div style="background: rgba(255, 215, 0, 0.08); border: 1px dashed var(--pfl-gold); padding: 12px; border-radius: 8px; margin-bottom: 16px;">
-        <span style="color: var(--text-gold); font-weight: bold; font-size: 0.9rem;">
-          🎁 Festive Day Bonus Offer:
+      <div style="background: var(--wf-surface-subtle); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 24px; border: 1px dashed var(--color-primary);">
+        <span style="color: var(--color-primary); font-weight: 800; font-size: 1rem; display: block; margin-bottom: 8px;">
+          🎁 Festive Day Bonus Offer
         </span>
-        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">
-          Checking your CIBIL score awards you <strong>1 EXTRA SPIN</strong> on the Spin & Win game!
+        <p style="font-size: 0.95rem; color: var(--wf-text-secondary); margin: 0;">
+          Checking your CIBIL score today awards you <strong>1 EXTRA SPIN</strong> on the Spin & Win game!
         </p>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 12px;">
-        <a href="${finalCibilUrl}" target="_blank" rel="noopener noreferrer" class="btn-gold glow-effect" id="check-cibil-cta" style="padding: 14px; font-size: 1rem;">
-          🔍 Check My CIBIL Score Now ↗
+      <div style="display: flex; flex-direction: column; gap: 16px; align-items: center;">
+        <a href="${finalCibilUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary" id="check-cibil-cta" style="padding: 16px 40px; font-size: 1.1rem;">
+          🔍 Check My CIBIL Score For Free ↗
         </a>
 
         ${userRewards.cibilExtraSpinUnlocked ? `
-          <div class="played-badge-overlay">
-            ⭐ Extra Spin Unlocked! Visit Spin & Win game to use your bonus spin.
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 16px; border-radius: var(--radius-sm); color: #10B981; font-weight: 600; font-size: 0.95rem; margin-top: 8px; width: 100%; max-width: 400px;">
+            ⭐ Extra Spin Unlocked! 
             <br>
-            <button class="btn-primary" id="go-to-spin-btn" style="margin-top: 10px; font-size: 0.82rem; padding: 8px 18px;">
+            <button class="btn-primary" id="go-to-spin-btn" style="margin-top: 12px; font-size: 0.9rem; padding: 10px 24px;">
               🎰 Go to Spin & Win Game
             </button>
           </div>
         ` : `
-          <button class="btn-outline" id="simulate-cibil-return-btn" style="margin-top: 6px;">
+          <button class="btn-outline" id="simulate-cibil-return-btn" style="margin-top: 8px; font-size: 0.9rem; padding: 10px 24px;">
             ✓ I've Completed My CIBIL Check (Claim Extra Spin)
           </button>
         `}
@@ -70,7 +73,7 @@ export function renderCibilSection(container, onNavigate) {
     });
   });
 
-  // Simulated Return / Completion Handler (Option 1 & Option 4 SOT v1.3 Section 4.5)
+  // Simulated Return / Completion Handler
   const simulateBtn = wrapper.querySelector('#simulate-cibil-return-btn');
   if (simulateBtn) {
     simulateBtn.addEventListener('click', () => {

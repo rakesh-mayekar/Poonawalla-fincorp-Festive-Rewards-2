@@ -10,7 +10,7 @@ import { openRewardModal } from './rewardModal.js';
 
 export function renderEmiSection(container) {
   const wrapper = document.createElement('div');
-  wrapper.className = 'loans-container';
+  wrapper.className = 'loans-container section-wrapper';
 
   const baseEmiUrl = 'https://poonawallafincorp.com/emi-calculator';
   const finalEmiUrl = buildUtmUrl(baseEmiUrl, 'emi-calculator');
@@ -19,98 +19,103 @@ export function renderEmiSection(container) {
   const emiClaim = userRewards.claims['emi_scratch_card'];
 
   wrapper.innerHTML = `
-    <div class="loans-header">
-      <div class="festive-badge-pill">🧮 Affordability Calculator</div>
-      <h2 class="loans-title festive-heading">Calculate Your EMI & Unlock a Surprise Reward!</h2>
-      <p class="loans-subtitle">Plan your loan EMIs effortlessly. Unlock a scratch card reward instantly before heading to Poonawalla's official EMI calculator!</p>
+    <div class="loans-header" style="text-align: center; margin-bottom: 32px;">
+      <div class="festive-badge-pill" style="margin-bottom: 12px; display: inline-block;">🧮 Affordability Calculator</div>
+      <h2 class="loans-title festive-heading">Calculate Your EMI</h2>
+      <p class="loans-subtitle" style="max-width: 600px; margin: 0 auto;">Estimate your monthly EMI before you apply.</p>
     </div>
 
-    <!-- Reward Hook Card -->
-    <div class="game-card-wrapper" style="margin-bottom: 24px;">
-      <div style="font-size: 2.5rem; margin-bottom: 8px;">🎁</div>
-      <h3 style="font-size: 1.1rem; color: var(--text-gold); margin-bottom: 6px;">
-        Unlock Guaranteed Scratch Card Reward
-      </h3>
-      <p style="font-size: 0.8rem; color: var(--wireframe-text-secondary); margin-bottom: 16px;">
-        1 Scratch Card per mobile number upon verification.
-      </p>
+    <div style="display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 1000px; margin: 0 auto;">
+      
+      <!-- Native Interactive EMI Calculator & Visualizer Widget -->
+      <div style="background: var(--wf-surface); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--wf-border); box-shadow: var(--shadow-sm); text-align: left;">
+        <h3 style="font-size: 1.2rem; color: var(--wf-text-primary); margin-bottom: 24px; text-align: center;">
+          📊 Quick EMI Estimator
+        </h3>
 
-      ${emiClaim ? `
-        <div class="played-badge-overlay" style="margin-bottom: 14px;">
-          ✓ You have already unlocked your EMI Scratch Reward!
-          <br>
-          <button class="btn-gold" id="view-previous-emi-reward" style="margin-top: 8px; font-size: 0.8rem; padding: 6px 16px;">
-            🎁 View My Won Reward
-          </button>
-        </div>
-      ` : `
-        <button class="btn-gold glow-effect" id="unlock-emi-reward-btn" style="padding: 12px 28px; font-size: 0.95rem; margin-bottom: 14px;">
-          🎁 Unlock My Reward
-        </button>
-      `}
-
-      <div>
-        <a href="${finalEmiUrl}" target="_blank" rel="noopener noreferrer" class="apply-now-btn" id="go-to-emi-redirect-btn" style="padding: 10px 22px; font-size: 0.88rem;">
-          Go to Poonawalla EMI Calculator ↗
-        </a>
-      </div>
-    </div>
-
-    <!-- Native Interactive EMI Calculator & Visualizer Widget -->
-    <div class="game-card-wrapper" style="text-align: left;">
-      <h3 style="font-size: 1.1rem; color: var(--wireframe-text-primary); margin-bottom: 14px; text-align: center;">
-        📊 Quick Festive EMI Visualizer
-      </h3>
-
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem;">
-            <span>Loan Amount:</span>
-            <strong style="color: #FFFFFF;" id="loan-amt-val">₹ 5,00,000</strong>
-          </div>
-          <input type="range" id="loan-amt-range" min="50000" max="3000000" step="50000" value="500000" style="width: 100%; accent-color: #FFFFFF;">
-        </div>
-
-        <div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem;">
-            <span>Interest Rate (% p.a.):</span>
-            <strong style="color: #FFFFFF;" id="interest-rate-val">10.25%</strong>
-          </div>
-          <input type="range" id="interest-rate-range" min="8" max="24" step="0.25" value="10.25" style="width: 100%; accent-color: #FFFFFF;">
-        </div>
-
-        <div>
-          <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem;">
-            <span>Tenure (Months):</span>
-            <strong style="color: #FFFFFF;" id="tenure-val">36 Months</strong>
-          </div>
-          <input type="range" id="tenure-range" min="12" max="60" step="6" value="36" style="width: 100%; accent-color: #FFFFFF;">
-        </div>
-
-        <!-- Calculated Result Box with SVG Donut Visualizer -->
-        <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid var(--wireframe-border-white); border-radius: var(--radius-sm); padding: 16px; text-align: center; margin-top: 10px;">
-          <span style="font-size: 0.75rem; color: var(--wireframe-text-secondary); text-transform: uppercase;">Estimated Monthly EMI</span>
-          <div style="font-size: 1.6rem; font-weight: 800; color: #FFFFFF; margin: 4px 0;" id="calc-emi-result">
-            ₹ 16,192
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          <div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; font-weight: 600; color: var(--wf-text-primary);">
+              <span>Loan Amount:</span>
+              <span id="loan-amt-val" style="color: var(--color-primary);">₹ 5,00,000</span>
+            </div>
+            <input type="range" id="loan-amt-range" min="50000" max="3000000" step="50000" value="500000" style="width: 100%; accent-color: var(--color-primary);">
           </div>
 
-          <!-- Interactive SVG Donut Chart -->
-          <div style="position: relative; width: 120px; height: 120px; margin: 12px auto;">
-            <svg viewBox="0 0 36 36" style="width: 120px; height: 120px; transform: rotate(-90deg);">
-              <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#333333" stroke-width="3.8"/>
-              <path id="donut-interest-segment" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#FFFFFF" stroke-width="3.8" stroke-dasharray="25, 100"/>
-            </svg>
-            <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: #FFFFFF;" id="donut-percent-text">
-              14% Interest
+          <div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; font-weight: 600; color: var(--wf-text-primary);">
+              <span>Interest Rate (% p.a.):</span>
+              <span id="interest-rate-val" style="color: var(--color-primary);">10.25%</span>
+            </div>
+            <input type="range" id="interest-rate-range" min="8" max="24" step="0.25" value="10.25" style="width: 100%; accent-color: var(--color-primary);">
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; font-weight: 600; color: var(--wf-text-primary);">
+              <span>Tenure (Months):</span>
+              <span id="tenure-val" style="color: var(--color-primary);">36 Months</span>
+            </div>
+            <input type="range" id="tenure-range" min="12" max="60" step="6" value="36" style="width: 100%; accent-color: var(--color-primary);">
+          </div>
+
+          <!-- Calculated Result Box with SVG Donut Visualizer -->
+          <div style="background: var(--wf-surface-subtle); border: 1px solid var(--wf-border); border-radius: var(--radius-md); padding: 24px; text-align: center; margin-top: 8px;">
+            <span style="font-size: 0.85rem; color: var(--wf-text-secondary); text-transform: uppercase; font-weight: 700;">Estimated Monthly EMI</span>
+            <div style="font-size: 2.5rem; font-weight: 800; color: var(--wf-text-primary); margin: 8px 0;" id="calc-emi-result">
+              ₹ 16,192
+            </div>
+
+            <!-- Interactive SVG Donut Chart -->
+            <div style="position: relative; width: 140px; height: 140px; margin: 16px auto;">
+              <svg viewBox="0 0 36 36" style="width: 140px; height: 140px; transform: rotate(-90deg);">
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="var(--wf-border)" stroke-width="3.8"/>
+                <path id="donut-interest-segment" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="var(--color-primary)" stroke-width="3.8" stroke-dasharray="25, 100"/>
+              </svg>
+              <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--wf-text-primary);" id="donut-percent-text">
+                14% Interest
+              </div>
+            </div>
+
+            <div style="font-size: 0.9rem; color: var(--wf-text-secondary); display: flex; justify-content: space-around; margin-top: 16px;">
+              <div>Principal: <strong style="color: var(--wf-text-primary);" id="calc-principal-display">₹ 5,00,000</strong></div>
+              <div>Interest: <strong style="color: var(--color-primary);" id="calc-total-interest">₹ 82,912</strong></div>
             </div>
           </div>
-
-          <div style="font-size: 0.78rem; color: var(--wireframe-text-secondary); display: flex; justify-content: space-around; margin-top: 6px;">
-            <div>Principal: <strong style="color: #FFFFFF;" id="calc-principal-display">₹ 5,00,000</strong></div>
-            <div>Interest: <strong style="color: #FFFFFF;" id="calc-total-interest">₹ 82,912</strong></div>
-          </div>
         </div>
       </div>
+
+      <!-- Reward Hook Card -->
+      <div style="background: var(--wf-surface); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--wf-border); box-shadow: var(--shadow-sm); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div style="font-size: 3.5rem; margin-bottom: 16px;">🎁</div>
+        <h3 style="font-size: 1.4rem; color: var(--wf-text-primary); margin-bottom: 8px;">
+          Claim Your Guaranteed Reward
+        </h3>
+        <p style="font-size: 0.95rem; color: var(--wf-text-secondary); margin-bottom: 24px;">
+          Get a Scratch Card just for verifying your mobile number!
+        </p>
+
+        ${emiClaim ? `
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 16px; border-radius: var(--radius-sm); color: #10B981; font-weight: 600; font-size: 0.95rem; margin-bottom: 24px; width: 100%;">
+            ✓ You have already unlocked your EMI Scratch Reward!
+            <br>
+            <button class="btn-primary" id="view-previous-emi-reward" style="margin-top: 12px; font-size: 0.9rem; padding: 10px 24px;">
+              🎁 View My Won Reward
+            </button>
+          </div>
+        ` : `
+          <button class="btn-primary" id="unlock-emi-reward-btn" style="padding: 16px 32px; font-size: 1.1rem; margin-bottom: 24px;">
+            🎁 Unlock My Reward
+          </button>
+        `}
+
+        <div style="margin-top: auto; padding-top: 24px; border-top: 1px solid var(--wf-border); width: 100%;">
+          <p style="font-size: 0.85rem; color: var(--wf-text-secondary); margin-bottom: 12px;">Ready to apply for a loan?</p>
+          <a href="${finalEmiUrl}" target="_blank" rel="noopener noreferrer" class="btn-outline" id="go-to-emi-redirect-btn" style="padding: 12px 24px; font-size: 0.95rem; display: inline-block;">
+            Go to Official EMI Calculator ↗
+          </a>
+        </div>
+      </div>
+      
     </div>
   `;
 

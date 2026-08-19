@@ -1,91 +1,59 @@
-// Loans Section Component
+// Loans Section Component (All Loans)
 import { LOAN_PRODUCTS, buildUtmUrl } from '../data/loansData.js';
 import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
-import { sendLeadToLeadSquared } from '../services/crmService.js';
 import { getSession } from '../state/sessionState.js';
 
 export function renderLoansSection(container) {
   const wrapper = document.createElement('div');
-  wrapper.className = 'loans-container';
+  wrapper.className = 'loans-container section-wrapper';
 
   wrapper.innerHTML = `
-    <div class="loans-header">
-      <h2 class="loans-title festive-heading">Poonawalla Fincorp Loan Products</h2>
-      <p class="loans-subtitle">Discover high-value loans with attractive interest rates & festive offers.</p>
+    <div class="section-header">
+      <h2>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="section-icon"><path d="M11 4C11 8.5 7.5 11 4 11C7.5 11 11 13.5 11 18C11 13.5 14.5 11 19 11C14.5 11 11 8.5 11 4Z" /><circle cx="6" cy="17" r="1.5" /><path d="M18 5 v4 m-2 -2 h4" /></svg>
+        Explore All Loan Products
+      </h2>
+      <p class="subheading">Discover high-value loans with attractive interest rates & festive offers.</p>
     </div>
 
-    <div class="loans-list" id="loans-list-wrapper"></div>
+    <div class="loans-list preview-grid" id="loans-list-wrapper"></div>
   `;
 
   const listContainer = wrapper.querySelector('#loans-list-wrapper');
 
   LOAN_PRODUCTS.forEach(product => {
-    const card = document.createElement('div');
+    const card = document.createElement('a');
+    card.href = `#loan-detail?id=${product.id}`;
     card.className = 'loan-card';
     card.id = `loan-card-${product.id}`;
 
-    const finalApplyUrl = buildUtmUrl(product.applyUrl, product.slug);
-
     card.innerHTML = `
-      <div class="loan-card-top">
-        <div class="loan-icon-box">${product.icon}</div>
-        <div class="loan-info">
-          <h3 class="loan-title">${product.title}</h3>
-          <div class="loan-rate-tag">
-            <span>EMI Starts ${product.startingEmi}</span> • <span>${product.interestRate}</span>
-          </div>
+      <div class="loan-card-content">
+        <div class="loan-icon-box" aria-hidden="true" style="font-size: 2rem; margin-bottom: 12px;">${product.icon}</div>
+        <h3 class="loan-title">${product.title}</h3>
+        <p class="loan-desc" style="font-size: 0.85rem; color: var(--wf-text-secondary); margin-bottom: 12px;">
+          EMI Starts ${product.startingEmi} • ${product.interestRate}
+        </p>
+        
+        <div class="festive-offer-banner" style="margin-bottom: 16px;">
+          <span aria-hidden="true">🏷️</span> ${product.festiveOffer}
         </div>
       </div>
-
-      <div class="festive-offer-banner">
-        <span>🏷️</span> ${product.festiveOffer}
+      
+      <div class="trust-badge-row" style="margin-bottom: 16px; justify-content: flex-start;">
+        <span class="trust-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> 100% Secure</span>
       </div>
 
-      <div class="loan-accordion-content">
-        <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 8px;">
-          <strong>Eligibility:</strong> ${product.eligibility}
-        </p>
-        <ul class="benefit-list">
-          ${product.benefits.map(b => `<li class="benefit-item"><span>✓</span> ${b}</li>`).join('')}
-        </ul>
-      </div>
-
-      <div class="loan-card-actions">
-        <button class="toggle-details-btn" data-id="${product.id}">
-          <span class="toggle-text">View Key Benefits</span>
-          <span class="toggle-icon">▼</span>
-        </button>
-
-        <a href="${finalApplyUrl}" target="_blank" rel="noopener noreferrer" class="apply-now-btn" data-slug="${product.slug}" data-title="${product.title}">
-          Apply Now ↗
-        </a>
+      <div class="loan-card-footer">
+        <button class="btn-secondary" style="width: 100%;">View Details</button>
       </div>
     `;
 
-    // Accordion Toggle Handler
-    const toggleBtn = card.querySelector('.toggle-details-btn');
-    const toggleText = card.querySelector('.toggle-text');
-    const toggleIcon = card.querySelector('.toggle-icon');
-
-    toggleBtn.addEventListener('click', () => {
-      const isExpanded = card.classList.toggle('expanded');
-      toggleText.textContent = isExpanded ? 'Hide Key Benefits' : 'View Key Benefits';
-      toggleIcon.textContent = isExpanded ? '▲' : '▼';
-    });
-
-    // Apply Now CTA Click Handler
-    const applyBtn = card.querySelector('.apply-now-btn');
-    applyBtn.addEventListener('click', () => {
-      const session = getSession();
-      trackGa4Event(GA4_EVENTS.APPLY_NOW_CLICKED, {
+    // Click tracking before routing
+    card.addEventListener('click', () => {
+      trackGa4Event(GA4_EVENTS.VIEW_ITEM, {
         product_slug: product.slug,
         product_title: product.title
-      });
-
-      sendLeadToLeadSquared({
-        mobileNumber: session.mobile || 'Guest / Direct Click',
-        activityType: `Loan Product Apply Click: ${product.title}`,
-        contentSlug: product.slug
       });
     });
 

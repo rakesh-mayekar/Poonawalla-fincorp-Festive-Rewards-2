@@ -1,4 +1,4 @@
-/* Loans Section Light Wireframe Styles (Reference Prototype List Table Style) */
+/* Loans Section Light Wireframe Styles */
 .loans-container {
   padding: 32px 0;
 }
@@ -21,12 +21,10 @@
 }
 
 .loans-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  /* Let .preview-grid handle the layout */
 }
 
-/* Prototype Table Row Card Style (Image 2 Inspired) */
+/* Compact Card Styles */
 .loan-card {
   background: var(--wf-surface);
   border: 1px solid var(--wf-border);
@@ -36,52 +34,44 @@
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .loan-card:hover {
   border-color: var(--wf-text-primary);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   box-shadow: var(--shadow-md);
 }
 
-.loan-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
 .loan-icon-box {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-sm);
   background: var(--wf-surface-subtle);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   flex-shrink: 0;
   color: var(--wf-text-primary);
-}
-
-.loan-info {
-  flex: 1;
+  filter: grayscale(100%) brightness(0.8);
 }
 
 .loan-title {
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--wf-text-primary);
-  margin-bottom: 2px;
+  margin-bottom: 6px;
 }
 
-.loan-rate-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
+.loan-desc {
+  font-size: 0.85rem;
   color: var(--wf-text-secondary);
-  font-weight: 600;
+  line-height: 1.4;
 }
 
 .festive-offer-banner {
@@ -97,84 +87,101 @@
   color: var(--wf-text-primary);
 }
 
-.loan-accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease, opacity 0.25s ease;
-  opacity: 0;
-  padding-top: 0;
-  border-top: 1px solid transparent;
-  margin-top: 0;
-}
-
-.loan-card.expanded .loan-accordion-content {
-  max-height: 400px;
-  opacity: 1;
-  padding-top: 16px;
-  margin-top: 16px;
-  border-top-color: var(--wf-border);
-}
-
-.benefit-list {
+.loan-features {
   list-style: none;
+  padding: 0;
+  margin: 12px 0 0 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 14px;
 }
-
-.benefit-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
+.loan-features li {
+  font-size: 0.8rem;
   color: var(--wf-text-secondary);
+  font-weight: 500;
 }
 
-.benefit-item span {
-  color: var(--wf-text-primary);
-  font-weight: bold;
-}
-
-.loan-card-actions {
+.trust-badge-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 16px;
   gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--wf-border);
 }
 
-.toggle-details-btn {
-  background: transparent;
-  border: none;
-  color: var(--wf-text-secondary);
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.toggle-details-btn:hover {
-  color: var(--wf-text-primary);
-}
-
-.apply-now-btn {
-  background: var(--wf-text-primary);
-  color: #FFFFFF;
-  font-weight: 700;
-  font-size: 0.88rem;
-  padding: 10px 22px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--wf-text-primary);
-  text-decoration: none;
+.trust-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: var(--transition-fast);
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
-.apply-now-btn:hover {
-  background: #333333;
+.loan-card-footer {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.loan-link {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--color-primary);
+}
+
+/* Portfolio Card Styles */
+.portfolio-card {
+  padding: 32px;
+  border: 1px solid var(--wf-border);
+  border-radius: 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.portfolio-card-badge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background-color: #EDF3EC; /* Pale Green */
+  color: #346538;
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: none;
+  text-transform: uppercase;
+}
+.portfolio-card-icon {
+  width: 56px;
+  height: 56px;
+  background-color: #f3f4f6;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+}
+.portfolio-card-content {
+  flex: 1;
+}
+.portfolio-card-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 8px;
+}
+.portfolio-card-stats {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4b5563;
+  margin-bottom: 16px;
+}
+.portfolio-card-desc {
+  font-size: 0.9rem;
+  color: #6b7280;
+  line-height: 1.5;
 }

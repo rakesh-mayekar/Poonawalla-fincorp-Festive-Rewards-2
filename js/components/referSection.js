@@ -6,40 +6,46 @@ import { getSession } from '../state/sessionState.js';
 
 export function renderReferSection(container) {
   const wrapper = document.createElement('div');
-  wrapper.className = 'loans-container';
+  wrapper.className = 'loans-container section-wrapper';
 
   const baseReferralUrl = 'https://referral.poonawallafincorp.com/';
   const finalReferralUrl = buildUtmUrl(baseReferralUrl, 'refer-earn');
 
   wrapper.innerHTML = `
-    <div class="loans-header">
-      <div class="festive-badge-pill" style="margin-bottom: 8px;">🤝 Customer Referral Program</div>
+    <div class="loans-header" style="text-align: center; margin-bottom: 32px;">
+      <div class="festive-badge-pill" style="margin-bottom: 12px; display: inline-block;">🤝 Customer Referral Program</div>
       <h2 class="loans-title festive-heading">Refer Friends & Earn Cash Rewards!</h2>
-      <p class="loans-subtitle">Spread the festive joy! Refer your family & friends for Poonawalla Fincorp loans and get attractive cash vouchers for every disbursed loan.</p>
+      <p class="loans-subtitle" style="max-width: 600px; margin: 0 auto;">Spread the festive joy! Refer your family & friends for Poonawalla Fincorp loans and get attractive cash vouchers for every disbursed loan.</p>
     </div>
 
-    <div class="game-card-wrapper" style="margin: 0 0 20px;">
-      <div style="font-size: 3rem; margin-bottom: 10px;">🎁</div>
-      <h3 style="font-size: 1.2rem; color: var(--text-gold); margin-bottom: 8px;">How Refer & Earn Works</h3>
+    <div style="background: var(--wf-surface); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--wf-border); box-shadow: var(--shadow-sm); max-width: 800px; margin: 0 auto;">
+      <h3 style="font-size: 1.4rem; color: var(--wf-text-primary); margin-bottom: 24px; text-align: center;">How Refer & Earn Works</h3>
       
-      <div style="text-align: left; display: flex; flex-direction: column; gap: 12px; margin: 16px 0; font-size: 0.85rem; color: var(--text-secondary);">
-        <div style="display: flex; gap: 10px; align-items: flex-start;">
-          <span style="background: var(--pfl-red); color: white; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">1</span>
-          <span>Tap <strong>"Refer Now"</strong> to visit Poonawalla's official referral portal.</span>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 32px;">
+        <div style="text-align: center;">
+          <div style="background: var(--color-primary); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 16px auto;">1</div>
+          <h4 style="font-size: 1.05rem; margin-bottom: 8px;">Refer Now</h4>
+          <p style="font-size: 0.9rem; color: var(--wf-text-secondary);">Tap the button below to visit our official referral portal.</p>
         </div>
-        <div style="display: flex; gap: 10px; align-items: flex-start;">
-          <span style="background: var(--pfl-red); color: white; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">2</span>
-          <span>Enter your friend's contact details & required loan product.</span>
+        
+        <div style="text-align: center;">
+          <div style="background: var(--color-primary); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 16px auto;">2</div>
+          <h4 style="font-size: 1.05rem; margin-bottom: 8px;">Enter Details</h4>
+          <p style="font-size: 0.9rem; color: var(--wf-text-secondary);">Provide your friend's contact information and loan requirement.</p>
         </div>
-        <div style="display: flex; gap: 10px; align-items: flex-start;">
-          <span style="background: var(--pfl-red); color: white; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">3</span>
-          <span>Earn guaranteed cash rewards transferred directly upon loan sanction!</span>
+        
+        <div style="text-align: center;">
+          <div style="background: var(--color-primary); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; margin: 0 auto 16px auto;">3</div>
+          <h4 style="font-size: 1.05rem; margin-bottom: 8px;">Earn Rewards</h4>
+          <p style="font-size: 0.9rem; color: var(--wf-text-secondary);">Get guaranteed cash rewards directly upon loan sanction!</p>
         </div>
       </div>
 
-      <a href="${finalReferralUrl}" target="_blank" rel="noopener noreferrer" class="btn-gold glow-effect" id="refer-now-cta" style="width: 100%; padding: 14px; font-size: 1.05rem;">
-        🚀 Refer Now ↗
-      </a>
+      <div style="text-align: center; border-top: 1px solid var(--wf-border); padding-top: 24px;">
+        <a href="${finalReferralUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary" id="refer-now-cta" style="padding: 16px 40px; font-size: 1.1rem; display: inline-block;">
+          🚀 Start Referring Now
+        </a>
+      </div>
     </div>
   `;
 

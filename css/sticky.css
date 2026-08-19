@@ -2,16 +2,12 @@
 .sticky-offers-bar {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   width: 100%;
-  max-width: 1240px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-top: 1px solid var(--wf-border);
-  border-left: 1px solid var(--wf-border);
-  border-right: 1px solid var(--wf-border);
   z-index: 90;
   padding: 12px 24px 14px;
   box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.06);

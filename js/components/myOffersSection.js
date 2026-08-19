@@ -17,22 +17,29 @@ export function renderMyOffersSection(container, onNavigate) {
   const claimedDeals = BRAND_OFFERS.filter(offer => claimedDealIds.includes(offer.dealId));
 
   wrapper.innerHTML = `
-    <div class="offers-header">
-      <div class="festive-badge-pill" style="background: var(--pfl-red); color: white;">
+    <div class="section-header" style="text-align: center; margin-bottom: 32px;">
+      <div class="festive-badge-pill" style="background: var(--wf-surface-subtle); color: var(--wf-text-primary); border: 1px solid var(--wf-border); display: inline-block; margin-bottom: 16px;">
         🎁 Wallet & Reward History
       </div>
-      <h2 class="loans-title festive-heading">My Claimed Festive Rewards</h2>
-      <p class="loans-subtitle">All your won coupon codes & brand partner vouchers in one place.</p>
+      <h2>My Claimed Festive Rewards</h2>
+      <p class="subheading" style="margin: 0 auto;">All your won coupon codes & brand partner vouchers in one place.</p>
     </div>
 
     ${claimedDeals.length === 0 ? `
-      <div class="my-offers-empty">
-        <div class="empty-icon">🎁</div>
-        <h3>No Rewards Claimed Yet</h3>
-        <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 8px 0 16px;">
-          Play festive games or explore EMI/PFIN sections to unlock exclusive coupon codes!
+      <div class="my-offers-empty" style="background: var(--wf-surface); border: 1px dashed var(--wf-border); padding: 48px 24px; border-radius: var(--radius-lg); text-align: center; max-width: 600px; margin: 0 auto;">
+        <div class="empty-icon" style="font-size: 4rem; margin-bottom: 16px;">🎁</div>
+        <h3 style="font-size: 1.5rem; color: var(--wf-text-primary); margin-bottom: 12px;">Your Reward Wallet is Empty</h3>
+        <p style="font-size: 1rem; color: var(--wf-text-secondary); margin-bottom: 24px;">
+          You haven't claimed any festive rewards yet. Play our festive games or use our free utilities to unlock exclusive brand vouchers right now!
         </p>
-        <button class="btn-gold" id="myoffers-play-btn">🎰 Play & Win Now</button>
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+          <button class="btn-primary" id="myoffers-play-btn" style="padding: 12px 32px; font-size: 1.05rem;">
+            🎰 Play Games & Win
+          </button>
+          <a href="#cibil" class="btn-secondary" style="padding: 12px 32px; font-size: 1.05rem; display: inline-flex; align-items: center; justify-content: center;">
+            📈 Check Free CIBIL
+          </a>
+        </div>
       </div>
     ` : `
       <div class="offers-grid">
@@ -52,7 +59,7 @@ export function renderMyOffersSection(container, onNavigate) {
 
             <div class="offer-card-foot">
               <div class="coupon-preview-box">${offer.couponCode}</div>
-              <button class="btn-gold my-offer-view-btn" data-deal-id="${offer.dealId}" style="font-size: 0.78rem; padding: 6px 14px;">
+              <button class="btn-primary my-offer-view-btn" data-deal-id="${offer.dealId}" style="font-size: 0.78rem; padding: 6px 14px;">
                 View Voucher 🎁
               </button>
             </div>

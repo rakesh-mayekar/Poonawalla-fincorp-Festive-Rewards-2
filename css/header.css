@@ -14,6 +14,15 @@
   gap: 20px;
 }
 
+.header-inner-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 @media (min-width: 768px) {
   .site-header {
     padding: 18px 40px;
@@ -30,15 +39,18 @@
 }
 
 .brand-icon {
-  width: 38px;
-  height: 38px;
-  background: var(--wf-text-primary);
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  background: #111111;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
   font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  font-family: var(--font-body);
 }
 
 .brand-name-group {
@@ -49,18 +61,19 @@
 .brand-title {
   font-family: var(--font-body);
   font-weight: 800;
-  font-size: 1.1rem;
-  color: var(--wf-text-primary);
-  letter-spacing: -0.02em;
+  font-size: 1.15rem;
+  color: #111111;
+  letter-spacing: -0.01em;
   line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .brand-subtitle {
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--wf-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #666666;
+  letter-spacing: 0.04em;
+  font-family: var(--font-body);
 }
 
 /* Desktop Navigation Link Bar (Header Text Navigation) */
@@ -82,20 +95,33 @@
 .desktop-nav-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  gap: 8px;
+  padding: 8px 14px;
   border-radius: var(--radius-full);
-  color: var(--wf-text-secondary);
+  color: #111111;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   transition: var(--transition-fast);
   white-space: nowrap;
+  font-family: var(--font-body);
+}
+
+.desktop-nav-link svg {
+  color: #666666;
+  transition: var(--transition-fast);
 }
 
 .desktop-nav-link:hover, .desktop-nav-link.active {
-  color: var(--wf-text-primary);
-  font-weight: 700;
+  background: var(--wf-surface-subtle);
+}
+
+.desktop-nav-link:hover svg, .desktop-nav-link.active svg {
+  color: #111111;
+}
+
+.dropdown-caret {
+  margin-left: 2px;
 }
 
 .header-actions {
@@ -122,8 +148,8 @@
   background: var(--wf-surface);
   border: 1px solid var(--wf-border);
   color: var(--wf-text-primary);
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -241,3 +267,87 @@
   padding: 2px 8px;
   border-radius: var(--radius-full);
 }
+
+/* Dropdown Styles */
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #FFFFFF;
+  border: 1px solid var(--wf-border);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+  list-style: none;
+  padding: 12px;
+  min-width: 240px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  margin-top: 4px;
+}
+
+.nav-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-menu-right {
+  left: auto;
+  right: 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #111111;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: var(--transition-fast);
+  font-family: var(--font-body);
+  white-space: nowrap;
+}
+
+.dropdown-item svg {
+  color: #666666;
+  transition: var(--transition-fast);
+}
+
+.dropdown-item:hover, .dropdown-item.active {
+  background: var(--wf-surface-subtle);
+}
+
+.dropdown-item:hover svg, .dropdown-item.active svg {
+  color: #111111;
+}
+
+/* Mobile Dropdown Styles */
+.mobile-dropdown-header {
+  font-weight: 700;
+  color: var(--wf-text-secondary);
+  font-size: 0.8rem;
+  padding: 16px 16px 8px 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.mobile-dropdown-menu {
+  list-style: none;
+  padding: 0 0 0 12px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+

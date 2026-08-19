@@ -38,7 +38,7 @@
 
 @media (min-width: 1024px) {
   .category-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -61,8 +61,7 @@
 }
 
 .category-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  transform: scale(0.98);
   border-color: var(--wf-text-primary);
 }
 
