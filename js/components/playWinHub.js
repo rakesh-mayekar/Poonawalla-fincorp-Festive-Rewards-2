@@ -9,7 +9,7 @@ export function renderPlayWinHub(container) {
   wrapper.className = 'games-hub-wrapper section-wrapper';
 
   wrapper.innerHTML = `
-    <div class="section-header">
+    <div class="section-header align-left">
       <h2>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="section-icon"><rect x="2" y="7" width="20" height="15" rx="2" ry="2" /><polyline points="17 2 12 7 7 2" /></svg>
         Play & Win Festive Rewards

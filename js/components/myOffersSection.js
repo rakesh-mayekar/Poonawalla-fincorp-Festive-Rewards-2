@@ -17,12 +17,12 @@ export function renderMyOffersSection(container, onNavigate) {
   const claimedDeals = BRAND_OFFERS.filter(offer => claimedDealIds.includes(offer.dealId));
 
   wrapper.innerHTML = `
-    <div class="section-header" style="text-align: center; margin-bottom: 32px;">
-      <div class="festive-badge-pill" style="background: var(--wf-surface-subtle); color: var(--wf-text-primary); border: 1px solid var(--wf-border); display: inline-block; margin-bottom: 16px;">
-        🎁 Wallet & Reward History
-      </div>
-      <h2>My Claimed Festive Rewards</h2>
-      <p class="subheading" style="margin: 0 auto;">All your won coupon codes & brand partner vouchers in one place.</p>
+    <div class="section-header align-left" style="margin-bottom: 32px;">
+      <h2>
+        <svg class="section-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+        My Claimed Offers
+      </h2>
+      <p class="subheading">Access and redeem the vouchers you've won from the Festive Campaign.</p>
     </div>
 
     ${claimedDeals.length === 0 ? `

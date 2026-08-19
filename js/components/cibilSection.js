@@ -16,10 +16,7 @@ export function renderCibilSection(container, onNavigate) {
   const userRewards = getUserRewards();
 
   wrapper.innerHTML = `
-    <div class="section-header">
-      <div class="festive-badge-pill" style="margin-bottom: 12px; display: inline-block;">
-        📊 100% Free Utility
-      </div>
+    <div class="section-header align-left">
       <h2>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="section-icon"><path d="M11 4C11 8.5 7.5 11 4 11C7.5 11 11 13.5 11 18C11 13.5 14.5 11 19 11C14.5 11 11 8.5 11 4Z" /><circle cx="6" cy="17" r="1.5" /><path d="M18 5 v4 m-2 -2 h4" /></svg>
         Check Your Free CIBIL Score

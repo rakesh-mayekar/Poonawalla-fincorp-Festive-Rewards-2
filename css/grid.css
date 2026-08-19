@@ -47,7 +47,7 @@
   background: var(--wf-surface);
   border: 1px solid var(--wf-border);
   border-radius: var(--radius-lg);
-  padding: 24px 20px;
+  padding: 32px 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

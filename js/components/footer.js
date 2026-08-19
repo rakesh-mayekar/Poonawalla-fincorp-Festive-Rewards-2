@@ -35,10 +35,10 @@ export function renderFooter(container, onNavigate) {
         <div class="footer-links-col">
           <h4>FINANCIAL SOLUTIONS</h4>
           <ul>
-            <li><a href="#loan-detail?id=instant-personal">Pre-Approved ₹15 Lakh Loan</a></li>
-            <li><a href="#loan-detail?id=prime-personal">Digital PFIN Credit Card</a></li>
-            <li><a href="#loan-detail?id=instant-personal">Instant Personal Loans</a></li>
-            <li><a href="#loan-detail?id=business">Business & Gold Loans</a></li>
+            <li><a href="#loan-detail?id=instant-personal-loan">Pre-Approved ₹15 Lakh Loan</a></li>
+            <li><a href="#loan-detail?id=prime-personal-loan">Digital PFIN Credit Card</a></li>
+            <li><a href="#loan-detail?id=instant-personal-loan">Instant Personal Loans</a></li>
+            <li><a href="#loan-detail?id=business-loan">Business & Gold Loans</a></li>
             <li><a href="#cibil">Free CIBIL Credit Check</a></li>
           </ul>
         </div>

@@ -33,10 +33,7 @@
 }
 
 .game-card-wrapper {
-  background: var(--wf-surface);
-  border: 1px solid var(--wf-border);
-  border-radius: var(--radius-lg);
-  padding: 32px 24px;
+  padding: 32px 0;
   margin-bottom: 32px;
   text-align: center;
   position: relative;

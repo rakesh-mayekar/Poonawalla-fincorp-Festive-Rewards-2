@@ -27,13 +27,13 @@ export function renderHeader(container, onNavigate) {
           </a>
           <ul class="dropdown-menu">
             <li><a href="#loans" class="dropdown-item" data-nav="loans">💳 All Loans</a></li>
-            <li><a href="#loan-detail?id=instant-personal" class="dropdown-item" data-nav="loan-detail">⚡ Instant Personal Loan</a></li>
-            <li><a href="#loan-detail?id=prime-personal" class="dropdown-item" data-nav="loan-detail">⭐ 24x7 Prime Personal Loan</a></li>
-            <li><a href="#loan-detail?id=business" class="dropdown-item" data-nav="loan-detail">💼 Business Loan</a></li>
-            <li><a href="#loan-detail?id=gold" class="dropdown-item" data-nav="loan-detail">🥇 Gold Loan</a></li>
-            <li><a href="#loan-detail?id=lap" class="dropdown-item" data-nav="loan-detail">🏠 Loan Against Property</a></li>
-            <li><a href="#loan-detail?id=professional" class="dropdown-item" data-nav="loan-detail">👨‍⚕️ Professional Loan</a></li>
-            <li><a href="#loan-detail?id=preowned-car" class="dropdown-item" data-nav="loan-detail">🚗 Pre-Owned Car Loan</a></li>
+            <li><a href="#loan-detail?id=instant-personal-loan" class="dropdown-item" data-nav="loan-detail">⚡ Instant Personal Loan</a></li>
+            <li><a href="#loan-detail?id=prime-personal-loan" class="dropdown-item" data-nav="loan-detail">⭐ 24x7 Prime Personal Loan</a></li>
+            <li><a href="#loan-detail?id=business-loan" class="dropdown-item" data-nav="loan-detail">💼 Business Loan</a></li>
+            <li><a href="#loan-detail?id=gold-loan" class="dropdown-item" data-nav="loan-detail">🥇 Gold Loan</a></li>
+            <li><a href="#loan-detail?id=loan-against-property" class="dropdown-item" data-nav="loan-detail">🏠 Loan Against Property</a></li>
+            <li><a href="#loan-detail?id=professional-loan" class="dropdown-item" data-nav="loan-detail">👨‍⚕️ Professional Loan</a></li>
+            <li><a href="#loan-detail?id=car-loan" class="dropdown-item" data-nav="loan-detail">🚗 Pre-Owned Car Loan</a></li>
           </ul>
         </li>
 
@@ -97,13 +97,13 @@ export function renderHeader(container, onNavigate) {
           <div class="mobile-dropdown-header">💳 Loans</div>
           <ul class="mobile-dropdown-menu">
             <li><a href="#loans" class="nav-link-item" data-nav="loans">All Loans</a></li>
-            <li><a href="#loan-detail?id=instant-personal" class="nav-link-item" data-nav="loan-detail">Instant Personal Loan</a></li>
-            <li><a href="#loan-detail?id=prime-personal" class="nav-link-item" data-nav="loan-detail">24x7 Prime Personal Loan</a></li>
-            <li><a href="#loan-detail?id=business" class="nav-link-item" data-nav="loan-detail">Business Loan</a></li>
-            <li><a href="#loan-detail?id=gold" class="nav-link-item" data-nav="loan-detail">Gold Loan</a></li>
-            <li><a href="#loan-detail?id=lap" class="nav-link-item" data-nav="loan-detail">Loan Against Property</a></li>
-            <li><a href="#loan-detail?id=professional" class="nav-link-item" data-nav="loan-detail">Professional Loan</a></li>
-            <li><a href="#loan-detail?id=preowned-car" class="nav-link-item" data-nav="loan-detail">Pre-Owned Car Loan</a></li>
+            <li><a href="#loan-detail?id=instant-personal-loan" class="nav-link-item" data-nav="loan-detail">Instant Personal Loan</a></li>
+            <li><a href="#loan-detail?id=prime-personal-loan" class="nav-link-item" data-nav="loan-detail">24x7 Prime Personal Loan</a></li>
+            <li><a href="#loan-detail?id=business-loan" class="nav-link-item" data-nav="loan-detail">Business Loan</a></li>
+            <li><a href="#loan-detail?id=gold-loan" class="nav-link-item" data-nav="loan-detail">Gold Loan</a></li>
+            <li><a href="#loan-detail?id=loan-against-property" class="nav-link-item" data-nav="loan-detail">Loan Against Property</a></li>
+            <li><a href="#loan-detail?id=professional-loan" class="nav-link-item" data-nav="loan-detail">Professional Loan</a></li>
+            <li><a href="#loan-detail?id=car-loan" class="nav-link-item" data-nav="loan-detail">Pre-Owned Car Loan</a></li>
           </ul>
         </li>
 
@@ -192,7 +192,13 @@ export function renderHeader(container, onNavigate) {
       container.querySelectorAll(`[data-nav="${targetNav}"]`).forEach(l => l.classList.add('active'));
       
       closeDrawer();
-      onNavigate(targetNav);
+      
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        onNavigate(href.substring(1));
+      } else {
+        onNavigate(targetNav);
+      }
     });
   });
 

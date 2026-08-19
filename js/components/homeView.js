@@ -9,18 +9,16 @@ export function renderHomeView(container, onNavigate) {
   const loansPreview = document.createElement('section');
   loansPreview.className = 'home-loans-preview section-wrapper animate-on-scroll';
   loansPreview.innerHTML = `
-    <div class="section-header" style="flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 12px;">
-      <div class="festive-badge-pill" style="margin-bottom: 4px; display: inline-block; background-color: var(--wf-surface-subtle); color: var(--wf-text-primary); border: 1px solid var(--wf-border); text-transform: uppercase;">
-        POONAWALLA FINCORP PORTFOLIO
-      </div>
-      <h2 style="font-size: 2.2rem; letter-spacing: -0.02em;">
+    <div class="section-header align-left">
+      <h2>
+        <svg class="section-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
         Our Popular <span style="font-family: var(--font-heading); font-style: italic; font-weight: 500; color: var(--wf-text-secondary); margin-left: 8px;">Services</span>
       </h2>
-      <p class="subheading" style="margin-top: 4px; max-width: 600px; color: var(--wf-text-secondary);">Explore transparent financial solutions engineered for your business and personal goals.</p>
+      <p class="subheading">Explore transparent financial solutions engineered for your business and personal goals.</p>
     </div>
     <div class="loans-grid preview-grid">
       <!-- Instant Personal Loan -->
-      <a href="#loan-detail?id=instant-personal" class="loan-card portfolio-card" data-nav="loan-detail" data-id="instant-personal">
+      <a href="#loan-detail?id=instant-personal-loan" class="loan-card portfolio-card" data-nav="loan-detail" data-id="instant-personal-loan">
         <div class="portfolio-card-badge">Zero Processing Fee</div>
         <div class="portfolio-card-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -36,7 +34,7 @@ export function renderHomeView(container, onNavigate) {
       </a>
       
       <!-- 24x7 Prime Personal Loan -->
-      <a href="#loan-detail?id=prime-personal" class="loan-card portfolio-card" data-nav="loan-detail" data-id="prime-personal">
+      <a href="#loan-detail?id=prime-personal-loan" class="loan-card portfolio-card" data-nav="loan-detail" data-id="prime-personal-loan">
         <div class="portfolio-card-badge">Flexible EMI</div>
         <div class="portfolio-card-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -52,7 +50,7 @@ export function renderHomeView(container, onNavigate) {
       </a>
 
       <!-- Business Loan -->
-      <a href="#loan-detail?id=business" class="loan-card portfolio-card" data-nav="loan-detail" data-id="business">
+      <a href="#loan-detail?id=business-loan" class="loan-card portfolio-card" data-nav="loan-detail" data-id="business-loan">
         <div class="portfolio-card-badge">Collateral Free</div>
         <div class="portfolio-card-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
@@ -79,12 +77,13 @@ export function renderHomeView(container, onNavigate) {
   gamesPreview.innerHTML = `
     <div class="pfin-dark-card">
       <div class="pfin-content">
-        <div class="pfin-badge">
-          <svg width="14" height="14" style="vertical-align: middle; margin-right: 4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-          FESTIVE CAMPAIGN
+        <div class="section-header align-left">
+          <h2 class="festive-heading pfin-title" style="font-size: 2.5rem; letter-spacing: -0.02em;">
+            <svg class="section-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            Festive <span style="font-style: italic; color: var(--wf-accent);">Games</span>
+          </h2>
+          <p class="subheading" style="color: inherit; max-width: none;">Spin the wheel, scratch cards, and shuffle to unlock exciting offers and exclusive partner deals.</p>
         </div>
-        <h2 class="festive-heading pfin-title">Play <i>&</i> Win</h2>
-        <p class="pfin-desc">Spin the wheel, scratch cards, and shuffle to unlock exciting offers and exclusive partner deals.</p>
         
         <div class="pfin-actions">
           <button class="btn-primary" id="play-win-hub-btn" style="background:#fff; border-color:#fff; color:#111;">Play Now</button>
@@ -113,7 +112,7 @@ export function renderHomeView(container, onNavigate) {
           DIGITAL FINANCIAL PRODUCT
         </div>
         <h2 class="festive-heading pfin-title">Digital Credit Card <i>Sanction</i></h2>
-        <p class="pfin-desc">Get 100% digital instant virtual card generation with zero joining fee and 5% festive rewards across top brand outlets.</p>
+        <p class="pfin-desc">Get 100% digital instant virtual card generation with zero joining fee and 5% festive rewards.</p>
         
         <div class="pfin-stats-row">
           <div class="pfin-stat">
@@ -155,9 +154,12 @@ export function renderHomeView(container, onNavigate) {
   topOffersSection.className = 'home-top-offers-preview animate-on-scroll';
   topOffersSection.innerHTML = `
     <div class="top-offers-container">
-      <div class="top-offers-header">
-        <h3 class="top-offers-title">🔥 TOP OFFERS FOR YOU</h3>
-        <a href="#offers" class="top-offers-link" id="view-all-offers-btn">Scroll & Tap to Unlock →</a>
+      <div class="section-header align-left">
+        <h2>
+          <svg class="section-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+          Top Offers For You
+        </h2>
+        <p class="subheading">Unlock exclusive vouchers and cashback across top brands.</p>
       </div>
       <div class="top-offers-scroll">
         <div class="top-offer-item">
@@ -195,6 +197,7 @@ export function renderHomeView(container, onNavigate) {
             <span class="top-offer-text">₹500 OFF on ₹2,500</span>
           </div>
         </div>
+        <button class="top-offer-view-all" id="view-all-offers-btn">View All Offers</button>
       </div>
     </div>
   `;
