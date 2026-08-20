@@ -70,22 +70,42 @@ export function renderHeader(container, onNavigate) {
             </li>
             ${session.isAuthenticated ? 
               `<li><a href="#" class="dropdown-item" id="logout-btn">🚪 Logout</a></li>` : 
-              `<li><a href="#" class="dropdown-item">🔒 Login</a></li>`
+              `<li><a href="#" class="dropdown-item" id="desktop-login-btn">🔒 Login</a></li>`
             }
           </ul>
         </li>
       </ul>
 
       <div class="header-actions">
+        <button class="mobile-only-toggle" id="mobile-nav-user-btn" aria-label="User Account" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; padding: 0;">
+          👤
+        </button>
         <button class="nav-toggle-btn mobile-only-toggle" id="nav-toggle-btn" aria-label="Toggle Navigation">
           ☰
         </button>
       </div>
     </div>
+  `;
 
-    <!-- Mobile Drawer Menu -->
-    <div class="nav-drawer-overlay" id="nav-drawer-overlay"></div>
-    <nav class="nav-drawer" id="nav-drawer">
+  // Mobile Drawer Menu (Appended to body to avoid backdrop-filter stacking context issues)
+  let drawerOverlay = document.getElementById('nav-drawer-overlay');
+  let drawerNav = document.getElementById('nav-drawer');
+  
+  if (!drawerOverlay) {
+    drawerOverlay = document.createElement('div');
+    drawerOverlay.className = 'nav-drawer-overlay';
+    drawerOverlay.id = 'nav-drawer-overlay';
+    document.body.appendChild(drawerOverlay);
+  }
+  
+  if (!drawerNav) {
+    drawerNav = document.createElement('nav');
+    drawerNav.className = 'nav-drawer';
+    drawerNav.id = 'nav-drawer';
+    document.body.appendChild(drawerNav);
+  }
+
+  drawerNav.innerHTML = `
       <div class="drawer-header">
         <span class="drawer-title">Festive Menu</span>
         <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close Navigation">&times;</button>
@@ -93,8 +113,11 @@ export function renderHeader(container, onNavigate) {
 
       <ul class="nav-links-list">
         <!-- Loans -->
-        <li>
-          <div class="mobile-dropdown-header">💳 Loans</div>
+        <li class="mobile-dropdown-group">
+          <div class="mobile-dropdown-header">
+            <span>💳 Loans</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="drawer-dropdown-caret"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
           <ul class="mobile-dropdown-menu">
             <li><a href="#loans" class="nav-link-item" data-nav="loans">All Loans</a></li>
             <li><a href="#loan-detail?id=instant-personal-loan" class="nav-link-item" data-nav="loan-detail">Instant Personal Loan</a></li>
@@ -108,8 +131,11 @@ export function renderHeader(container, onNavigate) {
         </li>
 
         <!-- Play & Win -->
-        <li>
-          <div class="mobile-dropdown-header">🎰 Play & Win</div>
+        <li class="mobile-dropdown-group">
+          <div class="mobile-dropdown-header">
+            <span>🎰 Play & Win</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="drawer-dropdown-caret"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
           <ul class="mobile-dropdown-menu">
             <li><a href="#games" class="nav-link-item" data-nav="games">Play & Win Hub</a></li>
             <li><a href="#spinwin" class="nav-link-item" data-nav="spinwin">Spin & Win</a></li>
@@ -124,20 +150,22 @@ export function renderHeader(container, onNavigate) {
         <li><a href="#offers" class="nav-link-item" data-nav="offers">🏷️ Top Partner Offers</a></li>
 
         <!-- Account -->
-        <li class="mobile-account-section">
-           <div class="mobile-dropdown-header">${session.isAuthenticated ? `👤 ${session.mobile}` : '👤 My Account'}</div>
+        <li class="mobile-account-section mobile-dropdown-group">
+           <div class="mobile-dropdown-header">
+             <span>${session.isAuthenticated ? `👤 ${session.mobile}` : '👤 My Account'}</span>
+             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="drawer-dropdown-caret"><path d="M6 9l6 6 6-6"/></svg>
+           </div>
            <ul class="mobile-dropdown-menu">
               <li id="mobile-myoffers-li" style="display: ${claimedCount > 0 ? 'block' : 'none'};">
                 <a href="#myoffers" class="nav-link-item" data-nav="myoffers">🎁 My Offers <span class="my-offers-badge" id="mobile-claimed-badge">${claimedCount}</span></a>
               </li>
               ${session.isAuthenticated ? 
                 `<li><a href="#" class="nav-link-item" id="mobile-logout-btn">🚪 Logout</a></li>` : 
-                `<li><a href="#" class="nav-link-item">🔒 Login</a></li>`
+                `<li><a href="#" class="nav-link-item" id="mobile-login-btn">🔒 Login</a></li>`
               }
            </ul>
         </li>
       </ul>
-    </nav>
   `;
 
   // Brand Logo Click Handler
@@ -151,9 +179,9 @@ export function renderHeader(container, onNavigate) {
 
   // Mobile Drawer Handlers
   const toggleBtn = container.querySelector('#nav-toggle-btn');
-  const closeBtn = container.querySelector('#drawer-close-btn');
-  const overlay = container.querySelector('#nav-drawer-overlay');
-  const drawer = container.querySelector('#nav-drawer');
+  const closeBtn = drawerNav.querySelector('#drawer-close-btn');
+  const overlay = document.getElementById('nav-drawer-overlay');
+  const drawer = document.getElementById('nav-drawer');
 
   const openDrawer = () => {
     drawer.classList.add('open');
@@ -169,12 +197,69 @@ export function renderHeader(container, onNavigate) {
   if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
   if (overlay) overlay.addEventListener('click', closeDrawer);
 
+  // Login Click Handler (Open OTP Modal)
+  const triggerLoginModal = (e) => {
+    e.preventDefault();
+    closeDrawer();
+    import('./otpModal.js').then(({ openOtpModal }) => {
+      openOtpModal(() => {
+        // Re-render header on success so it shows logged in state
+        renderHeader(container, onNavigate);
+      });
+    });
+  };
+
+  const desktopLoginBtn = container.querySelector('#desktop-login-btn');
+  if (desktopLoginBtn) desktopLoginBtn.addEventListener('click', triggerLoginModal);
+
+  const mobileLoginBtn = drawerNav.querySelector('#mobile-login-btn');
+  if (mobileLoginBtn) mobileLoginBtn.addEventListener('click', triggerLoginModal);
+
+  const mobileUserIconBtn = container.querySelector('#mobile-nav-user-btn');
+  if (mobileUserIconBtn) {
+    mobileUserIconBtn.addEventListener('click', (e) => {
+      if (!getSession().isAuthenticated) {
+        triggerLoginModal(e);
+      } else {
+        openDrawer(); // If logged in, just open the drawer to show account details
+      }
+    });
+  }
+
+  // Mobile Accordion Handlers
+  const mobileDropdownHeaders = drawerNav.querySelectorAll('.mobile-dropdown-header');
+  mobileDropdownHeaders.forEach(header => {
+    header.addEventListener('click', () => {
+      const parentGroup = header.closest('.mobile-dropdown-group');
+      if (parentGroup) {
+        // Toggle the clicked one
+        const isOpen = parentGroup.classList.contains('open');
+        
+        // Optional: Close all others first
+        drawerNav.querySelectorAll('.mobile-dropdown-group').forEach(group => {
+          group.classList.remove('open');
+        });
+        
+        // If it was not open, open it
+        if (!isOpen) {
+          parentGroup.classList.add('open');
+        }
+      }
+    });
+  });
+
   // Bind All Nav Links (Both Desktop & Mobile)
-  const allNavLinks = container.querySelectorAll('.desktop-nav-link, .nav-link-item, .dropdown-item');
+  const desktopLinks = container.querySelectorAll('.desktop-nav-link, .dropdown-item');
+  const mobileLinks = drawerNav.querySelectorAll('.nav-link-item');
+  const allNavLinks = [...desktopLinks, ...mobileLinks];
   allNavLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       const targetNav = link.getAttribute('data-nav');
       const isLogout = link.id === 'logout-btn' || link.id === 'mobile-logout-btn';
+      
+      // Ignore login button clicks here, handled separately
+      if (link.id === 'desktop-login-btn' || link.id === 'mobile-login-btn') return;
+
       
       if (isLogout) {
         e.preventDefault();
@@ -189,7 +274,7 @@ export function renderHeader(container, onNavigate) {
       e.preventDefault();
       
       allNavLinks.forEach(l => l.classList.remove('active'));
-      container.querySelectorAll(`[data-nav="${targetNav}"]`).forEach(l => l.classList.add('active'));
+      document.querySelectorAll(`[data-nav="${targetNav}"]`).forEach(l => l.classList.add('active'));
       
       closeDrawer();
       

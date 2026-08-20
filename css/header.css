@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
 }
 
 .brand-logo-wrap {
@@ -69,7 +70,7 @@
 .desktop-nav-bar {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   list-style: none;
   margin: 0 32px 0 auto;
   padding: 0;
@@ -84,13 +85,13 @@
 .desktop-nav-link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
+  gap: 6px;
+  padding: 6px 12px;
   border-radius: var(--radius-full);
   color: #111111;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: var(--transition-fast);
   white-space: nowrap;
   font-family: var(--font-body);
@@ -163,7 +164,10 @@
 /* Mobile Drawer (Only for mobile screens < 992px) */
 .nav-drawer-overlay {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
   z-index: 1000;
@@ -182,7 +186,7 @@
   top: 0;
   right: -360px;
   width: 320px;
-  height: 100%;
+  height: 100vh;
   background: #FFFFFF;
   border-left: 1px solid var(--wf-border);
   z-index: 1001;
@@ -191,6 +195,7 @@
   flex-direction: column;
   transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+  overflow-y: auto;
 }
 
 .nav-drawer.open {
@@ -329,14 +334,30 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-top: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-dropdown-caret {
+  transition: transform 0.3s ease;
+}
+
+.mobile-dropdown-group.open .drawer-dropdown-caret {
+  transform: rotate(180deg);
 }
 
 .mobile-dropdown-menu {
   list-style: none;
   padding: 0 0 0 12px;
   margin: 0;
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 8px;
+}
+
+.mobile-dropdown-group.open .mobile-dropdown-menu {
+  display: flex;
 }
 

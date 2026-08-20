@@ -35,7 +35,7 @@
   --radius-full: 9999px; /* Reserved strictly for tiny badges */
 
   /* Layout Constraints */
-  --max-width: 1720px;
+  --max-width: 1280px;
   --container-px: 20px;
 
   /* Shadows (Ultra-diffuse, barely visible) */
@@ -59,6 +59,7 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
@@ -90,6 +91,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   padding-bottom: 140px; /* Space for fixed bottom offers bar */
+  overflow-x: hidden;
 }
 
 /* Full Width End-to-End Container */
@@ -143,7 +145,7 @@ body {
   width: 100%;
   flex: 1;
   padding: 24px var(--container-px);
-  max-width: var(--max-width);
+  max-width: calc(var(--max-width) + 2 * var(--container-px));
   margin: 0 auto;
 }
 
@@ -318,7 +320,7 @@ h3, h4, h5 {
   font-family: var(--font-body);
 }
 
-.festive-badge-pill::before, .festive-tag::before {
+.festive-tag::before {
   content: "•";
   font-size: 1.2rem;
   line-height: 0;

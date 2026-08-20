@@ -33,7 +33,7 @@ export function renderHero(container, onNavigate) {
     </div>
 
     <!-- Live Live Winner Ticker Bar -->
-    <div style="margin-top: 18px; padding: 6px 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--wf-border); border-radius: var(--radius-sm); font-size: 0.75rem; color: var(--wf-text-secondary); display: flex; align-items: center; justify-content: center; gap: 6px;" id="hero-live-ticker">
+    <div style="margin-top: 18px; padding: 6px 12px; background: transparent; font-size: 0.75rem; color: var(--wf-text-secondary); display: flex; align-items: center; justify-content: flex-start; gap: 6px; width: fit-content;" id="hero-live-ticker">
       <span id="ticker-text">User from Mumbai (98***1209) won Myntra ₹250 Voucher!</span>
     </div>
 

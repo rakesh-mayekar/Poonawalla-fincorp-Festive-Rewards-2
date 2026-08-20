@@ -10,11 +10,11 @@ export function renderHomeView(container, onNavigate) {
   loansPreview.className = 'home-loans-preview section-wrapper animate-on-scroll';
   loansPreview.innerHTML = `
     <div class="section-header align-left">
-      <h2>
-        <svg class="section-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-        Our Popular <span style="font-family: var(--font-heading); font-style: italic; font-weight: 500; color: var(--wf-text-secondary); margin-left: 8px;">Services</span>
+      <div style="margin-bottom: 12px; background: transparent; border: none; padding: 0; font-size: 0.75rem; letter-spacing: 0.05em; color: var(--wf-text-secondary); text-transform: uppercase; font-weight: 700;">• POONAWALLA FINCORP PORTFOLIO</div>
+      <h2 style="font-family: var(--font-heading); margin-bottom: 8px;">
+        Our Popular <span style="font-style: italic; font-weight: 500; color: var(--wf-text-secondary); margin-left: 8px;">Services</span>
       </h2>
-      <p class="subheading">Explore transparent financial solutions engineered for your business and personal goals.</p>
+      <p class="subheading" style="margin: 0;">Explore transparent financial solutions engineered for your business and personal goals.</p>
     </div>
     <div class="loans-grid preview-grid">
       <!-- Instant Personal Loan -->
@@ -77,21 +77,18 @@ export function renderHomeView(container, onNavigate) {
   gamesPreview.innerHTML = `
     <div class="pfin-dark-card">
       <div class="pfin-content">
-        <div class="section-header align-left">
-          <h2 class="festive-heading pfin-title" style="font-size: 2.5rem; letter-spacing: -0.02em;">
-            <svg class="section-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
-            Festive <span style="font-style: italic; color: var(--wf-accent);">Games</span>
-          </h2>
-          <p class="subheading" style="color: inherit; max-width: none;">Spin the wheel, scratch cards, and shuffle to unlock exciting offers and exclusive partner deals.</p>
+        <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: transparent; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: #fff; margin-bottom: 24px;">
+          <span style="font-size: 1.2rem; line-height: 0;">☆</span> FESTIVE CAMPAIGN
         </div>
-        
-        <div class="pfin-actions">
-          <button class="btn-primary" id="play-win-hub-btn" style="background:#fff; border-color:#fff; color:#111;">Play Now</button>
-        </div>
+        <h2 class="festive-heading" style="font-size: 3rem; color: #fff; margin-bottom: 16px;">
+          Play <i style="color: var(--wf-text-secondary);">& Win</i>
+        </h2>
+        <p style="font-size: 1.1rem; color: #a1a1aa; line-height: 1.5; margin-bottom: 32px; font-family: var(--font-body);">Spin the wheel, scratch cards, and shuffle to unlock exciting offers and exclusive partner deals.</p>
+        <button class="btn-primary" id="play-win-hub-btn" style="background:#fff; border-color:#fff; color:#111;">Play Now</button>
       </div>
       <div class="pfin-visual">
-         <div class="promo-circle" style="background: linear-gradient(135deg, #1f1f22, #09090a); border-color: rgba(255, 255, 255, 0.1); color: #fff;">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+         <div class="promo-circle" style="width: 100px; height: 100px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: #fff;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
          </div>
       </div>
     </div>
@@ -104,6 +101,7 @@ export function renderHomeView(container, onNavigate) {
   // 5. PFIN Dedicated Section (Moved below CategoryGrid)
   const pfinPreview = document.createElement('section');
   pfinPreview.className = 'home-pfin-preview section-wrapper animate-on-scroll';
+  pfinPreview.style.marginTop = '150px';
   pfinPreview.innerHTML = `
     <div class="pfin-dark-card">
       <div class="pfin-content">
@@ -154,12 +152,8 @@ export function renderHomeView(container, onNavigate) {
   topOffersSection.className = 'home-top-offers-preview animate-on-scroll';
   topOffersSection.innerHTML = `
     <div class="top-offers-container">
-      <div class="section-header align-left">
-        <h2>
-          <svg class="section-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
-          Top Offers For You
-        </h2>
-        <p class="subheading">Unlock exclusive vouchers and cashback across top brands.</p>
+      <div class="section-header align-left" style="margin-bottom: 24px;">
+        <h2>Top Offers For You</h2>
       </div>
       <div class="top-offers-scroll">
         <div class="top-offer-item">
