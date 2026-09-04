@@ -16,8 +16,6 @@ import { renderFooter } from './components/footer.js';
 import { initParticleBackground } from './components/particleBg.js';
 import { renderLoanDetail } from './components/loanDetail.js';
 
-let activeGameTab = 'spin';
-
 function navigateTo(route) {
   window.location.hash = route;
   renderRoute(route);
@@ -34,27 +32,27 @@ function renderRoute(routeString) {
 
   switch (path) {
     case 'loans':
-      renderLoansSection(main);
+      renderLoansSection(main, navigateTo);
       break;
 
     case 'games':
-      renderPlayWinHub(main);
+      renderPlayWinHub(main, navigateTo);
       break;
 
     case 'spinwin':
-      renderSpinWinGame(main);
+      renderSpinWinGame(main, navigateTo);
       break;
 
     case 'scratchcard':
-      renderScratchCardGame(main);
+      renderScratchCardGame(main, navigateTo);
       break;
 
     case 'shufflecard':
-      renderShuffleCardGame(main);
+      renderShuffleCardGame(main, navigateTo);
       break;
 
     case 'refer':
-      renderReferSection(main);
+      renderReferSection(main, navigateTo);
       break;
 
     case 'cibil':
@@ -62,15 +60,15 @@ function renderRoute(routeString) {
       break;
 
     case 'emi':
-      renderEmiSection(main);
+      renderEmiSection(main, navigateTo);
       break;
 
     case 'pfin':
-      renderPfinSection(main);
+      renderPfinSection(main, navigateTo);
       break;
 
     case 'offers':
-      renderOffersSection(main);
+      renderOffersSection(main, navigateTo);
       break;
 
     case 'myoffers':
@@ -78,7 +76,7 @@ function renderRoute(routeString) {
       break;
 
     case 'loan-detail':
-      renderLoanDetail(main, queryParams.get('id'));
+      renderLoanDetail(main, queryParams.get('id'), navigateTo);
       break;
 
     case 'home':
@@ -128,5 +126,5 @@ function initScrollAnimations() {
 const originalRenderRoute = renderRoute;
 renderRoute = function(routeString) {
   originalRenderRoute(routeString);
-  setTimeout(initScrollAnimations, 50); // small delay to let DOM paint
+  setTimeout(initScrollAnimations, 50);
 };

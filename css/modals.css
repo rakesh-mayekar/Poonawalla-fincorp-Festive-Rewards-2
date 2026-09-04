@@ -2,9 +2,9 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 2000;
   display: flex;
   align-items: center;
@@ -22,15 +22,15 @@
 
 .modal-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   background: #FFFFFF;
   border: 1px solid var(--wf-border);
   border-radius: var(--radius-lg);
-  padding: 28px 24px;
+  padding: 32px 28px;
   position: relative;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
   transform: translateY(15px) scale(0.98);
-  transition: transform 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal-backdrop.active .modal-card {
@@ -44,7 +44,7 @@
   background: transparent;
   border: none;
   color: var(--wf-text-secondary);
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   cursor: pointer;
   width: 32px;
   height: 32px;
@@ -52,6 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.15s ease;
 }
 
 .modal-close-btn:hover {
@@ -61,22 +62,22 @@
 
 /* OTP Modal Content */
 .otp-header-icon {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background: var(--wf-surface-subtle);
   border: 1px solid var(--wf-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: var(--wf-text-primary);
-  margin: 0 auto 14px;
+  margin: 0 auto 16px;
 }
 
 .otp-title {
   text-align: center;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 800;
   margin-bottom: 4px;
   color: var(--wf-text-primary);
@@ -84,9 +85,10 @@
 
 .otp-subtitle {
   text-align: center;
-  font-size: 0.84rem;
+  font-size: 0.88rem;
   color: var(--wf-text-secondary);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  line-height: 1.4;
 }
 
 .otp-form-group {
@@ -119,12 +121,12 @@
 
 .phone-input {
   width: 100%;
-  padding: 12px 12px 12px 56px;
+  padding: 14px 14px 14px 62px;
   background: var(--wf-surface-subtle);
   border: 1px solid var(--wf-border);
   border-radius: var(--radius-sm);
   color: var(--wf-text-primary);
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
   outline: none;
   letter-spacing: 0.05em;
@@ -140,14 +142,14 @@
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  margin: 10px 0;
+  margin: 12px 0;
 }
 
 .otp-box-digit {
-  width: 44px;
-  height: 52px;
+  width: 46px;
+  height: 54px;
   text-align: center;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 800;
   background: var(--wf-surface-subtle);
   border: 1px solid var(--wf-border);
@@ -186,16 +188,17 @@
 }
 
 .reward-offer-title {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--wf-text-primary);
   margin-bottom: 6px;
 }
 
 .reward-offer-desc {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--wf-text-secondary);
   margin-bottom: 16px;
+  line-height: 1.4;
 }
 
 .coupon-display-box {
@@ -210,8 +213,8 @@
 }
 
 .coupon-code-text {
-  font-family: monospace;
-  font-size: 1.2rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--wf-text-primary);
   letter-spacing: 0.1em;
@@ -238,7 +241,7 @@
   border-radius: var(--radius-sm);
   padding: 14px;
   margin-bottom: 16px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--wf-text-secondary);
 }
 
@@ -246,6 +249,127 @@
   font-weight: 700;
   color: var(--wf-text-primary);
   margin-bottom: 6px;
+}
+
+/* -------------------------------------------------------------
+   REWARD LIMIT POPUP MODAL (Standard copy & dynamic activity navigation)
+   ------------------------------------------------------------- */
+.reward-limit-card {
+  max-width: 520px;
+  text-align: center;
+}
+
+.reward-limit-icon-wrap {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 16px auto;
+}
+
+.reward-limit-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--wf-text-primary);
+  margin-bottom: 8px;
+}
+
+.reward-limit-message {
+  font-size: 0.95rem;
+  color: var(--wf-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.eligible-activities-list {
+  text-align: left;
+  background: var(--wf-surface-subtle);
+  border: 1px solid var(--wf-border);
+  border-radius: var(--radius-md);
+  padding: 18px 16px;
+}
+
+.eligible-activities-heading {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--wf-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.activity-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.activity-nav-card {
+  background: #FFFFFF;
+  border: 1px solid var(--wf-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.activity-nav-card:hover {
+  border-color: var(--wf-text-primary);
+  transform: translateX(3px);
+  box-shadow: var(--shadow-sm);
+}
+
+.activity-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.activity-info {
+  flex: 1;
+}
+
+.activity-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.activity-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--wf-text-primary);
+}
+
+.activity-pill-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #10B981;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.activity-desc {
+  font-size: 0.78rem;
+  color: var(--wf-text-secondary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.activity-arrow {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--wf-text-primary);
 }
 
 /* Toast Feedback */

@@ -1,66 +1,67 @@
-// Game 1: Spin & Win Canvas Wheel Engine SOT v1.3 Section 4.3 (Wireframe Theme)
+// Game 1: Spin & Win Canvas Wheel Engine
 import { playTickSound, playWinFanfare } from '../services/audioSynth.js';
 import { allocateRewardForGame } from '../services/rewardEngine.js';
 import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
 import { sendLeadToLeadSquared } from '../services/crmService.js';
 import { getSession } from '../state/sessionState.js';
-import { getUserRewards, saveRewardClaim, useCibilExtraSpin } from '../state/rewardState.js';
+import { isPlayAndWinClaimed, saveRewardClaim, getUserRewards } from '../state/rewardState.js';
 import { openOtpModal } from './otpModal.js';
 import { openRewardModal } from './rewardModal.js';
+import { openRewardLimitModal } from './rewardLimitModal.js';
 
-// Wireframe Grayscale Segments
 const WHEEL_SEGMENTS = [
-  { label: 'Myntra ₹250', color: '#1A1A1A', dealId: 'DEAL-MYNTRA-250' },
-  { label: 'KFC Popcorn', color: '#333333', dealId: 'DEAL-KFC-POPCORN' },
-  { label: 'Swiggy ₹120', color: '#1D1D1D', dealId: 'DEAL-SWIGGY-120' },
-  { label: 'Ajio ₹150', color: '#444444', dealId: 'DEAL-AJIO-150' },
-  { label: 'Lifestyle ₹500', color: '#262626', dealId: 'DEAL-LIFESTYLE-500' },
-  { label: 'Max ₹500', color: '#555555', dealId: 'DEAL-MAX-500' },
-  { label: 'Homecentre ₹300', color: '#2F2F2F', dealId: 'DEAL-HOMECENTRE-300' },
-  { label: 'Urban Ladder 10%', color: '#3B3B3B', dealId: 'DEAL-URBANLADDER-10' }
+  { label: 'Lenovo ₹5,000', color: '#1A1A1A', dealId: 'DEAL-LENOVO-5000' },
+  { label: 'Tata Cliq ₹1,250', color: '#333333', dealId: 'DEAL-TATACLIQ-1250' },
+  { label: 'Senco 25% Off', color: '#242424', dealId: 'DEAL-SENCO-25' },
+  { label: 'Myntra ₹250', color: '#3F3F46', dealId: 'DEAL-MYNTRA-250' },
+  { label: 'JBL 15% Off', color: '#18181B', dealId: 'DEAL-JBL-15' },
+  { label: 'Joyalukkas 20%', color: '#27272A', dealId: 'DEAL-JOYALUKKAS-20' },
+  { label: 'Titan 10% Off', color: '#52525B', dealId: 'DEAL-TITAN-10' },
+  { label: 'Ajio Luxe 8%', color: '#2D2D30', dealId: 'DEAL-AJIO-LUXE-8' }
 ];
 
-export function renderSpinWinGame(container) {
+export function renderSpinWinGame(container, onNavigate) {
   const card = document.createElement('div');
   card.className = 'game-card-wrapper';
 
-  const userRewards = getUserRewards();
-  const spinClaim = userRewards.claims['spin_and_win'];
-  const hasExtraSpin = userRewards.cibilExtraSpinUnlocked && !userRewards.cibilExtraSpinUsed;
+  const isClaimed = isPlayAndWinClaimed();
 
   card.innerHTML = `
-    <h3 class="festive-heading" style="font-size: 1.25rem; margin-bottom: 6px;">🎰 Spin & Win Festive Wheel</h3>
-    <div class="game-instructions-box">
-      Tap "SPIN NOW" to spin the wheel and reveal your guaranteed brand reward voucher!
-    </div>
-
-    ${hasExtraSpin ? `
-      <div class="festive-tag tag-green" style="margin-bottom: 14px;">
-        ⭐ Bonus Spin Active (Unlocked via Free CIBIL Check)!
-      </div>
-    ` : ''}
+    <h3 class="festive-heading" style="font-size: 1.35rem; margin-bottom: 6px;">🎰 Spin & Win Festive Wheel</h3>
+    <p class="game-instructions-box" style="margin-bottom: 20px; font-size: 0.9rem; color: var(--wf-text-secondary);">
+      Verify your mobile number, tap "SPIN NOW" to spin the wheel, and reveal your guaranteed brand reward voucher!
+    </p>
 
     <div class="spin-wheel-container">
       <svg class="wheel-pointer" viewBox="0 0 30 40">
-        <polygon points="15,40 0,0 30,0" fill="#FFFFFF" stroke="#000000" stroke-width="2"/>
+        <polygon points="15,40 0,0 30,0" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
       </svg>
       <canvas id="spin-wheel-canvas" width="560" height="560"></canvas>
       <div class="spin-center-cap">PFL</div>
     </div>
 
-    ${spinClaim && !hasExtraSpin ? `
-      <div class="played-badge-overlay">
-        ✓ You have already spun the wheel for this session!
-        <br>
-        <button class="btn-gold" id="view-previous-spin-reward" style="margin-top: 10px; font-size: 0.8rem; padding: 6px 16px;">
-          🎁 View My Won Reward
+    <div style="margin-top: 24px; text-align: center;">
+      ${isClaimed ? `
+        <div class="played-badge-overlay" style="max-width: 480px; margin: 0 auto; background: #FFFBEB; border: 1px solid #FDE68A; padding: 18px 20px; border-radius: 8px; color: #92400E; font-weight: 600; font-size: 0.92rem;">
+          ✓ You have already unlocked your Play & Win reward!
+          <div style="margin-top: 12px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <button class="btn-primary" id="view-previous-spin-reward" style="font-size: 0.85rem; padding: 8px 20px;">
+              🎁 View My Won Voucher
+            </button>
+            <button class="btn-secondary" id="explore-other-spin-activities" style="font-size: 0.85rem; padding: 8px 20px; background: #FFFFFF;">
+              Explore Other Activities &rarr;
+            </button>
+          </div>
+        </div>
+      ` : `
+        <button class="btn-primary glow-effect" id="spin-wheel-cta-btn" style="padding: 16px 44px; font-size: 1.1rem; border-radius: var(--radius-sm);">
+          ⚡ SPIN NOW!
         </button>
-      </div>
-    ` : `
-      <button class="btn-gold glow-effect" id="spin-wheel-cta-btn" style="padding: 14px 32px; font-size: 1.05rem;">
-        ⚡ SPIN NOW!
-      </button>
-    `}
+        <p style="font-size: 0.78rem; color: var(--wf-text-secondary); margin-top: 8px;">
+          * One guaranteed reward per mobile number across all festive games
+        </p>
+      `}
+    </div>
   `;
 
   container.appendChild(card);
@@ -78,19 +79,19 @@ export function renderSpinWinGame(container) {
     const arcSize = (2 * Math.PI) / numSegments;
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
-    const radius = cx - 10;
+    const radius = cx - 12;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw Outer Rim in White Wireframe
+    // Outer Rim
     ctx.beginPath();
     ctx.arc(cx, cy, radius + 8, 0, 2 * Math.PI);
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = '#111111';
     ctx.fill();
 
     ctx.beginPath();
     ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
-    ctx.fillStyle = '#141414';
+    ctx.fillStyle = '#FFFFFF';
     ctx.fill();
 
     for (let i = 0; i < numSegments; i++) {
@@ -102,30 +103,40 @@ export function renderSpinWinGame(container) {
       ctx.fillStyle = WHEEL_SEGMENTS[i].color;
       ctx.fill();
       ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      // Draw Text Labels
+      // Text Labels
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(segAngle + arcSize / 2);
       ctx.textAlign = 'right';
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 22px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText(WHEEL_SEGMENTS[i].label, radius - 25, 8);
+      ctx.font = 'bold 20px "SF Pro Display", "Inter", sans-serif';
+      ctx.fillText(WHEEL_SEGMENTS[i].label, radius - 28, 7);
       ctx.restore();
     }
   }
 
   drawWheel(currentAngle);
 
-  // Previous Reward Button Listener
+  // View Won Voucher Handler
   const viewPrevBtn = card.querySelector('#view-previous-spin-reward');
   if (viewPrevBtn) {
     viewPrevBtn.addEventListener('click', () => {
-      const currentRewards = getUserRewards();
-      const allocated = allocateRewardForGame('spin_and_win', currentRewards.claims);
+      const userRewards = getUserRewards();
+      const allocated = allocateRewardForGame('play_and_win', userRewards.claims);
       openRewardModal(allocated.deal);
+    });
+  }
+
+  const exploreBtn = card.querySelector('#explore-other-spin-activities');
+  if (exploreBtn) {
+    exploreBtn.addEventListener('click', () => {
+      openRewardLimitModal({
+        currentActivityKey: 'play_and_win',
+        onNavigate
+      });
     });
   }
 
@@ -136,6 +147,14 @@ export function renderSpinWinGame(container) {
   spinBtn.addEventListener('click', () => {
     if (isSpinning) return;
 
+    if (isPlayAndWinClaimed()) {
+      openRewardLimitModal({
+        currentActivityKey: 'play_and_win',
+        onNavigate
+      });
+      return;
+    }
+
     const session = getSession();
     if (!session.isAuthenticated) {
       openOtpModal(() => {
@@ -144,8 +163,9 @@ export function renderSpinWinGame(container) {
       return;
     }
 
-    const currentRewards = getUserRewards();
-    const allocated = allocateRewardForGame('spin', currentRewards.claims);
+    // Allocate Reward
+    const userRewards = getUserRewards();
+    const allocated = allocateRewardForGame('play_and_win', userRewards.claims);
     const targetDealId = allocated.deal.dealId;
 
     let targetIndex = WHEEL_SEGMENTS.findIndex(s => s.dealId === targetDealId);
@@ -162,7 +182,7 @@ export function renderSpinWinGame(container) {
     trackGa4Event(GA4_EVENTS.GAME_STARTED, { game_type: 'spin_and_win' });
 
     let start = null;
-    const duration = 4000;
+    const duration = 3800;
     let lastTickAngle = 0;
 
     function animateSpin(timestamp) {
@@ -185,10 +205,7 @@ export function renderSpinWinGame(container) {
         isSpinning = false;
         playWinFanfare();
 
-        saveRewardClaim('spin_and_win', targetDealId);
-        if (hasExtraSpin) {
-          useCibilExtraSpin();
-        }
+        saveRewardClaim('play_and_win', targetDealId);
 
         trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
           game_type: 'spin_and_win',
@@ -204,6 +221,7 @@ export function renderSpinWinGame(container) {
 
         setTimeout(() => {
           openRewardModal(allocated.deal);
+          renderSpinWinGame(container, onNavigate); // Re-render in claimed state
         }, 500);
       }
     }

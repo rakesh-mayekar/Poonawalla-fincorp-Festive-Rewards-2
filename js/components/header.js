@@ -12,7 +12,7 @@ export function renderHeader(container, onNavigate) {
         <div class="brand-icon">PF</div>
         <div class="brand-name-group">
           <span class="brand-title">POONAWALLA FINCORP</span>
-          <span class="brand-subtitle">Festive Rewards</span>
+          <span class="brand-subtitle">Festive Rewards 2025</span>
         </div>
       </a>
 
@@ -20,7 +20,7 @@ export function renderHeader(container, onNavigate) {
       <ul class="desktop-nav-bar" id="desktop-nav-bar">
         <!-- Loans Dropdown -->
         <li class="nav-dropdown">
-          <a href="#" class="desktop-nav-link" aria-haspopup="true">
+          <a href="#loans" class="desktop-nav-link" data-nav="loans" aria-haspopup="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
             Loans
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dropdown-caret"><path d="M6 9l6 6 6-6"/></svg>
@@ -45,16 +45,18 @@ export function renderHeader(container, onNavigate) {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dropdown-caret"><path d="M6 9l6 6 6-6"/></svg>
           </a>
           <ul class="dropdown-menu">
+            <li><a href="#games" class="dropdown-item" data-nav="games">🎰 Play & Win Hub</a></li>
             <li><a href="#spinwin" class="dropdown-item" data-nav="spinwin"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg> Spin & Win</a></li>
             <li><a href="#scratchcard" class="dropdown-item" data-nav="scratchcard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7z"/></svg> Scratch Card</a></li>
             <li><a href="#shufflecard" class="dropdown-item" data-nav="shufflecard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg> Shuffle Card</a></li>
           </ul>
         </li>
 
-        <li><a href="#refer" class="desktop-nav-link" data-nav="refer">Refer & Earn</a></li>
-        <li><a href="#cibil" class="desktop-nav-link" data-nav="cibil">Free CIBIL</a></li>
+        <li><a href="#cibil" class="desktop-nav-link" data-nav="cibil">Check CIBIL</a></li>
         <li><a href="#emi" class="desktop-nav-link" data-nav="emi">EMI Calculator</a></li>
+        <li><a href="#pfin" class="desktop-nav-link" data-nav="pfin">PFIN Card</a></li>
         <li><a href="#offers" class="desktop-nav-link" data-nav="offers">Top Offers</a></li>
+        <li><a href="#refer" class="desktop-nav-link" data-nav="refer">Refer & Earn</a></li>
 
         <!-- My Account Dropdown -->
         <li class="nav-dropdown account-dropdown">
@@ -87,7 +89,7 @@ export function renderHeader(container, onNavigate) {
     </div>
   `;
 
-  // Mobile Drawer Menu (Appended to body to avoid backdrop-filter stacking context issues)
+  // Mobile Drawer Menu
   let drawerOverlay = document.getElementById('nav-drawer-overlay');
   let drawerNav = document.getElementById('nav-drawer');
   
@@ -144,10 +146,11 @@ export function renderHeader(container, onNavigate) {
           </ul>
         </li>
 
-        <li><a href="#refer" class="nav-link-item" data-nav="refer">🤝 Refer & Earn</a></li>
-        <li><a href="#cibil" class="nav-link-item" data-nav="cibil">📊 Free CIBIL Check</a></li>
+        <li><a href="#cibil" class="nav-link-item" data-nav="cibil">📊 Check CIBIL</a></li>
         <li><a href="#emi" class="nav-link-item" data-nav="emi">🧮 EMI Calculator</a></li>
-        <li><a href="#offers" class="nav-link-item" data-nav="offers">🏷️ Top Partner Offers</a></li>
+        <li><a href="#pfin" class="nav-link-item" data-nav="pfin">💳 PFIN Card</a></li>
+        <li><a href="#offers" class="nav-link-item" data-nav="offers">🏷️ Top Offers</a></li>
+        <li><a href="#refer" class="nav-link-item" data-nav="refer">🤝 Refer & Earn</a></li>
 
         <!-- Account -->
         <li class="mobile-account-section mobile-dropdown-group">
@@ -203,7 +206,6 @@ export function renderHeader(container, onNavigate) {
     closeDrawer();
     import('./otpModal.js').then(({ openOtpModal }) => {
       openOtpModal(() => {
-        // Re-render header on success so it shows logged in state
         renderHeader(container, onNavigate);
       });
     });
@@ -221,7 +223,7 @@ export function renderHeader(container, onNavigate) {
       if (!getSession().isAuthenticated) {
         triggerLoginModal(e);
       } else {
-        openDrawer(); // If logged in, just open the drawer to show account details
+        openDrawer();
       }
     });
   }
@@ -232,15 +234,10 @@ export function renderHeader(container, onNavigate) {
     header.addEventListener('click', () => {
       const parentGroup = header.closest('.mobile-dropdown-group');
       if (parentGroup) {
-        // Toggle the clicked one
         const isOpen = parentGroup.classList.contains('open');
-        
-        // Optional: Close all others first
         drawerNav.querySelectorAll('.mobile-dropdown-group').forEach(group => {
           group.classList.remove('open');
         });
-        
-        // If it was not open, open it
         if (!isOpen) {
           parentGroup.classList.add('open');
         }
@@ -248,7 +245,7 @@ export function renderHeader(container, onNavigate) {
     });
   });
 
-  // Bind All Nav Links (Both Desktop & Mobile)
+  // Bind All Nav Links
   const desktopLinks = container.querySelectorAll('.desktop-nav-link, .dropdown-item');
   const mobileLinks = drawerNav.querySelectorAll('.nav-link-item');
   const allNavLinks = [...desktopLinks, ...mobileLinks];
@@ -257,10 +254,8 @@ export function renderHeader(container, onNavigate) {
       const targetNav = link.getAttribute('data-nav');
       const isLogout = link.id === 'logout-btn' || link.id === 'mobile-logout-btn';
       
-      // Ignore login button clicks here, handled separately
       if (link.id === 'desktop-login-btn' || link.id === 'mobile-login-btn') return;
 
-      
       if (isLogout) {
         e.preventDefault();
         clearSession();
@@ -298,8 +293,8 @@ export function renderHeader(container, onNavigate) {
       desktopBadge.textContent = updatedCount;
     }
 
-    const mobileLi = container.querySelector('#mobile-myoffers-li');
-    const mobileBadge = container.querySelector('#mobile-claimed-badge');
+    const mobileLi = drawerNav.querySelector('#mobile-myoffers-li');
+    const mobileBadge = drawerNav.querySelector('#mobile-claimed-badge');
     if (mobileLi && mobileBadge) {
       mobileLi.style.display = updatedCount > 0 ? 'block' : 'none';
       mobileBadge.textContent = updatedCount;
