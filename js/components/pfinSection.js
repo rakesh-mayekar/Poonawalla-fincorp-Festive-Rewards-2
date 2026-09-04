@@ -1,13 +1,10 @@
-// PFIN Card & Consumer Durable Section Component
-import { buildUtmUrl, PRODUCT_LAMPS } from '../data/loansData.js';
-import { allocateRewardForGame } from '../services/rewardEngine.js';
-import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
-import { sendLeadToLeadSquared } from '../services/crmService.js';
-import { getSession } from '../state/sessionState.js';
-import { isActivityClaimed, saveRewardClaim, getUserRewards } from '../state/rewardState.js';
-import { openOtpModal } from './otpModal.js';
+// PFIN Card & Consumer Durable Section Component with In-Page 3-Game Hub
+import { buildUtmUrl } from '../data/loansData.js';
+import { renderSpinWinGame } from './spinWin.js';
+import { renderScratchCardGame } from './scratchCard.js';
+import { renderShuffleCardGame } from './shuffleCard.js';
+import { isActivityClaimed, getUserRewards } from '../state/rewardState.js';
 import { openRewardModal } from './rewardModal.js';
-import { openRewardLimitModal } from './rewardLimitModal.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
 
 export function renderPfinSection(container, onNavigate) {
@@ -15,10 +12,14 @@ export function renderPfinSection(container, onNavigate) {
   wrapper.className = 'loans-container section-wrapper';
 
   const pfinAlreadyClaimed = isActivityClaimed('pfin_card');
-  const pfinLamp = PRODUCT_LAMPS['pfin-card'] || '';
+  let selectedGame = 'spin'; // 'spin' | 'scratch' | 'shuffle'
+  let isGamesExpanded = false;
 
   wrapper.innerHTML = `
     <div class="section-header align-left">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <a href="#home" class="breadcrumb-back-link" id="pfin-back-home">&larr; Back to Home</a>
+      </div>
       <span class="section-kicker" style="color: var(--wf-text-secondary); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">• DIGITAL CREDIT CARD SANCTION</span>
       <h2 style="margin-top: 4px;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="section-icon"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
@@ -27,8 +28,8 @@ export function renderPfinSection(container, onNavigate) {
       <p class="subheading">Instant digital credit limit up to ₹2 Lakhs with No-Cost EMIs and guaranteed festive cashback vouchers.</p>
     </div>
 
-    <!-- PFIN Hero Showcase Banner with Lamp -->
-    <div class="pfin-dark-card" style="margin-bottom: 40px;">
+    <!-- PFIN Hero Showcase Banner -->
+    <div class="pfin-dark-card" style="margin-bottom: 32px;">
       <div class="pfin-content">
         <div class="pfin-badge">
           <svg width="14" height="14" style="vertical-align: middle; margin-right: 4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
@@ -53,18 +54,9 @@ export function renderPfinSection(container, onNavigate) {
         </div>
 
         <div class="pfin-actions">
-          ${pfinAlreadyClaimed ? `
-            <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); padding: 12px 18px; border-radius: 6px; color: #34D399; font-weight: 600; font-size: 0.9rem;">
-              ✓ You have already unlocked your PFIN Card reward!
-              <button class="btn-primary" id="view-pfin-won-reward-btn" style="margin-left: 12px; font-size: 0.8rem; padding: 6px 14px; background: #FFFFFF; color: #111111;">
-                View Voucher
-              </button>
-            </div>
-          ` : `
-            <button class="btn-primary" id="claim-pfin-reward-btn" style="background: #FFFFFF; color: #111111; border-color: #FFFFFF; font-weight: 700; padding: 14px 28px;">
-              🎁 Unlock PFIN Festive Reward &rarr;
-            </button>
-          `}
+          <button class="btn-primary" id="toggle-pfin-games-btn" style="background: #FFFFFF; color: #18181B; border-color: #FFFFFF; font-weight: 700; padding: 14px 28px;">
+            🎁 Unlock PFIN Festive Reward &darr;
+          </button>
           
           <a href="${buildUtmUrl('https://poonawallafincorp.com/emi-card', 'pfin-card')}" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="border-color: rgba(255, 255, 255, 0.3); color: #FFFFFF; padding: 14px 28px;">
             Apply Official Portal ↗
@@ -84,17 +76,58 @@ export function renderPfinSection(container, onNavigate) {
       </div>
     </div>
 
-    <!-- 4 Product Variants Grid -->
+    <!-- In-Page Interactive 3-Games Section (Expands right below button on the same screen) -->
+    <div class="pfin-games-inline-section" id="pfin-inline-games-wrapper" style="margin-bottom: 48px; background: #FFFFFF; border: 1px solid var(--wf-border); border-radius: var(--radius-lg); padding: 32px 24px; box-shadow: var(--shadow-sm); display: none;">
+      <div class="section-header center" style="margin-bottom: 24px;">
+        <div class="festive-kicker-badge">
+          <span>🎁</span> PLAY & WIN PFIN REWARDS
+        </div>
+        <h3 class="festive-heading" style="font-size: 1.8rem; margin-top: 6px;">
+          Choose a Game & Unlock Your Voucher
+        </h3>
+        <p class="subheading center-subheading" style="font-size: 0.92rem;">
+          Play below, reveal your masked festive voucher, verify with OTP, and apply for your PFIN Card on this screen!
+        </p>
+      </div>
+
+      <!-- 3 Game Selection Tabs -->
+      <div class="pfin-game-tabs-row" style="display: flex; gap: 10px; justify-content: center; margin-bottom: 28px; flex-wrap: wrap;">
+        <button class="pfin-game-tab-btn active" data-game="spin" style="padding: 10px 22px; border-radius: 30px; border: 1px solid #18181B; background: #18181B; color: #FFFFFF; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease;">
+          🎡 Spin & Win
+        </button>
+        <button class="pfin-game-tab-btn" data-game="scratch" style="padding: 10px 22px; border-radius: 30px; border: 1px solid var(--wf-border); background: #F4F4F5; color: var(--wf-text-primary); cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease;">
+          ✨ Scratch Card
+        </button>
+        <button class="pfin-game-tab-btn" data-game="shuffle" style="padding: 10px 22px; border-radius: 30px; border: 1px solid var(--wf-border); background: #F4F4F5; color: var(--wf-text-primary); cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease;">
+          🃏 Card Shuffle
+        </button>
+      </div>
+
+      <!-- Active Game Play Canvas Area -->
+      <div id="pfin-active-game-container" style="min-height: 380px;"></div>
+
+      <!-- Post-Game Quick Action Banner -->
+      <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--wf-border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+        <p style="margin: 0; font-size: 0.9rem; color: var(--wf-text-secondary);">
+          Ready to enjoy 5% festive cashback and instant ₹2 Lakhs limit?
+        </p>
+        <a href="${buildUtmUrl('https://poonawallafincorp.com/emi-card', 'pfin-card-game-complete')}" target="_blank" rel="noopener noreferrer" class="btn-primary" style="padding: 10px 24px; text-decoration: none;">
+          Apply for PFIN Card ↗
+        </a>
+      </div>
+    </div>
+
+    <!-- 3 Product Variants Grid -->
     <div class="loans-list preview-grid" style="margin-bottom: 48px;">
       <!-- Card 1: PFIN Card -->
-      <div class="loan-card portfolio-card">
+      <div class="loan-card portfolio-card wireframe-loan-card">
         <div class="portfolio-card-badge">Instant Approval</div>
         <div class="product-lamp-container">
-          ${pfinLamp}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
         </div>
         <div class="portfolio-card-content">
           <h3 class="portfolio-card-title">PFIN Virtual EMI Card</h3>
-          <p class="portfolio-card-stats">Limit up to ₹2 Lakhs <span style="color: #d1d5db; margin: 0 4px;">•</span> <span style="color: #10b981;">0% Interest</span></p>
+          <p class="portfolio-card-stats">Limit up to ₹2 Lakhs <span class="stat-dot">•</span> <span class="stat-highlight">0% Interest</span></p>
           <p class="portfolio-card-desc">Zero joining fee with instant card activation on your smartphone.</p>
         </div>
         <div class="portfolio-card-footer">
@@ -103,14 +136,14 @@ export function renderPfinSection(container, onNavigate) {
       </div>
 
       <!-- Card 2: Consumer Durable Financing -->
-      <div class="loan-card portfolio-card">
+      <div class="loan-card portfolio-card wireframe-loan-card">
         <div class="portfolio-card-badge">No Cost EMI</div>
-        <div class="product-lamp-container" style="font-size: 2.2rem; display: flex; align-items: center; justify-content: center; height: 56px;">
-          📺
+        <div class="product-lamp-container">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
         </div>
         <div class="portfolio-card-content">
           <h3 class="portfolio-card-title">Consumer Durable Loan</h3>
-          <p class="portfolio-card-stats">Flexible Tenures <span style="color: #d1d5db; margin: 0 4px;">•</span> <span style="color: #10b981;">Up to 24 Mos</span></p>
+          <p class="portfolio-card-stats">Flexible Tenures <span class="stat-dot">•</span> <span class="stat-highlight">Up to 24 Mos</span></p>
           <p class="portfolio-card-desc">Finance TVs, Refrigerators, Air Conditioners with 0 downpayment.</p>
         </div>
         <div class="portfolio-card-footer">
@@ -119,14 +152,14 @@ export function renderPfinSection(container, onNavigate) {
       </div>
 
       <!-- Card 3: Electronics Financing -->
-      <div class="loan-card portfolio-card">
+      <div class="loan-card portfolio-card wireframe-loan-card">
         <div class="portfolio-card-badge">Zero Paperwork</div>
-        <div class="product-lamp-container" style="font-size: 2.2rem; display: flex; align-items: center; justify-content: center; height: 56px;">
-          📱
+        <div class="product-lamp-container">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
         </div>
         <div class="portfolio-card-content">
           <h3 class="portfolio-card-title">Electronics Financing</h3>
-          <p class="portfolio-card-stats">Smartphones & Laptops <span style="color: #d1d5db; margin: 0 4px;">•</span> <span style="color: #10b981;">Instant In-Store</span></p>
+          <p class="portfolio-card-stats">Smartphones & Laptops <span class="stat-dot">•</span> <span class="stat-highlight">Instant In-Store</span></p>
           <p class="portfolio-card-desc">Upgrade your gadgets at partner retail counters with swift approvals.</p>
         </div>
         <div class="portfolio-card-footer">
@@ -136,61 +169,66 @@ export function renderPfinSection(container, onNavigate) {
     </div>
   `;
 
-  // Claim Reward Handler
-  const claimBtn = wrapper.querySelector('#claim-pfin-reward-btn');
-  if (claimBtn) {
-    claimBtn.addEventListener('click', () => {
-      if (isActivityClaimed('pfin_card')) {
-        openRewardLimitModal({
-          currentActivityKey: 'pfin_card',
-          onNavigate
-        });
-        return;
+  // Attach In-Page Game Expand & Switch Handlers
+  const toggleGamesBtn = wrapper.querySelector('#toggle-pfin-games-btn');
+  const inlineGamesWrapper = wrapper.querySelector('#pfin-inline-games-wrapper');
+  const activeGameContainer = wrapper.querySelector('#pfin-active-game-container');
+  const gameTabs = wrapper.querySelectorAll('.pfin-game-tab-btn');
+
+  function renderInlineGame(gameKey) {
+    if (!activeGameContainer) return;
+    activeGameContainer.innerHTML = '';
+    
+    if (gameKey === 'spin') {
+      renderSpinWinGame(activeGameContainer, onNavigate);
+    } else if (gameKey === 'scratch') {
+      renderScratchCardGame(activeGameContainer, onNavigate);
+    } else if (gameKey === 'shuffle') {
+      renderShuffleCardGame(activeGameContainer, onNavigate);
+    }
+  }
+
+  function updateGameTabs() {
+    gameTabs.forEach(tab => {
+      const g = tab.getAttribute('data-game');
+      if (g === selectedGame) {
+        tab.style.background = '#18181B';
+        tab.style.color = '#FFFFFF';
+        tab.style.borderColor = '#18181B';
+      } else {
+        tab.style.background = '#F4F4F5';
+        tab.style.color = 'var(--wf-text-primary)';
+        tab.style.borderColor = 'var(--wf-border)';
       }
+    });
+  }
 
-      const session = getSession();
-      if (!session.isAuthenticated) {
-        openOtpModal(() => {
-          handlePfinRewardAllocation();
-        });
-        return;
+  if (toggleGamesBtn && inlineGamesWrapper) {
+    toggleGamesBtn.addEventListener('click', () => {
+      isGamesExpanded = !isGamesExpanded;
+      if (isGamesExpanded) {
+        inlineGamesWrapper.style.display = 'block';
+        toggleGamesBtn.textContent = '▲ Close Games Area';
+        toggleGamesBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+        toggleGamesBtn.style.color = '#FFFFFF';
+        renderInlineGame(selectedGame);
+        inlineGamesWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        inlineGamesWrapper.style.display = 'none';
+        toggleGamesBtn.textContent = '🎁 Unlock PFIN Festive Reward ↓';
+        toggleGamesBtn.style.background = '#FFFFFF';
+        toggleGamesBtn.style.color = '#18181B';
       }
-
-      handlePfinRewardAllocation();
     });
   }
 
-  function handlePfinRewardAllocation() {
-    const userRewards = getUserRewards();
-    const allocated = allocateRewardForGame('pfin_card', userRewards.claims);
-
-    saveRewardClaim('pfin_card', allocated.deal.dealId);
-
-    trackGa4Event(GA4_EVENTS.PFIN_REWARD_CLAIMED, {
-      deal_id: allocated.deal.dealId
+  gameTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      selectedGame = tab.getAttribute('data-game');
+      updateGameTabs();
+      renderInlineGame(selectedGame);
     });
-
-    const session = getSession();
-    sendLeadToLeadSquared({
-      mobileNumber: session.mobile,
-      activityType: 'PFIN Card Guaranteed Reward Claimed',
-      rewardAllocated: allocated.deal.dealId,
-      contentSlug: 'pfin-card'
-    });
-
-    openRewardModal(allocated.deal);
-    renderPfinSection(container, onNavigate);
-  }
-
-  // View Won Reward Handler
-  const viewWonBtn = wrapper.querySelector('#view-pfin-won-reward-btn');
-  if (viewWonBtn) {
-    viewWonBtn.addEventListener('click', () => {
-      const userRewards = getUserRewards();
-      const allocated = allocateRewardForGame('pfin_card', userRewards.claims);
-      openRewardModal(allocated.deal);
-    });
-  }
+  });
 
   container.appendChild(wrapper);
 
