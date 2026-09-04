@@ -9,7 +9,7 @@ export function renderVideoSection(container, onNavigate) {
   videoSection.innerHTML = `
     <div class="section-header center">
       <div class="festive-kicker-badge">
-        <span class="sparkle-icon">✨</span> CAMPAIGN SHOWREEL
+        <span class="sparkle-icon">📹</span> CAMPAIGN SHOWREEL
       </div>
       <h2 class="festive-heading video-heading">
         Celebrate More. <span class="accent-italic">Worry Less.</span>
@@ -20,26 +20,20 @@ export function renderVideoSection(container, onNavigate) {
     </div>
 
     <div class="video-showreel-wrapper">
-      <!-- Decorative Lanterns / Marigold Garland Accents -->
-      <div class="video-decor-lantern left">🏮</div>
-      <div class="video-decor-lantern right">🏮</div>
-      <div class="video-decor-diya left">🪔</div>
-      <div class="video-decor-diya right">🪔</div>
-
       <div class="video-player-card" id="showreel-card">
         <div class="video-thumbnail-overlay">
-          <!-- Festive showreel visual graphic -->
+          <!-- Wireframe showreel visual graphic -->
           <div class="video-poster-bg">
             <div class="poster-glow"></div>
-            <div class="poster-badge">OFFICIAL FESTIVE FILM 2026</div>
+            <div class="poster-badge">CAMPAIGN FILM • 2026</div>
             <div class="poster-title-wrap">
               <span class="poster-subtitle">POONAWALLA FINCORP PRESENTS</span>
-              <h3 class="poster-main-title">Sapno Ki Celebration</h3>
+              <h3 class="poster-main-title">Festive Celebration Film</h3>
               <p class="poster-tagline">Make your festive moments bigger and brighter.</p>
             </div>
           </div>
           
-          <!-- Play Trigger Button with Ripple Glow -->
+          <!-- Play Trigger Button with Clean Ripple -->
           <button class="video-play-btn" id="video-play-trigger" aria-label="Play Campaign Showreel">
             <div class="play-ripple"></div>
             <div class="play-ripple-outer"></div>
@@ -52,10 +46,10 @@ export function renderVideoSection(container, onNavigate) {
         <div class="video-card-footer">
           <div class="video-meta-left">
             <span class="video-duration-pill">▶ 01:45 MIN</span>
-            <span class="video-badge-hd">4K ULTRA HD</span>
+            <span class="video-badge-hd">HD 1080p</span>
           </div>
           <div class="video-meta-right">
-            <span class="video-views-count">👁️ 1.2M+ Views</span>
+            <span class="video-views-count">1.2M+ Views</span>
             <button class="video-share-btn" id="showreel-share-btn">Share ↗</button>
           </div>
         </div>
@@ -77,8 +71,8 @@ export function renderVideoSection(container, onNavigate) {
         <div class="showreel-modal-dialog">
           <div class="showreel-modal-header">
             <div class="showreel-header-info">
-              <span class="modal-badge">✨ Sapno Ka Celebration</span>
-              <h4>Poonawalla Fincorp — Festive Campaign Film</h4>
+              <span class="modal-badge">Festive Celebration</span>
+              <h4>Poonawalla Fincorp — Campaign Film</h4>
             </div>
             <button class="showreel-modal-close" id="showreel-modal-close" aria-label="Close Video">&times;</button>
           </div>
@@ -89,7 +83,7 @@ export function renderVideoSection(container, onNavigate) {
                 <div class="festive-video-content">
                   <div class="video-watermark">POONAWALLA FINCORP</div>
                   <div class="video-center-art">
-                    <div class="diya-glow-anim">🪔</div>
+                    <div class="video-center-icon-pill">🎬</div>
                     <h3>Celebrate More. Worry Less.</h3>
                     <p>Instant Loans • Zero Processing Fee • Guaranteed Festive Rewards</p>
                   </div>

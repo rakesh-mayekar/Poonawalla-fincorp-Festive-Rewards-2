@@ -20,26 +20,24 @@
   color: var(--wf-text-secondary);
 }
 
-/* Category Lamp Container & Visual Identity */
-.product-lamp-container {
-  width: 56px;
-  height: 56px;
+/* Clean Wireframe Category Icon Container */
+.product-lamp-container, .category-icon-box {
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--wf-surface-subtle);
   border: 1px solid var(--wf-border);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease, background 0.2s ease;
+  font-size: 1.25rem;
 }
 
-.loan-card:hover .product-lamp-container {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-}
-
-.product-lamp-svg {
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+.loan-card:hover .product-lamp-container,
+.loan-card:hover .category-icon-box {
+  background: #E5E7EB;
+  transform: translateY(-1px);
 }
 
 /* Compact Card Styles */

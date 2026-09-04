@@ -1,4 +1,4 @@
-import { LOAN_PRODUCTS, PRODUCT_LAMPS, buildUtmUrl } from '../data/loansData.js';
+import { LOAN_PRODUCTS, buildUtmUrl } from '../data/loansData.js';
 import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
 import { sendLeadToLeadSquared } from '../services/crmService.js';
 import { getSession } from '../state/sessionState.js';
@@ -21,8 +21,6 @@ export function renderLoanDetail(container, loanId, onNavigate) {
   const wrapper = document.createElement('div');
   wrapper.className = 'loan-detail-container section-wrapper';
 
-  const lampSvg = PRODUCT_LAMPS[product.id] || '';
-
   wrapper.innerHTML = `
     <!-- Breadcrumb & Back -->
     <div class="loan-detail-nav-row" style="margin-bottom: 24px;">
@@ -31,20 +29,17 @@ export function renderLoanDetail(container, loanId, onNavigate) {
       </a>
     </div>
 
-    <!-- Header & Category Lamp -->
+    <!-- Header -->
     <div class="loan-detail-header" style="text-align: center; margin-bottom: 36px;">
-      <div class="loan-lamp-hero-wrap" style="margin: 0 auto 16px auto; width: 90px; height: 90px; border-radius: 50%; background: var(--wf-surface); border: 1px solid var(--wf-border); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,0.04);">
-        ${lampSvg}
-      </div>
-      <span class="festive-badge-pill" style="margin-bottom: 12px; display: inline-block;">✨ Special Festive Edition 2025</span>
+      <span class="festive-badge-pill" style="margin-bottom: 12px; display: inline-block;">Poonawalla Fincorp • Festive Rates</span>
       <h1 class="loans-title festive-heading" style="font-size: 2.4rem; margin-bottom: 8px;">${product.title}</h1>
-      <p class="loans-subtitle" style="max-width: 650px; margin: 0 auto; font-size: 1.1rem; color: var(--wf-text-secondary);">
+      <p class="loans-subtitle" style="max-width: 650px; margin: 0 auto; font-size: 1.05rem; color: var(--wf-text-secondary); line-height: 1.5;">
         ${product.subtitle} — engineered for quick approval with attractive festive rates and minimal documentation.
       </p>
       
-      <div class="festive-offer-banner enhanced-banner" style="margin-top: 24px; font-size: 1.05rem; padding: 14px 28px; display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border: 1px solid #FDE68A; border-radius: 8px; color: #92400E;">
-        <span aria-hidden="true" style="font-size: 1.4rem;">🏷️</span> 
-        <span><strong>Exclusive Festive Offer:</strong> ${product.festiveOffer}</span>
+      <div class="festive-offer-banner enhanced-banner" style="margin-top: 20px; font-size: 0.95rem; padding: 12px 24px; display: inline-flex; align-items: center; gap: 8px; background: #F4F5F7; border: 1px solid var(--wf-border); border-radius: 8px; color: var(--wf-text-primary);">
+        <span aria-hidden="true" style="font-size: 1.2rem;">🏷️</span> 
+        <span><strong>Festive Benefit:</strong> ${product.festiveOffer}</span>
       </div>
     </div>
 

@@ -1,25 +1,15 @@
-// Hero Section Component matching PDF Wireframe & Final Look
-// Features "Sapno Ka Celebration", "Celebrate More. Worry Less.", and festive visual atmosphere
-
+// Hero Section Component (Modern Geometric Wireframe Reference Style)
 export function renderHero(container, onNavigate) {
   const heroWrapper = document.createElement('section');
-  heroWrapper.className = 'festive-hero-pdf-style section-wrapper';
+  heroWrapper.className = 'festive-hero-wireframe section-wrapper';
   heroWrapper.id = 'hero-section';
 
   heroWrapper.innerHTML = `
-    <!-- Top Floating Marigold & Toran Garland -->
-    <div class="hero-festive-toran-decor">
-      <div class="toran-garland-line"></div>
-    </div>
-
     <div class="hero-content-container">
-      <!-- Top Campaign Badge -->
+      <!-- Top Campaign Pill Badge -->
       <div class="hero-campaign-badge">
-        <div class="badge-diya-icon">🪔</div>
-        <div class="badge-text-group">
-          <span class="badge-sub">POONAWALLA FINCORP</span>
-          <span class="badge-main">Sapno Ka Celebration</span>
-        </div>
+        <span class="badge-accent-dot"></span>
+        <span class="badge-main">POONAWALLA FINCORP &bull; SAPNO KA CELEBRATION</span>
       </div>
 
       <!-- Main Headline -->
@@ -30,38 +20,56 @@ export function renderHero(container, onNavigate) {
 
       <!-- Subtitle -->
       <p class="hero-main-subheading">
-        Make your festive moments bigger and brighter with the financial support you need.
+        Make your festive moments bigger and brighter with instant approvals, zero processing fees, and guaranteed rewards.
       </p>
 
-      <!-- Primary CTA Button -->
+      <!-- Action Row -->
       <div class="hero-action-row">
         <button class="hero-primary-cta-btn" id="hero-play-win-btn">
-          <span class="btn-star-sparkle">✨</span> Play & Win Rewards
+          Play & Win Rewards &rarr;
+        </button>
+        <button class="hero-secondary-cta-btn" id="hero-explore-loans-btn">
+          Explore Loan Offers
         </button>
       </div>
 
-      <!-- Festive Floating Accents (Characters / Lanterns / Diyas) -->
-      <div class="hero-floating-character left">
-        <div class="festive-character-box">
-          <span class="character-emoji">🏮</span>
-          <span class="character-caption">Shubh Labh</span>
+      <!-- Wireframe Highlights Row -->
+      <div class="hero-wireframe-stats">
+        <div class="stat-pill-item">
+          <span class="stat-pill-num">100%</span>
+          <span class="stat-pill-label">Digital Approvals</span>
         </div>
-      </div>
-
-      <div class="hero-floating-character right">
-        <div class="festive-character-box">
-          <span class="character-emoji">🪔</span>
-          <span class="character-caption">Joy & Prosperity</span>
+        <div class="stat-pill-divider"></div>
+        <div class="stat-pill-item">
+          <span class="stat-pill-num">From 9.99%</span>
+          <span class="stat-pill-label">Festive Loan Rates</span>
+        </div>
+        <div class="stat-pill-divider"></div>
+        <div class="stat-pill-item">
+          <span class="stat-pill-num">50+ Brands</span>
+          <span class="stat-pill-label">Assured Vouchers</span>
         </div>
       </div>
     </div>
   `;
 
-  // Attach button event
+  // Attach button events
   const playBtn = heroWrapper.querySelector('#hero-play-win-btn');
   if (playBtn) {
     playBtn.addEventListener('click', () => {
       if (onNavigate) onNavigate('games');
+    });
+  }
+
+  const loansBtn = heroWrapper.querySelector('#hero-explore-loans-btn');
+  if (loansBtn) {
+    loansBtn.addEventListener('click', () => {
+      const offersSection = document.getElementById('limited-period-offers');
+      if (offersSection) {
+        offersSection.scrollIntoView({ behavior: 'smooth' });
+      } else if (onNavigate) {
+        onNavigate('loans');
+      }
     });
   }
 

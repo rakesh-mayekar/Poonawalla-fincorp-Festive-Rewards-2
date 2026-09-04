@@ -1,5 +1,5 @@
 // Loans Section Component (All Loans)
-import { LOAN_PRODUCTS, PRODUCT_LAMPS } from '../data/loansData.js';
+import { LOAN_PRODUCTS } from '../data/loansData.js';
 import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
 
@@ -25,18 +25,12 @@ export function renderLoansSection(container, onNavigate) {
   LOAN_PRODUCTS.forEach(product => {
     const card = document.createElement('a');
     card.href = `#loan-detail?id=${product.id}`;
-    card.className = 'loan-card portfolio-card animate-on-scroll';
+    card.className = 'loan-card portfolio-card wireframe-loan-card animate-on-scroll';
     card.id = `loan-card-${product.id}`;
-
-    const lampSvg = PRODUCT_LAMPS[product.id] || '';
 
     card.innerHTML = `
       <div class="portfolio-card-badge">${product.festiveOffer.split('+')[0] || 'Festive Special'}</div>
       
-      <div class="product-lamp-container">
-        ${lampSvg}
-      </div>
-
       <div class="portfolio-card-content">
         <h3 class="portfolio-card-title">${product.title}</h3>
         <p class="portfolio-card-stats">EMI Starts ${product.startingEmi} <span style="color: #d1d5db; margin: 0 4px;">•</span> <span style="color: #10b981;">${product.interestRate}</span></p>
@@ -44,7 +38,7 @@ export function renderLoansSection(container, onNavigate) {
 
         <!-- Festive Benefits Preview -->
         <div class="festive-benefits-preview" style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--wf-border);">
-          <span style="font-size: 0.75rem; font-weight: 700; color: var(--wf-text-secondary); text-transform: uppercase; display: block; margin-bottom: 6px;">✨ Festive Benefits:</span>
+          <span style="font-size: 0.75rem; font-weight: 700; color: var(--wf-text-secondary); text-transform: uppercase; display: block; margin-bottom: 6px;">✨ Key Benefits:</span>
           <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.8rem; color: var(--wf-text-secondary); display: flex; flex-direction: column; gap: 4px;">
             ${product.benefits.slice(0, 2).map(b => `<li style="display: flex; align-items: center; gap: 6px;"><span style="color: #10B981; font-weight: bold;">✓</span> ${b}</li>`).join('')}
           </ul>
@@ -52,7 +46,7 @@ export function renderLoansSection(container, onNavigate) {
       </div>
       
       <div class="portfolio-card-footer" style="margin-top: 16px;">
-        <button class="btn-primary" style="width: 100%;">View Festive Details &rarr;</button>
+        <button class="btn-primary festive-card-btn" style="width: 100%;">View Loan Details &rarr;</button>
       </div>
     `;
 

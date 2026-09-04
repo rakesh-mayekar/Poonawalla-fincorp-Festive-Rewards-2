@@ -6,7 +6,6 @@ import { renderHomeOffersShowcase } from './homeOffersShowcase.js';
 import { renderWinnersWall } from './winnersWall.js';
 import { renderHomeBlogsSection } from './homeBlogsSection.js';
 import { initStickyOffersBar } from './stickyOffersBar.js';
-import { PRODUCT_LAMPS } from '../data/loansData.js';
 
 export function renderHomeView(container, onNavigate) {
   // 1. Hero / Festival Campaign ("Celebrate More. Worry Less.")
@@ -22,62 +21,53 @@ export function renderHomeView(container, onNavigate) {
   loansPreview.innerHTML = `
     <div class="section-header center">
       <div class="festive-kicker-badge">
-        <span class="sparkle-icon">✨</span> EXCLUSIVE FESTIVE RATES
+        EXCLUSIVE FESTIVE RATES
       </div>
       <h2 class="festive-heading">
-        Limited Period <span class="accent-italic">Offers</span>
+        Limited Period Offers
       </h2>
       <p class="subheading center-subheading">
-        Apply for loans and get assured offers from 50+ brands.
+        Apply for loans and get assured offers from 50+ brand partners.
       </p>
     </div>
 
     <div class="loans-grid preview-grid">
       <!-- Instant Loan -->
-      <a href="#loan-detail?id=instant-personal-loan" class="loan-card portfolio-card festive-blue-card" data-nav="loan-detail" data-id="instant-personal-loan">
+      <a href="#loan-detail?id=instant-personal-loan" class="loan-card portfolio-card wireframe-loan-card" data-nav="loan-detail" data-id="instant-personal-loan">
         <div class="portfolio-card-badge">Zero Processing Fee</div>
-        <div class="product-lamp-container">
-          ${PRODUCT_LAMPS['instant-personal-loan'] || '🪔'}
-        </div>
         <div class="portfolio-card-content">
           <h3 class="portfolio-card-title">Instant Loan</h3>
           <p class="portfolio-card-stats">From 10.25% p.a. <span class="stat-dot">•</span> <span class="stat-highlight">Up to ₹5 Lakh</span></p>
-          <p class="portfolio-card-desc">100% digital instant approval & quick disbursal to fuel festive moments.</p>
+          <p class="portfolio-card-desc">100% digital instant approval & quick disbursal to fuel your festive moments.</p>
         </div>
         <div class="portfolio-card-footer">
-          <button class="btn-primary festive-card-btn" style="width: 100%;">Enjoy Zero Fee &rarr;</button>
+          <button class="btn-primary festive-card-btn" style="width: 100%;">Apply Now &rarr;</button>
         </div>
       </a>
       
       <!-- Personal Loan -->
-      <a href="#loan-detail?id=prime-personal-loan" class="loan-card portfolio-card festive-blue-card" data-nav="loan-detail" data-id="prime-personal-loan">
+      <a href="#loan-detail?id=prime-personal-loan" class="loan-card portfolio-card wireframe-loan-card" data-nav="loan-detail" data-id="prime-personal-loan">
         <div class="portfolio-card-badge">Flexible EMI</div>
-        <div class="product-lamp-container">
-          ${PRODUCT_LAMPS['prime-personal-loan'] || '🏮'}
-        </div>
         <div class="portfolio-card-content">
           <h3 class="portfolio-card-title">Personal Loan</h3>
           <p class="portfolio-card-stats">From 9.99% p.a. <span class="stat-dot">•</span> <span class="stat-highlight">Up to ₹30 Lakh</span></p>
-          <p class="portfolio-card-desc">Flexible EMIs up to 60 months with zero hidden charges & high limits.</p>
+          <p class="portfolio-card-desc">Flexible EMIs up to 60 months with zero hidden charges and competitive rates.</p>
         </div>
         <div class="portfolio-card-footer">
-          <button class="btn-primary festive-card-btn" style="width: 100%;">Choose Flexible EMI &rarr;</button>
+          <button class="btn-primary festive-card-btn" style="width: 100%;">Apply Now &rarr;</button>
         </div>
       </a>
 
       <!-- Business Loan -->
-      <a href="#loan-detail?id=business-loan" class="loan-card portfolio-card festive-blue-card" data-nav="loan-detail" data-id="business-loan">
+      <a href="#loan-detail?id=business-loan" class="loan-card portfolio-card wireframe-loan-card" data-nav="loan-detail" data-id="business-loan">
         <div class="portfolio-card-badge">Collateral Free</div>
-        <div class="product-lamp-container">
-          ${PRODUCT_LAMPS['business-loan'] || '🏢'}
-        </div>
         <div class="portfolio-card-content">
           <h3 class="portfolio-card-title">Business Loan</h3>
           <p class="portfolio-card-stats">From 14.00% p.a. <span class="stat-dot">•</span> <span class="stat-highlight">Up to ₹50 Lakh</span></p>
           <p class="portfolio-card-desc">Collateral-free business capital to expand inventory for the festive surge.</p>
         </div>
         <div class="portfolio-card-footer">
-          <button class="btn-primary festive-card-btn" style="width: 100%;">Grow Your Business &rarr;</button>
+          <button class="btn-primary festive-card-btn" style="width: 100%;">Apply Now &rarr;</button>
         </div>
       </a>
     </div>
