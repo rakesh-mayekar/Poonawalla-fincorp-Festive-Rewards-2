@@ -36,11 +36,11 @@ export function renderCategoryGrid(container, onNavigate) {
         <a href="#emi" class="category-card" id="emi-feature-card" data-target="emi">
           <div class="card-top-head">
             <span class="card-badge-pill">Smart Tool</span>
-            <span class="card-category-indicator" style="font-size: 0.75rem; color: var(--wf-text-secondary); font-weight: 600;">Scratch Reward</span>
+            <span class="card-category-indicator" style="font-size: 0.75rem; color: var(--wf-text-secondary); font-weight: 600;">Instant Calculator</span>
           </div>
           <div class="card-body-content">
             <h3 class="card-title-text" style="font-size: 1.25rem;">EMI Calculator</h3>
-            <p class="card-desc-text">Explore EMIs & plan better with guaranteed festive rewards.</p>
+            <p class="card-desc-text">Calculate monthly installments with interactive sliders and plan your festive finances.</p>
           </div>
           <div class="card-footer-row">
             <span class="card-action-text" style="font-size: 0.85rem; font-weight: 600; color: var(--wf-text-primary);">Calculate EMI</span>
