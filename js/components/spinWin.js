@@ -29,7 +29,7 @@ export function renderSpinWinGame(container, onNavigate) {
   card.innerHTML = `
     <h3 class="festive-heading" style="font-size: 1.35rem; margin-bottom: 6px;">🎰 Spin & Win Festive Wheel</h3>
     <p class="game-instructions-box" style="margin-bottom: 20px; font-size: 0.9rem; color: var(--wf-text-secondary);">
-      Verify your mobile number, tap "SPIN NOW" to spin the wheel, and reveal your guaranteed brand reward voucher!
+      Tap <strong>"SPIN NOW"</strong> to spin the festive wheel, win a guaranteed brand voucher, and unlock your exclusive reward code!
     </p>
 
     <div class="spin-wheel-container">
@@ -103,30 +103,33 @@ export function renderSpinWinGame(container, onNavigate) {
       ctx.fillStyle = WHEEL_SEGMENTS[i].color;
       ctx.fill();
       ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Text Labels
+      // Segment Text
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(segAngle + arcSize / 2);
       ctx.textAlign = 'right';
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 20px "SF Pro Display", "Inter", sans-serif';
-      ctx.fillText(WHEEL_SEGMENTS[i].label, radius - 28, 7);
+      ctx.font = 'bold 15px sans-serif';
+      ctx.fillText(WHEEL_SEGMENTS[i].label, radius - 24, 5);
       ctx.restore();
     }
   }
 
   drawWheel(currentAngle);
 
-  // View Won Voucher Handler
+  // View Won Reward Handler
   const viewPrevBtn = card.querySelector('#view-previous-spin-reward');
   if (viewPrevBtn) {
     viewPrevBtn.addEventListener('click', () => {
-      const userRewards = getUserRewards();
-      const allocated = allocateRewardForGame('play_and_win', userRewards.claims);
-      openRewardModal(allocated.deal);
+      const currentRewards = getUserRewards();
+      const allocated = allocateRewardForGame('play_and_win', currentRewards.claims);
+      openRewardModal(allocated.deal, {
+        onVerified: () => renderSpinWinGame(container, onNavigate),
+        onNavigate
+      });
     });
   }
 
@@ -140,7 +143,7 @@ export function renderSpinWinGame(container, onNavigate) {
     });
   }
 
-  // Spin CTA Handler
+  // Spin CTA Handler (Zero friction - play immediately)
   const spinBtn = card.querySelector('#spin-wheel-cta-btn');
   if (!spinBtn) return;
 
@@ -151,14 +154,6 @@ export function renderSpinWinGame(container, onNavigate) {
       openRewardLimitModal({
         currentActivityKey: 'play_and_win',
         onNavigate
-      });
-      return;
-    }
-
-    const session = getSession();
-    if (!session.isAuthenticated) {
-      openOtpModal(() => {
-        spinBtn.click();
       });
       return;
     }
@@ -205,23 +200,26 @@ export function renderSpinWinGame(container, onNavigate) {
         isSpinning = false;
         playWinFanfare();
 
-        saveRewardClaim('play_and_win', targetDealId);
-
-        trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
-          game_type: 'spin_and_win',
-          deal_id: targetDealId
-        });
-
-        sendLeadToLeadSquared({
-          mobileNumber: session.mobile,
-          activityType: 'Spin & Win Reward Claimed',
-          rewardAllocated: targetDealId,
-          contentSlug: 'play-spin'
-        });
+        const session = getSession();
+        if (session && session.isAuthenticated) {
+          saveRewardClaim('play_and_win', targetDealId);
+          trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
+            game_type: 'spin_and_win',
+            deal_id: targetDealId
+          });
+          sendLeadToLeadSquared({
+            mobileNumber: session.mobile,
+            activityType: 'Spin & Win Reward Claimed',
+            rewardAllocated: targetDealId,
+            contentSlug: 'play-spin'
+          });
+        }
 
         setTimeout(() => {
-          openRewardModal(allocated.deal);
-          renderSpinWinGame(container, onNavigate); // Re-render in claimed state
+          openRewardModal(allocated.deal, {
+            onVerified: () => renderSpinWinGame(container, onNavigate),
+            onNavigate
+          });
         }, 500);
       }
     }

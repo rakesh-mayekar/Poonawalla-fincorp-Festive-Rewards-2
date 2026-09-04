@@ -54,7 +54,10 @@ export function renderScratchCardGame(container, onNavigate) {
     viewPrevBtn.addEventListener('click', () => {
       const currentRewards = getUserRewards();
       const allocated = allocateRewardForGame('play_and_win', currentRewards.claims);
-      openRewardModal(allocated.deal);
+      openRewardModal(allocated.deal, {
+        onVerified: () => renderScratchCardGame(container, onNavigate),
+        onNavigate
+      });
     });
   }
 
@@ -125,23 +128,25 @@ export function renderScratchCardGame(container, onNavigate) {
       playWinFanfare();
 
       const session = getSession();
-      saveRewardClaim('play_and_win', allocatedDeal.dealId);
-
-      trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
-        game_type: 'scratch_card',
-        deal_id: allocatedDeal.dealId
-      });
-
-      sendLeadToLeadSquared({
-        mobileNumber: session.mobile,
-        activityType: 'Scratch Card Reward Claimed',
-        rewardAllocated: allocatedDeal.dealId,
-        contentSlug: 'play-scratch'
-      });
+      if (session && session.isAuthenticated) {
+        saveRewardClaim('play_and_win', allocatedDeal.dealId);
+        trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
+          game_type: 'scratch_card',
+          deal_id: allocatedDeal.dealId
+        });
+        sendLeadToLeadSquared({
+          mobileNumber: session.mobile,
+          activityType: 'Scratch Card Reward Claimed',
+          rewardAllocated: allocatedDeal.dealId,
+          contentSlug: 'play-scratch'
+        });
+      }
 
       setTimeout(() => {
-        openRewardModal(allocatedDeal);
-        renderScratchCardGame(container, onNavigate);
+        openRewardModal(allocatedDeal, {
+          onVerified: () => renderScratchCardGame(container, onNavigate),
+          onNavigate
+        });
       }, 500);
     }
   }
@@ -155,25 +160,6 @@ export function renderScratchCardGame(container, onNavigate) {
       return;
     }
 
-    const session = getSession();
-    if (!session.isAuthenticated) {
-      openOtpModal(() => {
-        const currentRewards = getUserRewards();
-        const alloc = allocateRewardForGame('play_and_win', currentRewards.claims);
-        allocatedDeal = alloc.deal;
-
-        const underlayTitle = card.querySelector('#underlay-title');
-        const underlayCode = card.querySelector('#underlay-code');
-        if (underlayTitle && underlayCode) {
-          underlayTitle.textContent = allocatedDeal.offerTitle;
-          underlayCode.textContent = allocatedDeal.couponCode;
-        }
-
-        trackGa4Event(GA4_EVENTS.GAME_STARTED, { game_type: 'scratch_card' });
-      });
-      return;
-    }
-
     if (!allocatedDeal) {
       const currentRewards = getUserRewards();
       const alloc = allocateRewardForGame('play_and_win', currentRewards.claims);
@@ -183,7 +169,8 @@ export function renderScratchCardGame(container, onNavigate) {
       const underlayCode = card.querySelector('#underlay-code');
       if (underlayTitle && underlayCode) {
         underlayTitle.textContent = allocatedDeal.offerTitle;
-        underlayCode.textContent = allocatedDeal.couponCode;
+        const masked = allocatedDeal.couponCode.slice(0, 6) + '*****' + allocatedDeal.couponCode.slice(-1);
+        underlayCode.textContent = masked;
       }
 
       trackGa4Event(GA4_EVENTS.GAME_STARTED, { game_type: 'scratch_card' });

@@ -70,7 +70,10 @@ export function renderShuffleCardGame(container, onNavigate) {
     viewPrevBtn.addEventListener('click', () => {
       const currentRewards = getUserRewards();
       const allocated = allocateRewardForGame('play_and_win', currentRewards.claims);
-      openRewardModal(allocated.deal);
+      openRewardModal(allocated.deal, {
+        onVerified: () => renderShuffleCardGame(container, onNavigate),
+        onNavigate
+      });
     });
   }
 
@@ -86,7 +89,7 @@ export function renderShuffleCardGame(container, onNavigate) {
 
   if (isClaimed) return;
 
-  // Shuffle Cards Click Listener
+  // Shuffle Cards Click Listener (Zero friction - play immediately)
   const cards = card.querySelectorAll('.shuffle-card');
   let isPicking = false;
 
@@ -98,14 +101,6 @@ export function renderShuffleCardGame(container, onNavigate) {
         openRewardLimitModal({
           currentActivityKey: 'play_and_win',
           onNavigate
-        });
-        return;
-      }
-
-      const session = getSession();
-      if (!session.isAuthenticated) {
-        openOtpModal(() => {
-          cardEl.click();
         });
         return;
       }
@@ -132,23 +127,26 @@ export function renderShuffleCardGame(container, onNavigate) {
         window.confetti({ particleCount: 90, spread: 65, origin: { y: 0.6 } });
       }
 
-      saveRewardClaim('play_and_win', allocated.deal.dealId);
-
-      trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
-        game_type: 'shuffle_card',
-        deal_id: allocated.deal.dealId
-      });
-
-      sendLeadToLeadSquared({
-        mobileNumber: session.mobile,
-        activityType: 'Shuffle Card Reward Claimed',
-        rewardAllocated: allocated.deal.dealId,
-        contentSlug: 'play-shuffle'
-      });
+      const session = getSession();
+      if (session && session.isAuthenticated) {
+        saveRewardClaim('play_and_win', allocated.deal.dealId);
+        trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
+          game_type: 'shuffle_card',
+          deal_id: allocated.deal.dealId
+        });
+        sendLeadToLeadSquared({
+          mobileNumber: session.mobile,
+          activityType: 'Shuffle Card Reward Claimed',
+          rewardAllocated: allocated.deal.dealId,
+          contentSlug: 'play-shuffle'
+        });
+      }
 
       setTimeout(() => {
-        openRewardModal(allocated.deal);
-        renderShuffleCardGame(container, onNavigate);
+        openRewardModal(allocated.deal, {
+          onVerified: () => renderShuffleCardGame(container, onNavigate),
+          onNavigate
+        });
       }, 700);
     });
   });
