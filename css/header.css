@@ -1,52 +1,45 @@
 /* ==========================================================================
-   POONAWALLA FINCORP UNIFIED STICKY HEADER & NAVIGATION
+   POONAWALLA FINCORP HEADER & NAVIGATION (HOMEPAGE & INNER PAGES)
    ========================================================================== */
 .site-header {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 1000;
+  width: 100%;
 }
 
 .site-header-nav-wrapper {
   background: #FFFFFF;
   border-bottom: 1px solid var(--wf-border);
-  padding: 12px var(--container-px);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+  transition: all 0.25s ease;
+}
+
+/* -------------------------------------------------------------
+   HOMEPAGE HEADER: Clean Centered Branding
+   ------------------------------------------------------------- */
+.site-header-nav-wrapper.home-header-mode {
+  padding: 16px var(--container-px);
+  background: #FFFFFF;
+}
+
+.home-centered-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
 }
 
-/* Home Header Initial Mode */
-.site-header-nav-wrapper.home-header-mode:not(.is-sticky) {
-  background: #FFFFFF;
-  padding: 14px var(--container-px);
-}
-
-.site-header-nav-wrapper.home-header-mode:not(.is-sticky) .header-nav-pills-wrap {
-  display: none; /* Pill navigation is displayed below Hero when at top of Homepage */
-}
-
-.site-header-nav-wrapper.home-header-mode:not(.is-sticky) .header-inner-container {
-  justify-content: space-between;
-}
-
-/* Sticky Header on Homepage (When Scrolled Past Hero) & on All Inner Pages */
-.site-header-nav-wrapper.is-sticky,
+/* -------------------------------------------------------------
+   ALL INNER PAGES HEADER: Brand Logo Left + Pill Navigation Center + Loans Dropdown
+   ------------------------------------------------------------- */
 .site-header-nav-wrapper.inner-header-mode {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.95);
+  padding: 10px var(--container-px);
+  background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  padding: 8px var(--container-px);
-  animation: slideDownHeader 0.3s ease;
-}
-
-@keyframes slideDownHeader {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(0); }
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .header-inner-container {
@@ -106,11 +99,11 @@
   font-family: var(--font-body);
 }
 
-/* Nav Pills inside Header */
+/* Inner Page Nav Pills */
 .header-nav-pills-wrap {
   flex: 1;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   overflow: visible;
 }
 
@@ -122,13 +115,14 @@
   border: 1px solid var(--wf-border);
   padding: 4px 8px;
   border-radius: 40px;
+  overflow: visible;
 }
 
 .nav-pill-item {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 30px;
   background: transparent;
   border: none;
@@ -161,7 +155,7 @@
   transition: transform 0.2s ease;
 }
 
-/* Nav Pill Dropdown Menu for Loans */
+/* Loans Dropdown Menu on Inner Pages */
 .nav-pill-dropdown-group {
   position: relative;
   display: inline-block;
@@ -173,37 +167,49 @@
 
 .nav-pill-dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
   background: #FFFFFF;
   border: 1px solid var(--wf-border);
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
   list-style: none;
   padding: 8px;
-  min-width: 240px;
+  min-width: 270px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(8px);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1001;
-  margin-top: 6px;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  z-index: 99999;
 }
 
-.nav-pill-dropdown-group:hover .nav-pill-dropdown-menu {
+/* Hover bridge to keep dropdown open */
+.nav-pill-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 12px;
+}
+
+.nav-pill-dropdown-group:hover .nav-pill-dropdown-menu,
+.nav-pill-dropdown-group:focus-within .nav-pill-dropdown-menu {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
   transform: translateY(0);
 }
 
 .pill-dropdown-link {
   display: flex;
   align-items: center;
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 9px 14px;
+  border-radius: 8px;
   color: #111111;
   text-decoration: none;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 600;
   transition: all 0.15s ease;
   white-space: nowrap;
@@ -212,39 +218,43 @@
 .pill-dropdown-link:hover {
   background: var(--wf-surface-subtle);
   color: #000000;
-  transform: translateX(2px);
+  transform: translateX(4px);
 }
 
 .dropdown-divider {
   height: 1px;
   background: var(--wf-border);
-  margin: 4px 0;
+  margin: 6px 0;
 }
 
-/* Inner page body offset to compensate for fixed header */
-body:has(.inner-header-mode) {
-  padding-top: 64px;
+@media (max-width: 1024px) {
+  .header-nav-pills {
+    gap: 4px;
+    padding: 3px 6px;
+  }
+  .nav-pill-item {
+    padding: 5px 10px;
+    font-size: 0.78rem;
+  }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .brand-subtitle {
     display: none;
   }
   .brand-title {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
+  }
+  .header-nav-pills-wrap {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .header-nav-pills-wrap::-webkit-scrollbar {
+    display: none;
   }
   .nav-pill-item {
-    padding: 5px 9px;
-    font-size: 0.75rem;
-  }
-  .pill-icon {
-    font-size: 0.85rem;
-  }
-}
-
-@media (max-width: 680px) {
-  .site-header-nav-wrapper.is-sticky .brand-name-group,
-  .site-header-nav-wrapper.inner-header-mode .brand-name-group {
-    display: none;
+    padding: 5px 10px;
+    font-size: 0.76rem;
   }
 }

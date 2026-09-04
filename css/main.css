@@ -1310,28 +1310,32 @@ h3, h4, h5 {
 /* ==========================================================================
    MID-PAGE QUICK NAVIGATION PILL BAR (Sticky on Scroll)
    ========================================================================== */
-.mid-page-quick-nav.sticky-top-nav-wrap {
+.mid-page-quick-nav {
   position: sticky;
   top: 14px;
   z-index: 900;
-  margin: 10px auto 48px auto;
-  max-width: 980px;
+  margin: 14px auto 40px auto;
   width: 100%;
-  padding: 0 var(--container-px);
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
 .quick-nav-pill-container {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 8px 14px;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 6px 12px;
   border-radius: 50px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  width: max-content;
+  max-width: calc(100vw - 32px);
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -1344,16 +1348,17 @@ h3, h4, h5 {
 .quick-nav-item {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 40px;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 30px;
   color: var(--wf-text-primary);
   text-decoration: none;
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   font-weight: 600;
   transition: all 0.2s ease;
   white-space: nowrap;
   background: transparent;
+  flex-shrink: 0;
 }
 
 .quick-nav-item:hover {
@@ -1367,20 +1372,20 @@ h3, h4, h5 {
   color: #FFFFFF;
 }
 
-.quick-nav-item.active .quick-nav-icon-wrap svg {
+.quick-nav-item.active .quick-nav-icon,
+.quick-nav-item.active .quick-nav-label {
   color: #FFFFFF;
 }
 
-.quick-nav-icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 0;
+.quick-nav-icon {
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .quick-nav-label {
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   font-weight: 600;
+  line-height: 1;
 }
 
 /* ==========================================================================
