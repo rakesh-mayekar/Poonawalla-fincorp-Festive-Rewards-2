@@ -12,14 +12,17 @@ export function renderHomeBlogsSection(container, onNavigate) {
 
   const cardsHtml = featuredBlogs.map(blog => `
     <article class="blog-card" data-id="${blog.id}">
-      <div class="blog-card-cover" style="background: ${blog.coverGradient};">
-        <span class="blog-cover-emoji">${blog.coverEmoji}</span>
+      <div class="blog-card-cover wireframe-cover">
+        <div class="wireframe-blog-placeholder">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>Article Preview</span>
+        </div>
         <span class="blog-category-badge">${blog.category}</span>
       </div>
 
       <div class="blog-card-body">
         <div class="blog-meta-row">
-          <span class="blog-read-time">⏱ ${blog.readTime}</span>
+          <span class="blog-read-time">${blog.readTime}</span>
           <span class="blog-dot">•</span>
           <span class="blog-date">${blog.date}</span>
         </div>

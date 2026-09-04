@@ -89,27 +89,22 @@ export function renderHomeView(container, onNavigate) {
     <div class="pfin-dark-card play-win-dark-card">
       <div class="pfin-content">
         <div class="pfin-badge">
-          <span style="font-size: 1.1rem; line-height: 0;">🎁</span> GUARANTEED REWARDS
+          <span class="wireframe-pill-dot"></span> GUARANTEED REWARDS
         </div>
-        <h2 class="festive-heading" style="font-size: 2.8rem; color: #fff; margin-bottom: 14px;">
-          Play <span class="accent-italic">& Win</span>
+        <h2 class="festive-heading" style="font-size: 2.5rem; color: #FFFFFF; margin-bottom: 12px;">
+          Play & Win
         </h2>
-        <p style="font-size: 1.05rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 28px; font-family: var(--font-body);">
-          Spin, scratch & shuffle to win guaranteed vouchers from top brands.
+        <p style="font-size: 1rem; color: #A1A1AA; line-height: 1.5; margin-bottom: 24px; font-family: var(--font-body);">
+          Spin, scratch & shuffle to win guaranteed vouchers from 50+ partner brands.
         </p>
-        <button class="btn-primary" id="play-win-hub-btn" style="background:#fff; border-color:#fff; color:#111; padding: 12px 28px;">
+        <button class="btn-primary" id="play-win-hub-btn" style="background:#FFFFFF; border-color:#FFFFFF; color:#18181B; padding: 12px 28px;">
           Play & Win Rewards &rarr;
         </button>
       </div>
       <div class="pfin-visual">
-        <div class="festive-gift-box-visual">
-          <div class="gift-box-glow"></div>
-          <span class="gift-box-emoji">🎁</span>
-          <div class="floating-coins-cluster">
-            <span class="coin c1">🪙</span>
-            <span class="coin c2">✨</span>
-            <span class="coin c3">🎟️</span>
-          </div>
+        <div class="wireframe-game-preview-box">
+          <div class="game-preview-icon">🎯</div>
+          <div class="game-preview-badge">Spin • Scratch • Win</div>
         </div>
       </div>
     </div>

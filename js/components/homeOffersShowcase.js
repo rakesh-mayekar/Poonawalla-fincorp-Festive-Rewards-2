@@ -23,15 +23,18 @@ export function renderHomeOffersShowcase(container, onNavigate) {
       <!-- Offer Card 1: Foldable Flagship / EasyEMI -->
       <div class="featured-offer-card">
         <div class="featured-card-top-tag">
-          <span class="festive-tag-orange">✨ Handcrafted Goodness</span>
+          <span class="wireframe-tag">Featured Deal</span>
         </div>
-        <div class="featured-card-visual electronic-visual-1">
-          <div class="offer-product-icon">📱</div>
+        <div class="featured-card-visual">
+          <div class="wireframe-img-placeholder">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Offer Visual</span>
+          </div>
           <div class="offer-badge-float">0% EMI</div>
         </div>
         <div class="featured-card-content">
           <h3 class="featured-card-title">Foldable & Premium Flagships</h3>
-          <p class="featured-card-desc">Unfold the future with PFIN Card EasyEMI and 5% Instant Cash-back.</p>
+          <p class="featured-card-desc">PFIN Card EasyEMI with 5% instant cashback across authorized partner stores.</p>
         </div>
         <div class="featured-card-action">
           <button class="featured-action-btn" data-offer="gadgets">Claim Deal &rarr;</button>
@@ -39,17 +42,20 @@ export function renderHomeOffersShowcase(container, onNavigate) {
       </div>
 
       <!-- Offer Card 2: 5G Power & Cashback -->
-      <div class="featured-offer-card highlight-card">
+      <div class="featured-offer-card">
         <div class="featured-card-top-tag">
-          <span class="festive-tag-green">🔥 Galaxy 5G Flagship</span>
+          <span class="wireframe-tag">Top Cashback</span>
         </div>
-        <div class="featured-card-visual electronic-visual-2">
-          <div class="offer-product-icon">⚡</div>
+        <div class="featured-card-visual">
+          <div class="wireframe-img-placeholder">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Offer Visual</span>
+          </div>
           <div class="offer-badge-float">5% CashBack</div>
         </div>
         <div class="featured-card-content">
           <h3 class="featured-card-title">Galaxy 5G Flagship Series</h3>
-          <p class="featured-card-desc">Power through 5G with 5% Instant Cash-back on PFIN Card.</p>
+          <p class="featured-card-desc">Exclusive pre-approved discounts and guaranteed vouchers with PFIN Card.</p>
         </div>
         <div class="featured-card-action">
           <button class="featured-action-btn" data-offer="galaxy">Claim Deal &rarr;</button>
@@ -59,15 +65,18 @@ export function renderHomeOffersShowcase(container, onNavigate) {
       <!-- Offer Card 3: Smart Living & Electronics -->
       <div class="featured-offer-card">
         <div class="featured-card-top-tag">
-          <span class="festive-tag-blue">⭐ Discover What's New</span>
+          <span class="wireframe-tag">Festive Special</span>
         </div>
-        <div class="featured-card-visual electronic-visual-3">
-          <div class="offer-product-icon">⌚</div>
-          <div class="offer-badge-float">Festive Special</div>
+        <div class="featured-card-visual">
+          <div class="wireframe-img-placeholder">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Offer Visual</span>
+          </div>
+          <div class="offer-badge-float">Festive Offer</div>
         </div>
         <div class="featured-card-content">
           <h3 class="featured-card-title">Smart Gadgets & Lifestyle</h3>
-          <p class="featured-card-desc">Power through 5G with 5% Instant Cash-back on PFIN Card & vouchers.</p>
+          <p class="featured-card-desc">Upgrade electronics with zero processing fee and curated partner vouchers.</p>
         </div>
         <div class="featured-card-action">
           <button class="featured-action-btn" data-offer="lifestyle">Claim Deal &rarr;</button>
