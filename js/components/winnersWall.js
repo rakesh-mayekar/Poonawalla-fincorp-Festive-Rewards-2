@@ -1,5 +1,5 @@
 // Festive Winners Wall Component
-// Displays live verified winner feeds, rewards unlocked, and recent customer wins
+// Highlights top partner brands (Amazon, Myntra, Tanishq, KFC, Croma, Swiggy) and verified customer wins
 
 export function renderWinnersWall(container, onNavigate) {
   const section = document.createElement('section');
@@ -7,31 +7,87 @@ export function renderWinnersWall(container, onNavigate) {
   section.id = 'winners-section';
 
   const WINNERS_DATA = [
-    { name: 'Rahul Sharma', city: 'Mumbai', prize: '₹500 Tanishq Gold Voucher', product: 'Instant Loan', time: '2 mins ago', initial: 'R' },
-    { name: 'Priya Mukherjee', city: 'Pune', prize: 'Myntra ₹250 Voucher', product: 'Play & Win', time: '5 mins ago', initial: 'P' },
-    { name: 'Amitabh Verma', city: 'Delhi NCR', prize: '₹1,000 Amazon Voucher', product: 'Prime Personal Loan', time: '11 mins ago', initial: 'A' },
-    { name: 'Sneha Deshmukh', city: 'Bengaluru', prize: '5% Instant Cashback', product: 'PFIN Card', time: '18 mins ago', initial: 'S' },
-    { name: 'Vikram Reddy', city: 'Hyderabad', prize: 'KFC Feast Box Voucher', product: 'Spin & Win', time: '24 mins ago', initial: 'V' },
-    { name: 'Ananya Gupta', city: 'Ahmedabad', prize: 'Croma ₹1,500 Voucher', product: 'Business Loan', time: '32 mins ago', initial: 'A' }
+    { 
+      winner: 'Rahul S.', 
+      brand: 'Tanishq', 
+      brandInitials: 'T', 
+      brandClass: 'tanishq', 
+      prize: '₹500 Tanishq Gold Voucher', 
+      product: 'Instant Loan', 
+      time: '2 mins ago',
+      color: '#991B1B'
+    },
+    { 
+      winner: 'Priya M.', 
+      brand: 'Myntra', 
+      brandInitials: 'M', 
+      brandClass: 'myntra', 
+      prize: '₹250 OFF on Min. Cart ₹1,499', 
+      product: 'Play & Win', 
+      time: '5 mins ago',
+      color: '#FF3F6C'
+    },
+    { 
+      winner: 'Amitabh V.', 
+      brand: 'Amazon', 
+      brandInitials: 'a', 
+      brandClass: 'amazon', 
+      prize: '₹1,000 Amazon Shopping Voucher', 
+      product: 'Prime Personal Loan', 
+      time: '11 mins ago',
+      color: '#FF9900'
+    },
+    { 
+      winner: 'Sneha D.', 
+      brand: 'PFIN Cashback', 
+      brandInitials: 'PF', 
+      brandClass: 'pfin', 
+      prize: '5% Instant Festive Cashback', 
+      product: 'PFIN Card', 
+      time: '18 mins ago',
+      color: '#10B981'
+    },
+    { 
+      winner: 'Vikram R.', 
+      brand: 'KFC', 
+      brandInitials: 'K', 
+      brandClass: 'kfc', 
+      prize: 'Free Popcorn & Meal Voucher', 
+      product: 'Spin & Win', 
+      time: '24 mins ago',
+      color: '#E4002B'
+    },
+    { 
+      winner: 'Ananya G.', 
+      brand: 'Croma', 
+      brandInitials: 'C', 
+      brandClass: 'croma', 
+      prize: '₹1,500 Electronics Voucher', 
+      product: 'Business Loan', 
+      time: '32 mins ago',
+      color: '#00E9BF'
+    }
   ];
 
   const winnersCardsHtml = WINNERS_DATA.map(w => `
     <div class="winner-card-item">
       <div class="winner-card-top">
-        <div class="winner-avatar">${w.initial}</div>
-        <div class="winner-info-meta">
-          <span class="winner-name">${w.name}</span>
-          <span class="winner-location">📍 ${w.city}</span>
+        <div class="winner-brand-pill ${w.brandClass}">
+          <span class="brand-avatar-badge">${w.brandInitials}</span>
+          <span class="brand-pill-title">${w.brand}</span>
         </div>
+        <span class="winner-customer-name">Winner: <strong>${w.winner}</strong></span>
         <span class="winner-badge-verified">✓ Verified</span>
       </div>
+
       <div class="winner-prize-box">
-        <span class="prize-tag">WON</span>
+        <span class="prize-tag">REWARD</span>
         <strong class="prize-title">${w.prize}</strong>
       </div>
+
       <div class="winner-card-bottom">
-        <span class="winner-source">Via ${w.product}</span>
-        <span class="winner-timestamp">${w.time}</span>
+        <span class="winner-source">Claimed via ${w.product}</span>
+        <span class="winner-timestamp">⏱ ${w.time}</span>
       </div>
     </div>
   `).join('');
@@ -39,17 +95,17 @@ export function renderWinnersWall(container, onNavigate) {
   section.innerHTML = `
     <div class="section-header center">
       <div class="festive-kicker-badge">
-        <span class="sparkle-icon">🏆</span> CELEBRATION WINNERS
+        <span class="sparkle-icon">🏆</span> BRAND REWARDS WON
       </div>
       <h2 class="festive-heading">
         Festive Winners <span class="accent-italic">Wall</span>
       </h2>
       <p class="subheading center-subheading">
-        Explore offers from 50+ Brands, plus solutions tailored to your goals. Over 25,000+ customers have claimed guaranteed rewards!
+        Explore guaranteed vouchers from top brands like Amazon, Myntra, Tanishq, KFC & Croma won by customers this festive season!
       </p>
     </div>
 
-    <!-- Live Live Counter Bar -->
+    <!-- Live Counter Metrics Bar -->
     <div class="winners-metrics-banner">
       <div class="winner-metric">
         <span class="metric-num">₹2.4 Cr+</span>
@@ -58,7 +114,7 @@ export function renderWinnersWall(container, onNavigate) {
       <div class="metric-divider"></div>
       <div class="winner-metric">
         <span class="metric-num">28,500+</span>
-        <span class="metric-sub">Happy Winners</span>
+        <span class="metric-sub">Vouchers Claimed</span>
       </div>
       <div class="metric-divider"></div>
       <div class="winner-metric">
@@ -67,7 +123,7 @@ export function renderWinnersWall(container, onNavigate) {
       </div>
     </div>
 
-    <!-- Winners Grid / Ticker -->
+    <!-- Winners Grid -->
     <div class="winners-grid-wrapper">
       <div class="winners-grid">
         ${winnersCardsHtml}
@@ -76,7 +132,7 @@ export function renderWinnersWall(container, onNavigate) {
 
     <div class="winners-footer-cta center" style="margin-top: 36px; text-align: center;">
       <button class="btn-primary" id="winners-play-now-btn" style="padding: 12px 28px;">
-        Play & Win Your Reward Now &rarr;
+        Play & Win Your Brand Voucher Now &rarr;
       </button>
     </div>
   `;

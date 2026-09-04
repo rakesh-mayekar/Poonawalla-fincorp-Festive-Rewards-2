@@ -2269,37 +2269,55 @@ h3, h4, h5 {
 .winner-card-top {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.winner-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #FEF3C7;
-  color: #B45309;
+.winner-brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--wf-surface-subtle);
+  border: 1px solid var(--wf-border);
+}
+
+.winner-brand-pill.tanishq { background: #FEF2F2; border-color: #FECACA; color: #991B1B; }
+.winner-brand-pill.myntra { background: #FFF1F2; border-color: #FECDD3; color: #E11D48; }
+.winner-brand-pill.amazon { background: #FFFBEB; border-color: #FDE68A; color: #D97706; }
+.winner-brand-pill.pfin { background: #ECFDF5; border-color: #A7F3D0; color: #059669; }
+.winner-brand-pill.kfc { background: #FEF2F2; border-color: #FCA5A5; color: #DC2626; }
+.winner-brand-pill.croma { background: #F0FDFA; border-color: #99F6E4; color: #0D9488; }
+
+.brand-avatar-badge {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: #111111;
+  color: #FFFFFF;
+  font-size: 0.7rem;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
 }
 
-.winner-info-meta {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.winner-name {
-  font-size: 0.85rem;
+.brand-pill-title {
+  font-size: 0.78rem;
   font-weight: 800;
-  color: var(--wf-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.winner-location {
-  font-size: 0.72rem;
+.winner-customer-name {
+  font-size: 0.8rem;
   color: var(--wf-text-secondary);
+}
+
+.winner-customer-name strong {
+  color: var(--wf-text-primary);
 }
 
 .winner-badge-verified {
@@ -2314,10 +2332,11 @@ h3, h4, h5 {
 .winner-prize-box {
   background: var(--wf-surface-subtle);
   border-radius: 6px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  border: 1px dashed var(--wf-border);
 }
 
 .prize-tag {
@@ -2330,8 +2349,9 @@ h3, h4, h5 {
 }
 
 .prize-title {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   color: #111111;
+  font-weight: 700;
 }
 
 .winner-card-bottom {
@@ -2341,6 +2361,7 @@ h3, h4, h5 {
   font-size: 0.72rem;
   color: var(--wf-text-secondary);
 }
+
 
 /* Play & Win Visual Box */
 .play-win-dark-card {

@@ -1,48 +1,84 @@
 /* ==========================================================================
-   POONAWALLA FINCORP FESTIVE HEADER (Clean Minimalist Wireframe)
+   POONAWALLA FINCORP UNIFIED STICKY HEADER & NAVIGATION
    ========================================================================== */
 .site-header {
   position: relative;
-  z-index: 100;
+  z-index: 1000;
+}
+
+.site-header-nav-wrapper {
   background: #FFFFFF;
   border-bottom: 1px solid var(--wf-border);
+  padding: 12px var(--container-px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+/* Home Header Initial Mode */
+.site-header-nav-wrapper.home-header-mode:not(.is-sticky) {
+  background: #FFFFFF;
   padding: 14px var(--container-px);
 }
 
-.header-centered-brand {
+.site-header-nav-wrapper.home-header-mode:not(.is-sticky) .header-nav-pills-wrap {
+  display: none; /* Pill navigation is displayed below Hero when at top of Homepage */
+}
+
+.site-header-nav-wrapper.home-header-mode:not(.is-sticky) .header-inner-container {
+  justify-content: space-between;
+}
+
+/* Sticky Header on Homepage (When Scrolled Past Hero) & on All Inner Pages */
+.site-header-nav-wrapper.is-sticky,
+.site-header-nav-wrapper.inner-header-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  padding: 8px var(--container-px);
+  animation: slideDownHeader 0.3s ease;
+}
+
+@keyframes slideDownHeader {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(0); }
+}
+
+.header-inner-container {
   max-width: var(--max-width);
   margin: 0 auto;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
+  gap: 16px;
 }
 
 .brand-logo-wrap {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.brand-logo-wrap:hover {
-  transform: translateY(-1px);
+  flex-shrink: 0;
 }
 
 .brand-icon {
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
   background: #111111;
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1rem;
   letter-spacing: 0.05em;
   font-family: var(--font-body);
 }
@@ -55,7 +91,7 @@
 .brand-title {
   font-family: var(--font-body);
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   color: #111111;
   letter-spacing: -0.01em;
   line-height: 1.1;
@@ -63,29 +99,86 @@
 }
 
 .brand-subtitle {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 600;
   color: #666666;
   letter-spacing: 0.04em;
   font-family: var(--font-body);
 }
 
+/* Nav Pills inside Header */
+.header-nav-pills-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.header-nav-pills-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.header-nav-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--wf-surface-subtle);
+  border: 1px solid var(--wf-border);
+  padding: 4px 8px;
+  border-radius: 40px;
+}
+
+.nav-pill-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 30px;
+  background: transparent;
+  border: none;
+  color: var(--wf-text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-pill-item:hover {
+  background: #FFFFFF;
+  color: #111111;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.nav-pill-item.active {
+  background: #111111;
+  color: #FFFFFF;
+}
+
+.pill-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
 .header-right-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .header-login-btn, .header-user-btn, .header-claimed-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 16px;
+  padding: 6px 14px;
   background: var(--wf-surface-subtle);
   border: 1px solid var(--wf-border);
   border-radius: var(--radius-full);
   color: var(--wf-text-primary);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -104,29 +197,42 @@
   color: #92400E;
 }
 
-.header-claimed-pill .badge-num {
+.claimed-count-badge {
   background: #B45309;
   color: #FFFFFF;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   padding: 2px 6px;
   border-radius: 10px;
-  margin-left: 2px;
 }
 
-@media (max-width: 600px) {
-  .brand-title {
-    font-size: 0.95rem;
-  }
+/* Inner page body offset to compensate for fixed header */
+body:has(.inner-header-mode) {
+  padding-top: 64px;
+}
+
+@media (max-width: 900px) {
   .brand-subtitle {
-    font-size: 0.65rem;
+    display: none;
   }
-  .brand-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 0.95rem;
+  .brand-title {
+    font-size: 0.9rem;
+  }
+  .nav-pill-item {
+    padding: 5px 9px;
+    font-size: 0.75rem;
+  }
+  .pill-icon {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 680px) {
+  .site-header-nav-wrapper.is-sticky .brand-name-group,
+  .site-header-nav-wrapper.inner-header-mode .brand-name-group {
+    display: none; /* Show only logo icon on small mobile screens */
   }
   .header-login-btn, .header-user-btn {
-    padding: 6px 12px;
-    font-size: 0.75rem;
+    padding: 5px 9px;
+    font-size: 0.72rem;
   }
 }
