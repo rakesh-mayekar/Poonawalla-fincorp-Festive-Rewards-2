@@ -1,9 +1,10 @@
 // Sticky Bottom "Top Offers For You" Component
-// Appears ONLY when "Limited Period Offers" section becomes visible
-// and remains sticky at the bottom throughout the rest of the page.
+// Visible ONLY from the "Play & Win" section to the bottom of the page
+// (Hidden during the first two sections: Hero & Limited Period Offers)
+
 import { AUTO_SCROLLER_OFFERS } from '../data/offersData.js';
 
-export function initStickyOffersBar(targetSectionId = 'limited-period-offers', onNavigate) {
+export function initStickyOffersBar(targetSectionId = 'play-win-section', onNavigate) {
   // Remove existing sticky bar if re-initializing
   const existingBar = document.getElementById('sticky-bottom-offers-bar');
   if (existingBar) existingBar.remove();
@@ -59,33 +60,33 @@ export function initStickyOffersBar(targetSectionId = 'limited-period-offers', o
 
   document.body.appendChild(bar);
 
-  // Click on "View All"
+  // Click on "View All" (Scrolls smoothly to featured offers grid or navigates to offers)
   const viewAllBtn = bar.querySelector('#sticky-view-all-offers');
   if (viewAllBtn) {
     viewAllBtn.addEventListener('click', () => {
-      if (onNavigate) {
+      const offersGrid = document.getElementById('featured-offers-grid');
+      if (offersGrid) {
+        offersGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (onNavigate) {
         onNavigate('offers');
-      } else {
-        window.location.hash = '#offers';
       }
     });
   }
 
-  // Click on items
+  // Click on individual items
   const items = bar.querySelectorAll('.sticky-offer-item');
   items.forEach(item => {
     item.addEventListener('click', () => {
-      if (onNavigate) {
+      const offersGrid = document.getElementById('featured-offers-grid');
+      if (offersGrid) {
+        offersGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (onNavigate) {
         onNavigate('offers');
-      } else {
-        window.location.hash = '#offers';
       }
     });
   });
 
-  // Setup Intersection Observer on #limited-period-offers
-  let hasTriggered = false;
-
+  // Setup Observer on #play-win-section (3rd section on home page)
   const setupObserver = () => {
     const targetElement = document.getElementById(targetSectionId);
     if (!targetElement) {
@@ -93,33 +94,18 @@ export function initStickyOffersBar(targetSectionId = 'limited-period-offers', o
       return;
     }
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        // When Limited Period Offers section is intersecting or user is below it
-        if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
-          hasTriggered = true;
-          bar.classList.add('visible');
-        } else if (entry.boundingClientRect.top > 0 && !hasTriggered) {
-          bar.classList.remove('visible');
-        }
-      });
-    }, {
-      root: null,
-      threshold: 0.05,
-      rootMargin: '0px 0px -50px 0px'
-    });
-
-    observer.observe(targetElement);
-
-    // Also listen to scroll to handle quick direct scrolls
-    window.addEventListener('scroll', () => {
+    const checkVisibility = () => {
       const rect = targetElement.getBoundingClientRect();
+      // Only show once the user scrolls down to or past the Play & Win section
       if (rect.top <= window.innerHeight * 0.85) {
         bar.classList.add('visible');
-      } else if (rect.top > window.innerHeight) {
+      } else {
         bar.classList.remove('visible');
       }
-    }, { passive: true });
+    };
+
+    window.addEventListener('scroll', checkVisibility, { passive: true });
+    checkVisibility();
   };
 
   setupObserver();

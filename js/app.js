@@ -1,4 +1,4 @@
-// Main JS Application Router & Initializer SOT v1.3
+// Main JS Application Router & Initializer SOT v1.4
 import { renderHeader } from './components/header.js';
 import { renderHomeView } from './components/homeView.js';
 import { renderLoansSection } from './components/loansSection.js';
@@ -15,6 +15,7 @@ import { renderMyOffersSection } from './components/myOffersSection.js';
 import { renderFooter } from './components/footer.js';
 import { initParticleBackground } from './components/particleBg.js';
 import { renderLoanDetail } from './components/loanDetail.js';
+import { initScrollToTop } from './components/scrollToTop.js';
 
 function navigateTo(route) {
   window.location.hash = route;
@@ -88,6 +89,8 @@ function renderRoute(routeString) {
 
 document.addEventListener('DOMContentLoaded', () => {
   initParticleBackground();
+  initScrollToTop();
+
   const headerContainer = document.querySelector('#site-header');
   const footerContainer = document.querySelector('#site-footer');
 

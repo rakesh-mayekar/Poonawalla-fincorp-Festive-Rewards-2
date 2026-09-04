@@ -1,7 +1,8 @@
 // Category Navigation Grid Cards Component (Secondary Features)
 export function renderCategoryGrid(container, onNavigate) {
   const section = document.createElement('section');
-  section.className = 'category-section animate-on-scroll';
+  section.className = 'category-section section-wrapper animate-on-scroll';
+  section.id = 'explore-features-section';
 
   const updateGridHTML = () => {
     section.innerHTML = `
@@ -16,14 +17,14 @@ export function renderCategoryGrid(container, onNavigate) {
 
       <div class="category-grid">
         <!-- Check CIBIL (with Prominent FREE Tag) -->
-        <a href="#cibil" class="category-card" data-target="cibil" style="position: relative;">
+        <a href="#cibil" class="category-card" id="cibil-feature-card" data-target="cibil" style="position: relative;">
           <div class="card-top-head">
             <span class="card-badge-pill free-tag" style="background: #10B981; color: #FFFFFF; font-weight: 800; letter-spacing: 0.05em; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px;">FREE</span>
             <span class="card-category-indicator" style="font-size: 0.75rem; color: var(--wf-text-secondary); font-weight: 600;">Instant Score</span>
           </div>
           <div class="card-body-content">
             <h3 class="card-title-text" style="font-size: 1.25rem;">Check CIBIL</h3>
-            <p class="card-desc-text">Check your official credit score 100% free with no impact on your credit rating.</p>
+            <p class="card-desc-text">Check your official credit score 100% free with zero impact on your credit rating.</p>
           </div>
           <div class="card-footer-row">
             <span class="card-action-text" style="font-size: 0.85rem; font-weight: 600; color: var(--wf-text-primary);">Check My Score</span>
@@ -32,14 +33,14 @@ export function renderCategoryGrid(container, onNavigate) {
         </a>
 
         <!-- EMI Calculator -->
-        <a href="#emi" class="category-card" data-target="emi">
+        <a href="#emi" class="category-card" id="emi-feature-card" data-target="emi">
           <div class="card-top-head">
             <span class="card-badge-pill">Smart Tool</span>
             <span class="card-category-indicator" style="font-size: 0.75rem; color: var(--wf-text-secondary); font-weight: 600;">Scratch Reward</span>
           </div>
           <div class="card-body-content">
             <h3 class="card-title-text" style="font-size: 1.25rem;">EMI Calculator</h3>
-            <p class="card-desc-text">Interactive EMI visualizer & plan your finances better with guaranteed rewards.</p>
+            <p class="card-desc-text">Explore EMIs & plan better with guaranteed festive rewards.</p>
           </div>
           <div class="card-footer-row">
             <span class="card-action-text" style="font-size: 0.85rem; font-weight: 600; color: var(--wf-text-primary);">Calculate EMI</span>
@@ -48,14 +49,14 @@ export function renderCategoryGrid(container, onNavigate) {
         </a>
 
         <!-- Refer & Earn -->
-        <a href="#refer" class="category-card" data-target="refer">
+        <a href="#refer" class="category-card" id="refer-feature-card" data-target="refer">
           <div class="card-top-head">
             <span class="card-badge-pill">Cash Vouchers</span>
             <span class="card-category-indicator" style="font-size: 0.75rem; color: var(--wf-text-secondary); font-weight: 600;">Referral Payouts</span>
           </div>
           <div class="card-body-content">
             <h3 class="card-title-text" style="font-size: 1.25rem;">Refer & Earn</h3>
-            <p class="card-desc-text">Refer family & friends to earn guaranteed festive cash vouchers upon sanction.</p>
+            <p class="card-desc-text">Refer friends & family to earn guaranteed festive vouchers upon sanction.</p>
           </div>
           <div class="card-footer-row">
             <span class="card-action-text" style="font-size: 0.85rem; font-weight: 600; color: var(--wf-text-primary);">Start Referring</span>
