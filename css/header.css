@@ -2,10 +2,15 @@
    POONAWALLA FINCORP HEADER & NAVIGATION (HOMEPAGE & INNER PAGES)
    ========================================================================== */
 .site-header {
+  position: relative;
+  width: 100%;
+}
+
+.site-header.is-inner-page,
+.site-header:has(.inner-header-mode) {
   position: sticky;
   top: 0;
   z-index: 1000;
-  width: 100%;
 }
 
 .site-header-nav-wrapper {

@@ -6,6 +6,7 @@ export function renderHeader(container, onNavigate) {
   const isHomePage = !window.location.hash || window.location.hash === '#' || window.location.hash === '#home';
 
   if (isHomePage) {
+    container.classList.remove('is-inner-page');
     // -------------------------------------------------------------
     // HOMEPAGE HEADER MODE: Centered Brand Mark (matching PDF design)
     // -------------------------------------------------------------
@@ -23,6 +24,7 @@ export function renderHeader(container, onNavigate) {
       </div>
     `;
   } else {
+    container.classList.add('is-inner-page');
     // -------------------------------------------------------------
     // ALL INNER PAGES HEADER MODE: Brand Logo + Complete Navigation + Loans Dropdown
     // -------------------------------------------------------------

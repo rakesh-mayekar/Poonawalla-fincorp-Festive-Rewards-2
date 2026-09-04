@@ -1308,13 +1308,11 @@ h3, h4, h5 {
 }
 
 /* ==========================================================================
-   MID-PAGE QUICK NAVIGATION PILL BAR (Sticky on Scroll)
+   MID-PAGE QUICK NAVIGATION PILL BAR (Natural Flow on Homepage)
    ========================================================================== */
 .mid-page-quick-nav {
-  position: sticky;
-  top: 14px;
-  z-index: 900;
-  margin: 14px auto 40px auto;
+  position: relative;
+  margin: 16px auto 40px auto;
   width: 100%;
   display: flex;
   justify-content: center;
