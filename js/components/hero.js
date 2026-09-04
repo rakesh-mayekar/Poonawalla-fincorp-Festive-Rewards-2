@@ -32,24 +32,6 @@ export function renderHero(container, onNavigate) {
           Explore Loan Offers
         </button>
       </div>
-
-      <!-- Wireframe Highlights Row -->
-      <div class="hero-wireframe-stats">
-        <div class="stat-pill-item">
-          <span class="stat-pill-num">100%</span>
-          <span class="stat-pill-label">Digital Approvals</span>
-        </div>
-        <div class="stat-pill-divider"></div>
-        <div class="stat-pill-item">
-          <span class="stat-pill-num">From 9.99%</span>
-          <span class="stat-pill-label">Festive Loan Rates</span>
-        </div>
-        <div class="stat-pill-divider"></div>
-        <div class="stat-pill-item">
-          <span class="stat-pill-num">50+ Brands</span>
-          <span class="stat-pill-label">Assured Vouchers</span>
-        </div>
-      </div>
     </div>
   `;
 
