@@ -1,78 +1,69 @@
-// Hero Section Component with Live Win Ticker
-const RECENT_WINNERS = [
-  { city: 'Mumbai', prize: 'Myntra ₹250 Voucher', mobile: '98***1209' },
-  { city: 'Delhi', prize: 'KFC Popcorn Voucher', mobile: '99***4410' },
-  { city: 'Bengaluru', prize: 'Swiggy Instamart ₹120 Off', mobile: '88***9012' },
-  { city: 'Pune', prize: 'Ajio ₹150 Voucher', mobile: '97***3318' },
-  { city: 'Hyderabad', prize: 'Lifestyle ₹500 Voucher', mobile: '91***8821' }
-];
+// Hero Section Component matching PDF Wireframe & Final Look
+// Features "Sapno Ka Celebration", "Celebrate More. Worry Less.", and festive visual atmosphere
 
 export function renderHero(container, onNavigate) {
   const heroWrapper = document.createElement('section');
-  heroWrapper.className = 'festive-hero';
+  heroWrapper.className = 'festive-hero-pdf-style section-wrapper';
+  heroWrapper.id = 'hero-section';
 
   heroWrapper.innerHTML = `
-    <div class="festive-badge-pill">Festive Celebration Sale 2025</div>
-    
-
-    <h1 class="hero-title festive-heading">
-      Celebrate Big Savings & Guaranteed Rewards!
-    </h1>
-    
-    <p class="hero-subtitle">
-      Explore low-interest loans, play interactive festive games, check your CIBIL score for free, and win vouchers from Myntra, KFC, Swiggy & more!
-    </p>
-
-    <div class="hero-cta-group">
-      <button class="hero-pill-btn hero-pill-light" id="hero-play-win-btn">
-        Play & Win Rewards
-      </button>
-      <button class="hero-pill-btn hero-pill-dark" id="hero-loans-btn">
-        Explore Loans
-      </button>
+    <!-- Top Floating Marigold & Toran Garland -->
+    <div class="hero-festive-toran-decor">
+      <div class="toran-garland-line"></div>
     </div>
 
-    <!-- Live Live Winner Ticker Bar -->
-    <div style="margin-top: 18px; padding: 6px 12px; background: transparent; font-size: 0.75rem; color: var(--wf-text-secondary); display: flex; align-items: center; justify-content: flex-start; gap: 6px; width: fit-content;" id="hero-live-ticker">
-      <span id="ticker-text">User from Mumbai (98***1209) won Myntra ₹250 Voucher!</span>
-    </div>
+    <div class="hero-content-container">
+      <!-- Top Campaign Badge -->
+      <div class="hero-campaign-badge">
+        <div class="badge-diya-icon">🪔</div>
+        <div class="badge-text-group">
+          <span class="badge-sub">POONAWALLA FINCORP</span>
+          <span class="badge-main">Sapno Ka Celebration</span>
+        </div>
+      </div>
 
-    <div class="hero-stats-bar">
-      <div class="hero-stat-item">
-        <span class="stat-value">₹50L+</span>
-        <span class="stat-label">Max Loan Limit</span>
+      <!-- Main Headline -->
+      <h1 class="hero-main-heading">
+        Celebrate More.<br>
+        <span class="hero-heading-highlight">Worry Less.</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="hero-main-subheading">
+        Make your festive moments bigger and brighter with the financial support you need.
+      </p>
+
+      <!-- Primary CTA Button -->
+      <div class="hero-action-row">
+        <button class="hero-primary-cta-btn" id="hero-play-win-btn">
+          <span class="btn-star-sparkle">✨</span> Play & Win Rewards
+        </button>
       </div>
-      <div class="hero-stat-item">
-        <span class="stat-value">100%</span>
-        <span class="stat-label">Digital Process</span>
+
+      <!-- Festive Floating Accents (Characters / Lanterns / Diyas) -->
+      <div class="hero-floating-character left">
+        <div class="festive-character-box">
+          <span class="character-emoji">🏮</span>
+          <span class="character-caption">Shubh Labh</span>
+        </div>
       </div>
-      <div class="hero-stat-item">
-        <span class="stat-value">150+</span>
-        <span class="stat-label">Brand Offers</span>
+
+      <div class="hero-floating-character right">
+        <div class="festive-character-box">
+          <span class="character-emoji">🪔</span>
+          <span class="character-caption">Joy & Prosperity</span>
+        </div>
       </div>
-    </div>
-    
-    <!-- New Festive Strip Line -->
-    <div class="festive-strip-line">
-      <span class="strip-text-bold">✨ SHUBH DIWALI & FESTIVE OFFERS</span>
-      <span class="strip-pill">Guaranteed Brand Rewards</span>
-      <span class="strip-text-light">• Zero Processing Fee on Pre-Approved Loans •</span>
     </div>
   `;
 
-  heroWrapper.querySelector('#hero-play-win-btn').addEventListener('click', () => onNavigate('games'));
-  heroWrapper.querySelector('#hero-loans-btn').addEventListener('click', () => onNavigate('loans'));
-
-  // Rotate Live Winner Ticker
-  let winnerIdx = 0;
-  const tickerText = heroWrapper.querySelector('#ticker-text');
-  const tickerInterval = setInterval(() => {
-    winnerIdx = (winnerIdx + 1) % RECENT_WINNERS.length;
-    const w = RECENT_WINNERS[winnerIdx];
-    if (tickerText) {
-      tickerText.textContent = `User from ${w.city} (${w.mobile}) won ${w.prize}!`;
-    }
-  }, 3500);
+  // Attach button event
+  const playBtn = heroWrapper.querySelector('#hero-play-win-btn');
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      if (onNavigate) onNavigate('games');
+    });
+  }
 
   container.appendChild(heroWrapper);
 }
