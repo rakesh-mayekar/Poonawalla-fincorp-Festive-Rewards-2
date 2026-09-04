@@ -111,13 +111,7 @@
   flex: 1;
   display: flex;
   justify-content: center;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.header-nav-pills-wrap::-webkit-scrollbar {
-  display: none;
+  overflow: visible;
 }
 
 .header-nav-pills {
@@ -162,47 +156,69 @@
   line-height: 1;
 }
 
-.header-right-actions {
+.pill-caret-svg {
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+
+/* Nav Pill Dropdown Menu for Loans */
+.nav-pill-dropdown-group {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-pill-dropdown-group:hover .pill-caret-svg {
+  transform: rotate(180deg);
+}
+
+.nav-pill-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #FFFFFF;
+  border: 1px solid var(--wf-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 8px;
+  min-width: 240px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1001;
+  margin-top: 6px;
+}
+
+.nav-pill-dropdown-group:hover .nav-pill-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.pill-dropdown-link {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.header-login-btn, .header-user-btn, .header-claimed-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  background: var(--wf-surface-subtle);
-  border: 1px solid var(--wf-border);
-  border-radius: var(--radius-full);
-  color: var(--wf-text-primary);
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: #111111;
   text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
-.header-login-btn:hover, .header-user-btn:hover, .header-claimed-pill:hover {
-  background: #111111;
-  color: #FFFFFF;
-  border-color: #111111;
+.pill-dropdown-link:hover {
+  background: var(--wf-surface-subtle);
+  color: #000000;
+  transform: translateX(2px);
 }
 
-.header-claimed-pill {
-  background: #FEF3C7;
-  border-color: #FDE68A;
-  color: #92400E;
-}
-
-.claimed-count-badge {
-  background: #B45309;
-  color: #FFFFFF;
-  font-size: 0.65rem;
-  padding: 2px 6px;
-  border-radius: 10px;
+.dropdown-divider {
+  height: 1px;
+  background: var(--wf-border);
+  margin: 4px 0;
 }
 
 /* Inner page body offset to compensate for fixed header */
@@ -229,10 +245,6 @@ body:has(.inner-header-mode) {
 @media (max-width: 680px) {
   .site-header-nav-wrapper.is-sticky .brand-name-group,
   .site-header-nav-wrapper.inner-header-mode .brand-name-group {
-    display: none; /* Show only logo icon on small mobile screens */
-  }
-  .header-login-btn, .header-user-btn {
-    padding: 5px 9px;
-    font-size: 0.72rem;
+    display: none;
   }
 }

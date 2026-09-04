@@ -1,4 +1,4 @@
-// Main JS Application Router & Initializer SOT v1.4
+// Main JS Application Router & Initializer SOT v1.5
 import { renderHeader } from './components/header.js';
 import { renderHomeView } from './components/homeView.js';
 import { renderLoansSection } from './components/loansSection.js';
@@ -12,6 +12,8 @@ import { renderEmiSection } from './components/emiSection.js';
 import { renderPfinSection } from './components/pfinSection.js';
 import { renderOffersSection } from './components/offersSection.js';
 import { renderMyOffersSection } from './components/myOffersSection.js';
+import { renderBlogsSection } from './components/blogsSection.js';
+import { renderBlogDetail } from './components/blogDetail.js';
 import { renderFooter } from './components/footer.js';
 import { initParticleBackground } from './components/particleBg.js';
 import { renderLoanDetail } from './components/loanDetail.js';
@@ -30,6 +32,10 @@ function renderRoute(routeString) {
 
   const [path, queryString] = routeString.split('?');
   const queryParams = new URLSearchParams(queryString || '');
+
+  // Re-render header to adjust mode (home vs inner page)
+  const headerContainer = document.querySelector('#site-header');
+  if (headerContainer) renderHeader(headerContainer, navigateTo);
 
   switch (path) {
     case 'loans':
@@ -74,6 +80,14 @@ function renderRoute(routeString) {
 
     case 'myoffers':
       renderMyOffersSection(main, navigateTo);
+      break;
+
+    case 'blogs':
+      renderBlogsSection(main, navigateTo);
+      break;
+
+    case 'blog-detail':
+      renderBlogDetail(main, queryParams.get('id'), navigateTo);
       break;
 
     case 'loan-detail':

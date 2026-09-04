@@ -4,6 +4,7 @@ import { renderCategoryGrid } from './categoryGrid.js';
 import { renderVideoSection } from './videoSection.js';
 import { renderHomeOffersShowcase } from './homeOffersShowcase.js';
 import { renderWinnersWall } from './winnersWall.js';
+import { renderHomeBlogsSection } from './homeBlogsSection.js';
 import { initStickyOffersBar } from './stickyOffersBar.js';
 import { PRODUCT_LAMPS } from '../data/loansData.js';
 
@@ -11,10 +12,10 @@ export function renderHomeView(container, onNavigate) {
   // 1. Hero / Festival Campaign ("Celebrate More. Worry Less.")
   renderHero(container, onNavigate);
 
-  // 2. Mid-Page Quick Navigation Bar (Loans, Play and Win, Check CIBIL, PFIN Card, EMI Calculator, Top Offers)
+  // 2. Mid-Page Quick Navigation Bar
   renderMidPageNav(container, onNavigate);
 
-  // 3. Limited Period Offers Section (Triggers Sticky Bottom Bar)
+  // 3. Limited Period Offers Section
   const loansPreview = document.createElement('section');
   loansPreview.className = 'home-loans-preview section-wrapper animate-on-scroll';
   loansPreview.id = 'limited-period-offers';
@@ -87,8 +88,8 @@ export function renderHomeView(container, onNavigate) {
   `;
   container.appendChild(loansPreview);
 
-  // 4. Initialize Sticky Bottom "Top Offers For You" bar (triggers on #limited-period-offers)
-  initStickyOffersBar('limited-period-offers', onNavigate);
+  // 4. Initialize Sticky Bottom "Top Offers For You" bar (triggers on #play-win-section)
+  initStickyOffersBar('play-win-section', onNavigate);
 
   // 5. Play & Win Prominent Banner
   const gamesPreview = document.createElement('section');
@@ -128,7 +129,7 @@ export function renderHomeView(container, onNavigate) {
   // 6. Explore More Features (Category Grid)
   renderCategoryGrid(container, onNavigate);
 
-  // 7. Campaign Video Showreel (NEW Section)
+  // 7. Campaign Video Showreel
   renderVideoSection(container, onNavigate);
 
   // 8. Digital Credit Card Sanction (PFIN Section)
@@ -189,6 +190,9 @@ export function renderHomeView(container, onNavigate) {
 
   // 10. Festive Winners Wall (Live Winner details)
   renderWinnersWall(container, onNavigate);
+
+  // 11. Featured Blogs & Articles Section (3-Card Showcase)
+  renderHomeBlogsSection(container, onNavigate);
 
   // Bind Listeners
   const viewAllBtn = loansPreview.querySelector('#view-all-loans-btn');
