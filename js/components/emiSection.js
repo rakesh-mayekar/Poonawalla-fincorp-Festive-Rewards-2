@@ -3,7 +3,13 @@ import { buildUtmUrl } from '../data/loansData.js';
 import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
 import { sendLeadToLeadSquared } from '../services/crmService.js';
 import { getSession } from '../state/sessionState.js';
+import { getUserRewards, saveRewardClaim } from '../state/rewardState.js';
+import { allocateRewardForGame } from '../services/rewardEngine.js';
+import { openRewardModal } from './rewardModal.js';
+import { requireAuth } from './otpModal.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
+import { renderBreadcrumbs } from './breadcrumbs.js';
+import { showWhatsAppNotification } from '../services/whatsappService.js';
 
 export function renderEmiSection(container, onNavigate) {
   const wrapper = document.createElement('div');
@@ -99,13 +105,18 @@ export function renderEmiSection(container, onNavigate) {
             </div>
           </div>
 
-          <!-- Direct Official Brand Redirect CTA -->
+          <!-- Action Buttons Area: Unlock Rewards & Official Redirect -->
           <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 12px;">
-            <a href="${finalEmiUrl}" target="_blank" rel="noopener noreferrer" class="btn-primary glow-effect" id="official-emi-cta" style="padding: 16px 44px; font-size: 1.05rem; width: 100%; border-radius: var(--radius-sm); text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <!-- Requirement 7: Unlock Rewards Button on EMI Calculator -->
+            <button class="btn-primary glow-effect" id="emi-unlock-rewards-btn" style="padding: 16px 44px; font-size: 1.05rem; width: 100%; border-radius: var(--radius-sm); text-align: center; background: #10B981; border-color: #10B981; color: #FFFFFF; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
+              <span>🎁</span> Unlock Festive Rewards & Vouchers
+            </button>
+
+            <a href="${finalEmiUrl}" target="_blank" rel="noopener noreferrer" class="btn-secondary" id="official-emi-cta" style="padding: 14px 44px; font-size: 0.95rem; width: 100%; border-radius: var(--radius-sm); text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; background: #FFFFFF; border-color: var(--wf-border); color: var(--wf-text-primary);">
               Apply For Loan on Official Site ↗
             </a>
             
-            <button class="btn-secondary" id="explore-loans-listing-btn" style="padding: 12px 28px; font-size: 0.9rem; background: #FFFFFF; width: 100%;">
+            <button class="btn-secondary" id="explore-loans-listing-btn" style="padding: 10px 28px; font-size: 0.88rem; background: transparent; border: none; color: var(--wf-text-secondary); cursor: pointer;">
               Explore All Festive Loan Products &rarr;
             </button>
           </div>
@@ -154,10 +165,39 @@ export function renderEmiSection(container, onNavigate) {
     donutPercentText.textContent = `${dashVal}% Interest`;
   }
 
+  renderBreadcrumbs(wrapper, [{ label: 'EMI Calculator', route: 'emi' }], onNavigate);
+
   amtRange.addEventListener('input', calculateEmi);
   rateRange.addEventListener('input', calculateEmi);
   tenureRange.addEventListener('input', calculateEmi);
   calculateEmi();
+
+  // Unlock Rewards Button Handler (Directly opens voucher in popup per requirement 7)
+  const unlockRewardsBtn = wrapper.querySelector('#emi-unlock-rewards-btn');
+  if (unlockRewardsBtn) {
+    unlockRewardsBtn.addEventListener('click', () => {
+      requireAuth(() => {
+        const userRewards = getUserRewards();
+        const allocated = allocateRewardForGame('emi_calculator', userRewards.claims);
+        saveRewardClaim('emi_calculator', allocated.deal.dealId);
+
+        const session = getSession();
+        showWhatsAppNotification({
+          title: 'Festive Reward Unlocked from EMI Calculator!',
+          recipient: session.mobile,
+          message: `Your festive ${allocated.deal.brandName} voucher (${allocated.deal.offerTitle}) is ready & dispatched to your WhatsApp!`,
+          voucherCode: allocated.deal.couponCode,
+          brand: allocated.deal.brandName,
+          actionUrl: finalEmiUrl
+        });
+
+        openRewardModal(allocated.deal, {
+          activityKey: 'emi_calculator',
+          onNavigate
+        });
+      });
+    });
+  }
 
   // Official Site Redirect Click Tracker
   const officialCta = wrapper.querySelector('#official-emi-cta');

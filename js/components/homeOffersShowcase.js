@@ -1,3 +1,5 @@
+import { requireAuth } from './otpModal.js';
+
 // Featured Top Offers 3-Card Showcase Component (Matching PDF Grid)
 // Features the 3 primary campaign cards (Foldable Phone, 5G Smartphone, Smart Electronics)
 
@@ -94,13 +96,17 @@ export function renderHomeOffersShowcase(container, onNavigate) {
   const viewAllBtn = section.querySelector('#home-view-all-offers-btn');
   if (viewAllBtn) {
     viewAllBtn.addEventListener('click', () => {
-      if (onNavigate) onNavigate('offers');
+      requireAuth(() => {
+        if (onNavigate) onNavigate('offers');
+      });
     });
   }
 
   section.querySelectorAll('.featured-action-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      if (onNavigate) onNavigate('offers');
+      requireAuth(() => {
+        if (onNavigate) onNavigate('offers');
+      });
     });
   });
 

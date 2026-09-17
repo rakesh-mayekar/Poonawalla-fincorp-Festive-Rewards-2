@@ -1,3 +1,5 @@
+import { requireAuth } from './otpModal.js';
+
 // Festive Winners Wall Component
 // Highlights top partner brands (Amazon, Myntra, Tanishq, KFC, Croma, Swiggy) and verified customer wins
 
@@ -105,18 +107,16 @@ export function renderWinnersWall(container, onNavigate) {
       </p>
     </div>
 
-    <!-- Live Counter Metrics Bar -->
-    <div class="winners-metrics-banner">
+    <!-- Stats Counter Bar -->
+    <div class="winners-stats-bar">
       <div class="winner-metric">
         <span class="metric-num">₹2.4 Cr+</span>
         <span class="metric-sub">Rewards Disbursed</span>
       </div>
-      <div class="metric-divider"></div>
       <div class="winner-metric">
         <span class="metric-num">28,500+</span>
         <span class="metric-sub">Vouchers Claimed</span>
       </div>
-      <div class="metric-divider"></div>
       <div class="winner-metric">
         <span class="metric-num">50+</span>
         <span class="metric-sub">Partner Brands</span>
@@ -140,7 +140,9 @@ export function renderWinnersWall(container, onNavigate) {
   const playBtn = section.querySelector('#winners-play-now-btn');
   if (playBtn) {
     playBtn.addEventListener('click', () => {
-      if (onNavigate) onNavigate('games');
+      requireAuth(() => {
+        if (onNavigate) onNavigate('games');
+      });
     });
   }
 

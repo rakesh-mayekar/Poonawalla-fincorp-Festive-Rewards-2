@@ -4,6 +4,7 @@ import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
 import { getUserRewards } from '../state/rewardState.js';
 import { openRewardModal } from './rewardModal.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
+import { renderBreadcrumbs } from './breadcrumbs.js';
 
 export function renderMyOffersSection(container, onNavigate) {
   const wrapper = document.createElement('div');
@@ -70,6 +71,8 @@ export function renderMyOffersSection(container, onNavigate) {
       </div>
     `}
   `;
+
+  renderBreadcrumbs(wrapper, [{ label: 'My Claimed Offers', route: 'myoffers' }], onNavigate);
 
   const playBtn = wrapper.querySelector('#myoffers-play-btn');
   if (playBtn) {

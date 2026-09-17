@@ -5,9 +5,10 @@ import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
 import { sendLeadToLeadSquared } from '../services/crmService.js';
 import { getSession } from '../state/sessionState.js';
 import { isPlayAndWinClaimed, saveRewardClaim, getUserRewards } from '../state/rewardState.js';
-import { openOtpModal } from './otpModal.js';
+import { requireAuth } from './otpModal.js';
 import { openRewardModal } from './rewardModal.js';
 import { openRewardLimitModal } from './rewardLimitModal.js';
+import { showWhatsAppNotification } from '../services/whatsappService.js';
 
 export function renderScratchCardGame(container, onNavigate) {
   const card = document.createElement('div');
@@ -18,7 +19,7 @@ export function renderScratchCardGame(container, onNavigate) {
   card.innerHTML = `
     <h3 class="festive-heading" style="font-size: 1.35rem; margin-bottom: 6px;">✨ Festive Scratch Card</h3>
     <p class="game-instructions-box" style="margin-bottom: 20px; font-size: 0.9rem; color: var(--wf-text-secondary);">
-      Use your finger or mouse cursor to scratch the metallic card and reveal your brand voucher reward!
+      Verify with OTP and use your finger or cursor to scratch the metallic card and reveal your brand voucher reward!
     </p>
 
     ${isClaimed ? `
@@ -41,9 +42,15 @@ export function renderScratchCardGame(container, onNavigate) {
         </div>
         <canvas id="scratch-canvas" width="280" height="180" style="position: absolute; inset: 0; cursor: pointer; z-index: 2;"></canvas>
       </div>
-      <p style="text-align: center; font-size: 0.78rem; color: var(--wf-text-secondary); margin-top: 12px;">
-        * One guaranteed reward per mobile number across all festive games
-      </p>
+
+      <div style="margin-top: 16px; text-align: center;">
+        <button type="button" id="scratch-skip-wa-btn" style="background: none; border: none; color: #166534; font-size: 0.82rem; cursor: pointer; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;">
+          <span>💬 Skip scratching & send offer code directly to WhatsApp</span>
+        </button>
+        <p style="text-align: center; font-size: 0.78rem; color: var(--wf-text-secondary); margin-top: 8px;">
+          * Single play per mobile number across all festive games
+        </p>
+      </div>
     `}
   `;
 
@@ -55,6 +62,7 @@ export function renderScratchCardGame(container, onNavigate) {
       const currentRewards = getUserRewards();
       const allocated = allocateRewardForGame('play_and_win', currentRewards.claims);
       openRewardModal(allocated.deal, {
+        activityKey: 'play_and_win',
         onVerified: () => renderScratchCardGame(container, onNavigate),
         onNavigate
       });
@@ -67,6 +75,36 @@ export function renderScratchCardGame(container, onNavigate) {
       openRewardLimitModal({
         currentActivityKey: 'play_and_win',
         onNavigate
+      });
+    });
+  }
+
+  // Skip scratch & send offer code directly to WhatsApp handler
+  const skipWaBtn = card.querySelector('#scratch-skip-wa-btn');
+  if (skipWaBtn) {
+    skipWaBtn.addEventListener('click', () => {
+      requireAuth(() => {
+        if (isPlayAndWinClaimed()) {
+          openRewardLimitModal({ currentActivityKey: 'play_and_win', onNavigate });
+          return;
+        }
+        const userRewards = getUserRewards();
+        const allocated = allocateRewardForGame('play_and_win', userRewards.claims);
+        saveRewardClaim('play_and_win', allocated.deal.dealId);
+        const session = getSession();
+        showWhatsAppNotification({
+          title: 'Festive Offer Code Dispatched!',
+          recipient: session.mobile,
+          message: `Your festive ${allocated.deal.brandName} voucher code (${allocated.deal.offerTitle}) is shared to your WhatsApp!`,
+          voucherCode: allocated.deal.couponCode,
+          brand: allocated.deal.brandName
+        });
+
+        openRewardModal(allocated.deal, {
+          activityKey: 'play_and_win',
+          onVerified: () => renderScratchCardGame(container, onNavigate),
+          onNavigate
+        });
       });
     });
   }
@@ -144,6 +182,7 @@ export function renderScratchCardGame(container, onNavigate) {
 
       setTimeout(() => {
         openRewardModal(allocatedDeal, {
+          activityKey: 'play_and_win',
           onVerified: () => renderScratchCardGame(container, onNavigate),
           onNavigate
         });
@@ -152,32 +191,34 @@ export function renderScratchCardGame(container, onNavigate) {
   }
 
   function handleStart(e) {
-    if (isPlayAndWinClaimed()) {
-      openRewardLimitModal({
-        currentActivityKey: 'play_and_win',
-        onNavigate
-      });
-      return;
-    }
-
-    if (!allocatedDeal) {
-      const currentRewards = getUserRewards();
-      const alloc = allocateRewardForGame('play_and_win', currentRewards.claims);
-      allocatedDeal = alloc.deal;
-
-      const underlayTitle = card.querySelector('#underlay-title');
-      const underlayCode = card.querySelector('#underlay-code');
-      if (underlayTitle && underlayCode) {
-        underlayTitle.textContent = allocatedDeal.offerTitle;
-        const masked = allocatedDeal.couponCode.slice(0, 6) + '*****' + allocatedDeal.couponCode.slice(-1);
-        underlayCode.textContent = masked;
+    requireAuth(() => {
+      if (isPlayAndWinClaimed()) {
+        openRewardLimitModal({
+          currentActivityKey: 'play_and_win',
+          onNavigate
+        });
+        return;
       }
 
-      trackGa4Event(GA4_EVENTS.GAME_STARTED, { game_type: 'scratch_card' });
-    }
+      if (!allocatedDeal) {
+        const currentRewards = getUserRewards();
+        const alloc = allocateRewardForGame('play_and_win', currentRewards.claims);
+        allocatedDeal = alloc.deal;
 
-    isDrawing = true;
-    handleMove(e);
+        const underlayTitle = card.querySelector('#underlay-title');
+        const underlayCode = card.querySelector('#underlay-code');
+        if (underlayTitle && underlayCode) {
+          underlayTitle.textContent = allocatedDeal.offerTitle;
+          const masked = allocatedDeal.couponCode.slice(0, 6) + '*****' + allocatedDeal.couponCode.slice(-1);
+          underlayCode.textContent = masked;
+        }
+
+        trackGa4Event(GA4_EVENTS.GAME_STARTED, { game_type: 'scratch_card' });
+      }
+
+      isDrawing = true;
+      handleMove(e);
+    });
   }
 
   function handleMove(e) {
@@ -202,3 +243,4 @@ export function renderScratchCardGame(container, onNavigate) {
   canvas.addEventListener('touchmove', handleMove, { passive: true });
   canvas.addEventListener('touchend', handleEnd, { passive: true });
 }
+

@@ -3,6 +3,8 @@ import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
 import { sendLeadToLeadSquared } from '../services/crmService.js';
 import { getSession } from '../state/sessionState.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
+import { renderBreadcrumbs } from './breadcrumbs.js';
+import { requireAuth } from './otpModal.js';
 
 export function renderLoanDetail(container, loanId, onNavigate) {
   const product = LOAN_PRODUCTS.find(p => p.id === loanId);
@@ -22,13 +24,6 @@ export function renderLoanDetail(container, loanId, onNavigate) {
   wrapper.className = 'loan-detail-container section-wrapper';
 
   wrapper.innerHTML = `
-    <!-- Breadcrumb & Back -->
-    <div class="loan-detail-nav-row" style="margin-bottom: 24px;">
-      <a href="#loans" class="back-to-loans-btn" id="back-to-loans-link" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: var(--wf-text-secondary); text-decoration: none;">
-        &larr; Back to All Loans
-      </a>
-    </div>
-
     <!-- Header -->
     <div class="loan-detail-header" style="text-align: center; margin-bottom: 36px;">
       <span class="festive-badge-pill" style="margin-bottom: 12px; display: inline-block;">Poonawalla Fincorp • Festive Rates</span>
@@ -124,24 +119,24 @@ export function renderLoanDetail(container, loanId, onNavigate) {
     </div>
   `;
 
-  // Back link listener
-  const backLink = wrapper.querySelector('#back-to-loans-link');
-  if (backLink) {
-    backLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (onNavigate) {
-        onNavigate('loans');
-      } else {
-        window.location.hash = '#loans';
-      }
-    });
-  }
+  renderBreadcrumbs(wrapper, [
+    { label: 'Loans', route: 'loans' },
+    { label: product.title, route: `loan-detail?id=${product.id}` }
+  ], onNavigate);
 
-  // Apply Now CTA Click Handler
+  // Apply Now CTA Click Handler (Requires Upfront OTP verification per client requirement 1)
   const applyBtn = wrapper.querySelector('.apply-now-btn');
   if (applyBtn) {
-    applyBtn.addEventListener('click', () => {
+    applyBtn.addEventListener('click', (e) => {
       const session = getSession();
+      if (!session || !session.isAuthenticated) {
+        e.preventDefault();
+        requireAuth(() => {
+          window.open(finalApplyUrl, '_blank', 'noopener,noreferrer');
+        });
+        return;
+      }
+
       trackGa4Event(GA4_EVENTS.APPLY_NOW_CLICKED, {
         product_slug: product.slug,
         product_title: product.title

@@ -1,23 +1,23 @@
-// Main JS Application Router & Initializer SOT v1.5
-import { renderHeader } from './components/header.js';
-import { renderHomeView } from './components/homeView.js';
-import { renderLoansSection } from './components/loansSection.js';
-import { renderSpinWinGame } from './components/spinWin.js';
-import { renderScratchCardGame } from './components/scratchCard.js';
-import { renderShuffleCardGame } from './components/shuffleCard.js';
-import { renderPlayWinHub } from './components/playWinHub.js';
-import { renderReferSection } from './components/referSection.js';
-import { renderCibilSection } from './components/cibilSection.js';
-import { renderEmiSection } from './components/emiSection.js';
-import { renderPfinSection } from './components/pfinSection.js';
-import { renderOffersSection } from './components/offersSection.js';
-import { renderMyOffersSection } from './components/myOffersSection.js';
-import { renderBlogsSection } from './components/blogsSection.js';
-import { renderBlogDetail } from './components/blogDetail.js';
-import { renderFooter } from './components/footer.js';
-import { initParticleBackground } from './components/particleBg.js';
-import { renderLoanDetail } from './components/loanDetail.js';
-import { initScrollToTop } from './components/scrollToTop.js';
+// Main JS Application Router & Initializer SOT v4.0
+import { renderHeader } from './components/header.js?v=4.0';
+import { renderHomeView } from './components/homeView.js?v=4.0';
+import { renderLoansSection } from './components/loansSection.js?v=4.0';
+import { renderSpinWinGame } from './components/spinWin.js?v=4.0';
+import { renderScratchCardGame } from './components/scratchCard.js?v=4.0';
+import { renderShuffleCardGame } from './components/shuffleCard.js?v=4.0';
+import { renderPlayWinHub } from './components/playWinHub.js?v=4.0';
+import { renderReferSection } from './components/referSection.js?v=4.0';
+import { renderCibilSection } from './components/cibilSection.js?v=4.0';
+import { renderEmiSection } from './components/emiSection.js?v=4.0';
+import { renderPfinSection } from './components/pfinSection.js?v=4.0';
+import { renderOffersSection } from './components/offersSection.js?v=4.0';
+import { renderMyOffersSection } from './components/myOffersSection.js?v=4.0';
+import { renderBlogsSection } from './components/blogsSection.js?v=4.0';
+import { renderBlogDetail } from './components/blogDetail.js?v=4.0';
+import { renderFooter } from './components/footer.js?v=4.0';
+import { initParticleBackground } from './components/particleBg.js?v=4.0';
+import { renderLoanDetail } from './components/loanDetail.js?v=4.0';
+import { initScrollToTop } from './components/scrollToTop.js?v=4.0';
 
 function navigateTo(route) {
   window.location.hash = route;

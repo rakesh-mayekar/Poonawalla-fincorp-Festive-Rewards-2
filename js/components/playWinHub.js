@@ -2,8 +2,11 @@ import { renderSpinWinGame } from './spinWin.js';
 import { renderScratchCardGame } from './scratchCard.js';
 import { renderShuffleCardGame } from './shuffleCard.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
-import { isPlayAndWinClaimed } from '../state/rewardState.js';
+import { isPlayAndWinClaimed, getUserRewards } from '../state/rewardState.js';
+import { allocateRewardForGame } from '../services/rewardEngine.js';
+import { openRewardModal } from './rewardModal.js';
 import { openRewardLimitModal } from './rewardLimitModal.js';
+import { renderBreadcrumbs } from './breadcrumbs.js';
 
 let activeGameTab = 'spin';
 
@@ -70,6 +73,8 @@ export function renderPlayWinHub(container, onNavigate) {
     <div id="game-active-container" style="background: var(--wf-surface); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--wf-border); box-shadow: var(--shadow-sm); margin-bottom: 48px;"></div>
   `;
 
+  renderBreadcrumbs(wrapper, [{ label: 'Play & Win', route: 'games' }], onNavigate);
+
   const tabs = wrapper.querySelectorAll('.game-tab-btn');
   const gameContainer = wrapper.querySelector('#game-active-container');
 
@@ -113,6 +118,19 @@ export function renderPlayWinHub(container, onNavigate) {
   updateTabStyles();
   renderActiveGame();
   
+  // View Claimed Reward Handler
+  const viewClaimedBtn = wrapper.querySelector('#view-game-claimed-reward-btn');
+  if (viewClaimedBtn) {
+    viewClaimedBtn.addEventListener('click', () => {
+      const userRewards = getUserRewards();
+      const allocated = allocateRewardForGame('play_and_win', userRewards.claims);
+      openRewardModal(allocated.deal, {
+        activityKey: 'play_and_win',
+        onNavigate
+      });
+    });
+  }
+
   container.appendChild(wrapper);
 
   // Render Top Offers at the bottom of Play & Win Hub
@@ -122,3 +140,4 @@ export function renderPlayWinHub(container, onNavigate) {
     isBottomSection: true
   });
 }
+

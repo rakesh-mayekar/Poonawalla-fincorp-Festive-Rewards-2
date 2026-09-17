@@ -6,6 +6,7 @@ import { renderHomeOffersShowcase } from './homeOffersShowcase.js';
 import { renderWinnersWall } from './winnersWall.js';
 import { renderHomeBlogsSection } from './homeBlogsSection.js';
 import { initStickyOffersBar } from './stickyOffersBar.js';
+import { requireAuth } from './otpModal.js';
 
 export function renderHomeView(container, onNavigate) {
   // 1. Hero / Festival Campaign ("Celebrate More. Worry Less.")
@@ -180,24 +181,33 @@ export function renderHomeView(container, onNavigate) {
   renderHomeBlogsSection(container, onNavigate);
 
   // Bind Listeners
+  // Bind Listeners with Forced Registration Requirement
   const viewAllBtn = loansPreview.querySelector('#view-all-loans-btn');
   if (viewAllBtn) {
-    viewAllBtn.addEventListener('click', () => onNavigate('loans'));
+    viewAllBtn.addEventListener('click', () => {
+      requireAuth(() => onNavigate('loans'));
+    });
   }
 
   const playNowBtn = gamesPreview.querySelector('#play-win-hub-btn');
   if (playNowBtn) {
-    playNowBtn.addEventListener('click', () => onNavigate('games'));
+    playNowBtn.addEventListener('click', () => {
+      requireAuth(() => onNavigate('games'));
+    });
   }
 
   const pfinViewBtn = pfinPreview.querySelector('#home-pfin-view-btn');
   if (pfinViewBtn) {
-    pfinViewBtn.addEventListener('click', () => onNavigate('pfin'));
+    pfinViewBtn.addEventListener('click', () => {
+      requireAuth(() => onNavigate('pfin'));
+    });
   }
 
   const pfinApplyBtn = pfinPreview.querySelector('#home-pfin-apply-btn');
   if (pfinApplyBtn) {
-    pfinApplyBtn.addEventListener('click', () => onNavigate('pfin'));
+    pfinApplyBtn.addEventListener('click', () => {
+      requireAuth(() => onNavigate('pfin'));
+    });
   }
 
   const loanCards = loansPreview.querySelectorAll('.loan-card');
@@ -205,7 +215,7 @@ export function renderHomeView(container, onNavigate) {
     card.addEventListener('click', (e) => {
       e.preventDefault();
       const target = card.getAttribute('href').replace('#', '');
-      onNavigate(target);
+      requireAuth(() => onNavigate(target));
     });
   });
 }

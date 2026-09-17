@@ -5,9 +5,10 @@ import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
 import { sendLeadToLeadSquared } from '../services/crmService.js';
 import { getSession } from '../state/sessionState.js';
 import { isPlayAndWinClaimed, saveRewardClaim, getUserRewards } from '../state/rewardState.js';
-import { openOtpModal } from './otpModal.js';
+import { requireAuth } from './otpModal.js';
 import { openRewardModal } from './rewardModal.js';
 import { openRewardLimitModal } from './rewardLimitModal.js';
+import { showWhatsAppNotification } from '../services/whatsappService.js';
 
 const WHEEL_SEGMENTS = [
   { label: 'Lenovo ₹5,000', color: '#1A1A1A', dealId: 'DEAL-LENOVO-5000' },
@@ -29,7 +30,7 @@ export function renderSpinWinGame(container, onNavigate) {
   card.innerHTML = `
     <h3 class="festive-heading" style="font-size: 1.35rem; margin-bottom: 6px;">🎰 Spin & Win Festive Wheel</h3>
     <p class="game-instructions-box" style="margin-bottom: 20px; font-size: 0.9rem; color: var(--wf-text-secondary);">
-      Tap <strong>"SPIN NOW"</strong> to spin the festive wheel, win a guaranteed brand voucher, and unlock your exclusive reward code!
+      Verify with OTP and tap <strong>"SPIN NOW"</strong> to spin the festive wheel, win a guaranteed brand voucher, and unlock your exclusive reward code!
     </p>
 
     <div class="spin-wheel-container">
@@ -54,12 +55,19 @@ export function renderSpinWinGame(container, onNavigate) {
           </div>
         </div>
       ` : `
-        <button class="btn-primary glow-effect" id="spin-wheel-cta-btn" style="padding: 16px 44px; font-size: 1.1rem; border-radius: var(--radius-sm);">
-          ⚡ SPIN NOW!
-        </button>
-        <p style="font-size: 0.78rem; color: var(--wf-text-secondary); margin-top: 8px;">
-          * One guaranteed reward per mobile number across all festive games
-        </p>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+          <button class="btn-primary glow-effect" id="spin-wheel-cta-btn" style="padding: 16px 44px; font-size: 1.1rem; border-radius: var(--radius-sm);">
+            ⚡ SPIN NOW!
+          </button>
+          
+          <button type="button" id="skip-game-wa-btn" style="background: none; border: none; color: #166534; font-size: 0.82rem; cursor: pointer; text-decoration: underline; margin-top: 4px; display: inline-flex; align-items: center; gap: 4px;">
+            <span>💬 Skip game & send offer code directly to WhatsApp</span>
+          </button>
+
+          <p style="font-size: 0.78rem; color: var(--wf-text-secondary); margin-top: 4px;">
+            * Single play per mobile number across all festive games
+          </p>
+        </div>
       `}
     </div>
   `;
@@ -127,6 +135,7 @@ export function renderSpinWinGame(container, onNavigate) {
       const currentRewards = getUserRewards();
       const allocated = allocateRewardForGame('play_and_win', currentRewards.claims);
       openRewardModal(allocated.deal, {
+        activityKey: 'play_and_win',
         onVerified: () => renderSpinWinGame(container, onNavigate),
         onNavigate
       });
@@ -143,87 +152,121 @@ export function renderSpinWinGame(container, onNavigate) {
     });
   }
 
-  // Spin CTA Handler (Zero friction - play immediately)
+  // Skip game & send offer code directly to WhatsApp handler
+  const skipWaBtn = card.querySelector('#skip-game-wa-btn');
+  if (skipWaBtn) {
+    skipWaBtn.addEventListener('click', () => {
+      requireAuth(() => {
+        if (isPlayAndWinClaimed()) {
+          openRewardLimitModal({ currentActivityKey: 'play_and_win', onNavigate });
+          return;
+        }
+        const userRewards = getUserRewards();
+        const allocated = allocateRewardForGame('play_and_win', userRewards.claims);
+        saveRewardClaim('play_and_win', allocated.deal.dealId);
+        const session = getSession();
+        showWhatsAppNotification({
+          title: 'Festive Offer Code Dispatched!',
+          recipient: session.mobile,
+          message: `Your festive ${allocated.deal.brandName} voucher code (${allocated.deal.offerTitle}) is shared to your WhatsApp!`,
+          voucherCode: allocated.deal.couponCode,
+          brand: allocated.deal.brandName
+        });
+
+        openRewardModal(allocated.deal, {
+          activityKey: 'play_and_win',
+          onVerified: () => renderSpinWinGame(container, onNavigate),
+          onNavigate
+        });
+      });
+    });
+  }
+
+  // Spin CTA Handler with upfront OTP check and single-play rule
   const spinBtn = card.querySelector('#spin-wheel-cta-btn');
   if (!spinBtn) return;
 
   spinBtn.addEventListener('click', () => {
     if (isSpinning) return;
 
-    if (isPlayAndWinClaimed()) {
-      openRewardLimitModal({
-        currentActivityKey: 'play_and_win',
-        onNavigate
-      });
-      return;
-    }
-
-    // Allocate Reward
-    const userRewards = getUserRewards();
-    const allocated = allocateRewardForGame('play_and_win', userRewards.claims);
-    const targetDealId = allocated.deal.dealId;
-
-    let targetIndex = WHEEL_SEGMENTS.findIndex(s => s.dealId === targetDealId);
-    if (targetIndex === -1) targetIndex = 0;
-
-    const numSegments = WHEEL_SEGMENTS.length;
-    const arcSize = (2 * Math.PI) / numSegments;
-    const targetSegmentAngle = targetIndex * arcSize + arcSize / 2;
-    const totalRotation = (5 * 2 * Math.PI) + (Math.PI * 1.5 - targetSegmentAngle);
-
-    isSpinning = true;
-    spinBtn.disabled = true;
-
-    trackGa4Event(GA4_EVENTS.GAME_STARTED, { game_type: 'spin_and_win' });
-
-    let start = null;
-    const duration = 3800;
-    let lastTickAngle = 0;
-
-    function animateSpin(timestamp) {
-      if (!start) start = timestamp;
-      const elapsed = timestamp - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const easeOut = 1 - Math.pow(1 - progress, 3);
-      currentAngle = totalRotation * easeOut;
-
-      if (currentAngle - lastTickAngle > arcSize) {
-        playTickSound();
-        lastTickAngle = currentAngle;
+    requireAuth(() => {
+      if (isPlayAndWinClaimed()) {
+        openRewardLimitModal({
+          currentActivityKey: 'play_and_win',
+          onNavigate
+        });
+        return;
       }
 
-      drawWheel(currentAngle);
+      // Allocate Reward
+      const userRewards = getUserRewards();
+      const allocated = allocateRewardForGame('play_and_win', userRewards.claims);
+      const targetDealId = allocated.deal.dealId;
 
-      if (progress < 1) {
-        requestAnimationFrame(animateSpin);
-      } else {
-        isSpinning = false;
-        playWinFanfare();
+      let targetIndex = WHEEL_SEGMENTS.findIndex(s => s.dealId === targetDealId);
+      if (targetIndex === -1) targetIndex = 0;
 
-        const session = getSession();
-        if (session && session.isAuthenticated) {
-          saveRewardClaim('play_and_win', targetDealId);
-          trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
-            game_type: 'spin_and_win',
-            deal_id: targetDealId
-          });
-          sendLeadToLeadSquared({
-            mobileNumber: session.mobile,
-            activityType: 'Spin & Win Reward Claimed',
-            rewardAllocated: targetDealId,
-            contentSlug: 'play-spin'
-          });
+      const numSegments = WHEEL_SEGMENTS.length;
+      const arcSize = (2 * Math.PI) / numSegments;
+      const targetSegmentAngle = targetIndex * arcSize + arcSize / 2;
+      const totalRotation = (5 * 2 * Math.PI) + (Math.PI * 1.5 - targetSegmentAngle);
+
+      isSpinning = true;
+      spinBtn.disabled = true;
+
+      trackGa4Event(GA4_EVENTS.GAME_STARTED, { game_type: 'spin_and_win' });
+
+      let start = null;
+      const duration = 3800;
+      let lastTickAngle = 0;
+
+      function animateSpin(timestamp) {
+        if (!start) start = timestamp;
+        const elapsed = timestamp - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        currentAngle = totalRotation * easeOut;
+
+        if (currentAngle - lastTickAngle > arcSize) {
+          playTickSound();
+          lastTickAngle = currentAngle;
         }
 
-        setTimeout(() => {
-          openRewardModal(allocated.deal, {
-            onVerified: () => renderSpinWinGame(container, onNavigate),
-            onNavigate
-          });
-        }, 500);
-      }
-    }
+        drawWheel(currentAngle);
 
-    requestAnimationFrame(animateSpin);
+        if (progress < 1) {
+          requestAnimationFrame(animateSpin);
+        } else {
+          isSpinning = false;
+          playWinFanfare();
+
+          const session = getSession();
+          if (session && session.isAuthenticated) {
+            saveRewardClaim('play_and_win', targetDealId);
+            trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
+              game_type: 'spin_and_win',
+              deal_id: targetDealId
+            });
+            sendLeadToLeadSquared({
+              mobileNumber: session.mobile,
+              activityType: 'Spin & Win Reward Claimed',
+              rewardAllocated: targetDealId,
+              contentSlug: 'play-spin'
+            });
+          }
+
+          setTimeout(() => {
+            openRewardModal(allocated.deal, {
+              activityKey: 'play_and_win',
+              onVerified: () => renderSpinWinGame(container, onNavigate),
+              onNavigate
+            });
+          }, 500);
+        }
+      }
+
+      requestAnimationFrame(animateSpin);
+    });
   });
 }
+

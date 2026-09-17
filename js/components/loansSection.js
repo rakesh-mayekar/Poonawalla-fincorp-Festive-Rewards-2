@@ -2,6 +2,7 @@
 import { LOAN_PRODUCTS } from '../data/loansData.js';
 import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
+import { renderBreadcrumbs } from './breadcrumbs.js';
 
 export function renderLoansSection(container, onNavigate) {
   const wrapper = document.createElement('div');
@@ -19,6 +20,8 @@ export function renderLoansSection(container, onNavigate) {
 
     <div class="loans-list preview-grid" id="loans-list-wrapper"></div>
   `;
+
+  renderBreadcrumbs(wrapper, [{ label: 'Loans', route: 'loans' }], onNavigate);
 
   const listContainer = wrapper.querySelector('#loans-list-wrapper');
 

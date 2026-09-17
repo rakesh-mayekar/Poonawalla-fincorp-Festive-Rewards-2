@@ -3,6 +3,7 @@
 
 import { FESTIVE_BLOGS } from '../data/blogsData.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
+import { renderBreadcrumbs } from './breadcrumbs.js';
 
 export function renderBlogDetail(container, blogId, onNavigate) {
   const blog = FESTIVE_BLOGS.find(b => b.id === blogId) || FESTIVE_BLOGS[0];
@@ -12,13 +13,6 @@ export function renderBlogDetail(container, blogId, onNavigate) {
   wrapper.className = 'blog-detail-page section-wrapper';
 
   wrapper.innerHTML = `
-    <!-- Top Breadcrumb -->
-    <div class="blog-detail-breadcrumb">
-      <a href="#blogs" class="breadcrumb-back-link" id="detail-back-blogs">&larr; Back to All Blogs</a>
-      <span class="breadcrumb-sep">/</span>
-      <span class="breadcrumb-current">${blog.category}</span>
-    </div>
-
     <!-- Article Header -->
     <header class="blog-detail-header">
       <div class="blog-category-badge" style="margin-bottom: 16px;">${blog.category}</div>
@@ -102,14 +96,10 @@ export function renderBlogDetail(container, blogId, onNavigate) {
     </div>
   `;
 
-  // Attach Event Handlers
-  const backBtn = wrapper.querySelector('#detail-back-blogs');
-  if (backBtn) {
-    backBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (onNavigate) onNavigate('blogs');
-    });
-  }
+  renderBreadcrumbs(wrapper, [
+    { label: 'Smart Festive Guides', route: 'blogs' },
+    { label: blog.title, route: `blog-detail?id=${blog.id}` }
+  ], onNavigate);
 
   const applyBtn = wrapper.querySelector('#blog-cta-apply-btn');
   if (applyBtn) {

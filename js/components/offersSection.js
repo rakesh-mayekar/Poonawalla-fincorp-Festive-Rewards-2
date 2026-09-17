@@ -2,6 +2,7 @@
 import { BRAND_OFFERS, AUTO_SCROLLER_OFFERS } from '../data/offersData.js';
 import { REWARD_ACTIVITIES } from '../state/rewardState.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
+import { renderBreadcrumbs } from './breadcrumbs.js';
 
 export function renderOffersSection(container, onNavigate) {
   const wrapper = document.createElement('div');
@@ -65,6 +66,8 @@ export function renderOffersSection(container, onNavigate) {
     <!-- Partner Offers Grid (No Coupon Codes displayed directly, No Get Offer button) -->
     <div class="offers-grid" id="offers-grid-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 48px;"></div>
   `;
+
+  renderBreadcrumbs(wrapper, [{ label: 'Top Offers', route: 'offers' }], onNavigate);
 
   const gridContainer = wrapper.querySelector('#offers-grid-container');
   const searchInput = wrapper.querySelector('#offers-search');

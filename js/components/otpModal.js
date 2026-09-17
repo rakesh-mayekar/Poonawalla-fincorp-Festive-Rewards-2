@@ -1,7 +1,17 @@
 // Global OTP Verification Modal Component SOT v1.3 Section 3 & Section 8.1
-import { saveSession } from '../state/sessionState.js';
+import { saveSession, getSession } from '../state/sessionState.js';
 import { sendLeadToLeadSquared } from '../services/crmService.js';
 import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
+
+export function requireAuth(onSuccessCallback) {
+  const session = getSession();
+  if (session && session.isAuthenticated) {
+    if (onSuccessCallback) onSuccessCallback();
+    return true;
+  }
+  openOtpModal(onSuccessCallback);
+  return false;
+}
 
 export function openOtpModal(onSuccessCallback) {
   const container = document.querySelector('#otp-modal-container');
@@ -14,38 +24,46 @@ export function openOtpModal(onSuccessCallback) {
         
         <div class="otp-header-icon">📱</div>
         <h3 class="otp-title">Identity Verification</h3>
-        <p class="otp-subtitle">Enter your 10-digit mobile number to unlock your festive rewards & session.</p>
+        <p class="otp-subtitle">Enter your 10-digit mobile number to unlock your festive rewards, play games & access offers.</p>
 
         <form id="otp-form" class="otp-form-group">
           <!-- Step 1: Mobile Number Input -->
           <div id="otp-step-mobile">
-            <label class="input-label">Mobile Number</label>
+            <label class="input-label" style="text-align: left; display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.85rem;">Mobile Number</label>
             <div class="mobile-input-wrap">
               <span class="country-code-flag">🇮🇳 +91</span>
-              <input type="tel" id="mobile-input" class="phone-input" placeholder="98765 43210" maxlength="10" required pattern="[6-9][0-9]{9}">
+              <input type="tel" id="mobile-input" class="phone-input" placeholder="98765 43210" maxlength="10" required pattern="[6-9][0-9]{9}" autofocus>
             </div>
-            <button type="button" class="btn-gold glow-effect" id="send-otp-btn" style="width: 100%; margin-top: 14px; padding: 12px;">
-              Get OTP 🚀
+
+            <!-- WhatsApp opt-in -->
+            <label style="display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; font-size: 0.78rem; color: var(--wf-text-secondary); text-align: left; cursor: pointer;">
+              <input type="checkbox" id="whatsapp-optin-cb" checked style="margin-top: 2px; accent-color: #10B981;">
+              <span>Send me festive voucher codes & reward updates on <strong>WhatsApp 💬</strong></span>
+            </label>
+
+            <button type="button" class="btn-primary" id="send-otp-btn" style="width: 100%; margin-top: 16px; padding: 12px; font-weight: 700; background: #111827; color: #FFFFFF; border-radius: var(--radius-sm); border: none; cursor: pointer;">
+              Get OTP &rarr;
             </button>
           </div>
 
           <!-- Step 2: 6-Digit OTP Input -->
           <div id="otp-step-code" style="display: none;">
-            <div style="font-size: 0.8rem; color: var(--text-secondary); text-align: center; margin-bottom: 8px;">
-              Enter 6-digit OTP sent to <strong id="sent-mobile-label" style="color: var(--text-gold);"></strong>
+            <div style="font-size: 0.82rem; color: var(--wf-text-secondary); text-align: center; margin-bottom: 12px;">
+              Enter 6-digit OTP sent to <strong id="sent-mobile-label" style="color: var(--wf-text-primary);"></strong>
+              <button type="button" id="edit-otp-phone-btn" style="background: none; border: none; color: #2563EB; font-size: 0.75rem; text-decoration: underline; cursor: pointer; margin-left: 6px;">Edit</button>
             </div>
             
             <div class="otp-boxes-group">
-              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" required>
-              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" required>
-              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" required>
-              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" required>
-              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" required>
-              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" required>
+              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+              <input type="text" class="otp-box-digit" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
             </div>
 
-            <button type="submit" class="btn-primary" id="verify-otp-btn" style="width: 100%; margin-top: 14px; padding: 12px;">
-              Verify & Continue ✓
+            <button type="submit" class="btn-primary" id="verify-otp-btn" style="width: 100%; margin-top: 16px; padding: 12px; font-weight: 700; background: #111827; color: #FFFFFF; border-radius: var(--radius-sm); border: none; cursor: pointer;">
+              Verify & Unlock &rarr;
             </button>
           </div>
         </form>
@@ -62,6 +80,7 @@ export function openOtpModal(onSuccessCallback) {
   const mobileInput = container.querySelector('#mobile-input');
   const sendOtpBtn = container.querySelector('#send-otp-btn');
   const sentMobileLabel = container.querySelector('#sent-mobile-label');
+  const editPhoneBtn = container.querySelector('#edit-otp-phone-btn');
 
   const otpDigits = container.querySelectorAll('.otp-box-digit');
   const form = container.querySelector('#otp-form');
@@ -93,11 +112,24 @@ export function openOtpModal(onSuccessCallback) {
     otpDigits[0].focus();
   });
 
+  if (editPhoneBtn) {
+    editPhoneBtn.addEventListener('click', () => {
+      stepCode.style.display = 'none';
+      stepMobile.style.display = 'block';
+      mobileInput.focus();
+    });
+  }
+
   // Focus next box automatically
   otpDigits.forEach((digitInput, idx) => {
     digitInput.addEventListener('input', (e) => {
       if (e.target.value.length === 1 && idx < otpDigits.length - 1) {
         otpDigits[idx + 1].focus();
+      }
+    });
+    digitInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+        otpDigits[idx - 1].focus();
       }
     });
   });
@@ -130,3 +162,4 @@ export function openOtpModal(onSuccessCallback) {
     }
   });
 }
+

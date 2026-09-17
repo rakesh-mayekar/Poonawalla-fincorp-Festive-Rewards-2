@@ -1,3 +1,5 @@
+import { requireAuth } from './otpModal.js';
+
 // Category Navigation Grid Cards Component (Secondary Features)
 export function renderCategoryGrid(container, onNavigate) {
   const section = document.createElement('section');
@@ -66,13 +68,13 @@ export function renderCategoryGrid(container, onNavigate) {
       </div>
     `;
 
-    // Attach Click Handlers
+    // Attach Click Handlers with Forced Registration Requirement
     const cards = section.querySelectorAll('.category-card');
     cards.forEach(card => {
       card.addEventListener('click', (e) => {
         e.preventDefault();
         const target = card.getAttribute('data-target');
-        onNavigate(target);
+        requireAuth(() => onNavigate(target));
       });
     });
   };

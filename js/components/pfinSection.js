@@ -3,9 +3,14 @@ import { buildUtmUrl } from '../data/loansData.js';
 import { renderSpinWinGame } from './spinWin.js';
 import { renderScratchCardGame } from './scratchCard.js';
 import { renderShuffleCardGame } from './shuffleCard.js';
-import { isActivityClaimed, getUserRewards } from '../state/rewardState.js';
+import { isActivityClaimed, getUserRewards, saveRewardClaim } from '../state/rewardState.js';
+import { allocateRewardForGame } from '../services/rewardEngine.js';
 import { openRewardModal } from './rewardModal.js';
+import { requireAuth } from './otpModal.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
+import { renderBreadcrumbs } from './breadcrumbs.js';
+import { showWhatsAppNotification } from '../services/whatsappService.js';
+import { getSession } from '../state/sessionState.js';
 
 export function renderPfinSection(container, onNavigate) {
   const wrapper = document.createElement('div');
@@ -17,9 +22,6 @@ export function renderPfinSection(container, onNavigate) {
 
   wrapper.innerHTML = `
     <div class="section-header align-left">
-      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-        <a href="#home" class="breadcrumb-back-link" id="pfin-back-home">&larr; Back to Home</a>
-      </div>
       <span class="section-kicker" style="color: var(--wf-text-secondary); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">• DIGITAL CREDIT CARD SANCTION</span>
       <h2 style="margin-top: 4px;">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="section-icon"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
@@ -36,7 +38,7 @@ export function renderPfinSection(container, onNavigate) {
           INSTANT VIRTUAL CARD
         </div>
         <h2 class="festive-heading pfin-title">Digital Credit Card <i>Sanction</i></h2>
-        <p class="pfin-desc">Get 100% digital instant virtual card generation with zero joining fee and 5% festive cashback on top brands.</p>
+        <p class="pfin-desc">Get 100% digital instant virtual card generation with zero joining fee, 5% festive cashback, and an instant gift voucher on WhatsApp upon updating details.</p>
         
         <div class="pfin-stats-row">
           <div class="pfin-stat">
@@ -54,13 +56,13 @@ export function renderPfinSection(container, onNavigate) {
         </div>
 
         <div class="pfin-actions">
-          <button class="btn-primary" id="toggle-pfin-games-btn" style="background: #FFFFFF; color: #18181B; border-color: #FFFFFF; font-weight: 700; padding: 14px 28px;">
-            🎁 Unlock PFIN Festive Reward &darr;
+          <button class="btn-primary" id="update-details-voucher-btn" style="background: #10B981; color: #FFFFFF; border-color: #10B981; font-weight: 700; padding: 14px 28px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);">
+            🎁 Update Details & Get Voucher ↗
           </button>
-          
-          <a href="${buildUtmUrl('https://poonawallafincorp.com/emi-card', 'pfin-card')}" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="border-color: rgba(255, 255, 255, 0.3); color: #FFFFFF; padding: 14px 28px;">
-            Apply Official Portal ↗
-          </a>
+
+          <button class="btn-primary" id="toggle-pfin-games-btn" style="background: #FFFFFF; color: #18181B; border-color: #FFFFFF; font-weight: 700; padding: 14px 28px;">
+            🎮 Play Games & Win &darr;
+          </button>
         </div>
       </div>
       <div class="pfin-visual">
@@ -230,6 +232,34 @@ export function renderPfinSection(container, onNavigate) {
     });
   });
 
+  renderBreadcrumbs(wrapper, [{ label: 'PFIN Card', route: 'pfin' }], onNavigate);
+
+  // Update Details & Get Voucher Button Handler (Per requirement 4)
+  const updateDetailsBtn = wrapper.querySelector('#update-details-voucher-btn');
+  if (updateDetailsBtn) {
+    updateDetailsBtn.addEventListener('click', () => {
+      requireAuth(() => {
+        const userRewards = getUserRewards();
+        const allocated = allocateRewardForGame('pfin_card', userRewards.claims);
+        saveRewardClaim('pfin_card', allocated.deal.dealId);
+
+        const session = getSession();
+        showWhatsAppNotification({
+          title: 'PFIN Card Gift Voucher Unlocked!',
+          recipient: session.mobile,
+          message: `Your festive ${allocated.deal.brandName} gift voucher (${allocated.deal.offerTitle}) is shared to your WhatsApp!`,
+          voucherCode: allocated.deal.couponCode,
+          brand: allocated.deal.brandName
+        });
+
+        openRewardModal(allocated.deal, {
+          activityKey: 'pfin_card',
+          onNavigate
+        });
+      });
+    });
+  }
+
   container.appendChild(wrapper);
 
   // Render Top Offers at the bottom of PFIN Card page
@@ -239,3 +269,4 @@ export function renderPfinSection(container, onNavigate) {
     isBottomSection: true
   });
 }
+

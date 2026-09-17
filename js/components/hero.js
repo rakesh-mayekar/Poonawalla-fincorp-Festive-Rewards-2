@@ -1,3 +1,5 @@
+import { requireAuth } from './otpModal.js';
+
 // Hero Section Component (Modern Geometric Wireframe Reference Style)
 export function renderHero(container, onNavigate) {
   const heroWrapper = document.createElement('section');
@@ -35,23 +37,27 @@ export function renderHero(container, onNavigate) {
     </div>
   `;
 
-  // Attach button events
+  // Attach button events with forced registration requirement
   const playBtn = heroWrapper.querySelector('#hero-play-win-btn');
   if (playBtn) {
     playBtn.addEventListener('click', () => {
-      if (onNavigate) onNavigate('games');
+      requireAuth(() => {
+        if (onNavigate) onNavigate('games');
+      });
     });
   }
 
   const loansBtn = heroWrapper.querySelector('#hero-explore-loans-btn');
   if (loansBtn) {
     loansBtn.addEventListener('click', () => {
-      const offersSection = document.getElementById('limited-period-offers');
-      if (offersSection) {
-        offersSection.scrollIntoView({ behavior: 'smooth' });
-      } else if (onNavigate) {
-        onNavigate('loans');
-      }
+      requireAuth(() => {
+        const offersSection = document.getElementById('limited-period-offers');
+        if (offersSection) {
+          offersSection.scrollIntoView({ behavior: 'smooth' });
+        } else if (onNavigate) {
+          onNavigate('loans');
+        }
+      });
     });
   }
 

@@ -5,9 +5,10 @@ import { trackGa4Event, GA4_EVENTS } from '../services/gaService.js';
 import { sendLeadToLeadSquared } from '../services/crmService.js';
 import { getSession } from '../state/sessionState.js';
 import { isPlayAndWinClaimed, saveRewardClaim, getUserRewards } from '../state/rewardState.js';
-import { openOtpModal } from './otpModal.js';
+import { requireAuth } from './otpModal.js';
 import { openRewardModal } from './rewardModal.js';
 import { openRewardLimitModal } from './rewardLimitModal.js';
+import { showWhatsAppNotification } from '../services/whatsappService.js';
 
 export function renderShuffleCardGame(container, onNavigate) {
   const card = document.createElement('div');
@@ -18,7 +19,7 @@ export function renderShuffleCardGame(container, onNavigate) {
   card.innerHTML = `
     <h3 class="festive-heading" style="font-size: 1.35rem; margin-bottom: 6px;">🃏 Festive Card Shuffle</h3>
     <p class="game-instructions-box" style="margin-bottom: 20px; font-size: 0.9rem; color: var(--wf-text-secondary);">
-      Pick 1 face-down card from below to reveal your lucky festive brand partner deal!
+      Verify with OTP and pick 1 face-down card from below to reveal your lucky festive brand partner deal!
     </p>
 
     ${isClaimed ? `
@@ -56,9 +57,15 @@ export function renderShuffleCardGame(container, onNavigate) {
           </div>
         </div>
       </div>
-      <p style="text-align: center; font-size: 0.78rem; color: var(--wf-text-secondary); margin-top: 12px;">
-        * One guaranteed reward per mobile number across all festive games
-      </p>
+
+      <div style="margin-top: 16px; text-align: center;">
+        <button type="button" id="shuffle-skip-wa-btn" style="background: none; border: none; color: #166534; font-size: 0.82rem; cursor: pointer; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;">
+          <span>💬 Skip shuffle & send offer code directly to WhatsApp</span>
+        </button>
+        <p style="text-align: center; font-size: 0.78rem; color: var(--wf-text-secondary); margin-top: 8px;">
+          * Single play per mobile number across all festive games
+        </p>
+      </div>
     `}
   `;
 
@@ -71,6 +78,7 @@ export function renderShuffleCardGame(container, onNavigate) {
       const currentRewards = getUserRewards();
       const allocated = allocateRewardForGame('play_and_win', currentRewards.claims);
       openRewardModal(allocated.deal, {
+        activityKey: 'play_and_win',
         onVerified: () => renderShuffleCardGame(container, onNavigate),
         onNavigate
       });
@@ -87,9 +95,39 @@ export function renderShuffleCardGame(container, onNavigate) {
     });
   }
 
+  // Skip shuffle & send offer code directly to WhatsApp handler
+  const skipWaBtn = card.querySelector('#shuffle-skip-wa-btn');
+  if (skipWaBtn) {
+    skipWaBtn.addEventListener('click', () => {
+      requireAuth(() => {
+        if (isPlayAndWinClaimed()) {
+          openRewardLimitModal({ currentActivityKey: 'play_and_win', onNavigate });
+          return;
+        }
+        const userRewards = getUserRewards();
+        const allocated = allocateRewardForGame('play_and_win', userRewards.claims);
+        saveRewardClaim('play_and_win', allocated.deal.dealId);
+        const session = getSession();
+        showWhatsAppNotification({
+          title: 'Festive Offer Code Dispatched!',
+          recipient: session.mobile,
+          message: `Your festive ${allocated.deal.brandName} voucher code (${allocated.deal.offerTitle}) is shared to your WhatsApp!`,
+          voucherCode: allocated.deal.couponCode,
+          brand: allocated.deal.brandName
+        });
+
+        openRewardModal(allocated.deal, {
+          activityKey: 'play_and_win',
+          onVerified: () => renderShuffleCardGame(container, onNavigate),
+          onNavigate
+        });
+      });
+    });
+  }
+
   if (isClaimed) return;
 
-  // Shuffle Cards Click Listener (Zero friction - play immediately)
+  // Shuffle Cards Click Listener (Upfront requireAuth)
   const cards = card.querySelectorAll('.shuffle-card');
   let isPicking = false;
 
@@ -97,57 +135,61 @@ export function renderShuffleCardGame(container, onNavigate) {
     cardEl.addEventListener('click', () => {
       if (isPicking || cardEl.classList.contains('flipped')) return;
 
-      if (isPlayAndWinClaimed()) {
-        openRewardLimitModal({
-          currentActivityKey: 'play_and_win',
-          onNavigate
-        });
-        return;
-      }
+      requireAuth(() => {
+        if (isPlayAndWinClaimed()) {
+          openRewardLimitModal({
+            currentActivityKey: 'play_and_win',
+            onNavigate
+          });
+          return;
+        }
 
-      isPicking = true;
-      playTickSound();
+        isPicking = true;
+        playTickSound();
 
-      // Allocate Reward
-      const currentRewards = getUserRewards();
-      const allocated = allocateRewardForGame('play_and_win', currentRewards.claims);
+        // Allocate Reward
+        const currentRewards = getUserRewards();
+        const allocated = allocateRewardForGame('play_and_win', currentRewards.claims);
 
-      // Set front text
-      const idx = cardEl.getAttribute('data-card-idx');
-      const frontTitle = card.querySelector(`#front-title-${idx}`);
-      if (frontTitle) {
-        frontTitle.textContent = allocated.deal.brandName;
-      }
+        // Set front text
+        const idx = cardEl.getAttribute('data-card-idx');
+        const frontTitle = card.querySelector(`#front-title-${idx}`);
+        if (frontTitle) {
+          frontTitle.textContent = allocated.deal.brandName;
+        }
 
-      // Flip card animation
-      cardEl.classList.add('flipped');
-      playWinFanfare();
+        // Flip card animation
+        cardEl.classList.add('flipped');
+        playWinFanfare();
 
-      if (window.confetti) {
-        window.confetti({ particleCount: 90, spread: 65, origin: { y: 0.6 } });
-      }
+        if (window.confetti) {
+          window.confetti({ particleCount: 90, spread: 65, origin: { y: 0.6 } });
+        }
 
-      const session = getSession();
-      if (session && session.isAuthenticated) {
-        saveRewardClaim('play_and_win', allocated.deal.dealId);
-        trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
-          game_type: 'shuffle_card',
-          deal_id: allocated.deal.dealId
-        });
-        sendLeadToLeadSquared({
-          mobileNumber: session.mobile,
-          activityType: 'Shuffle Card Reward Claimed',
-          rewardAllocated: allocated.deal.dealId,
-          contentSlug: 'play-shuffle'
-        });
-      }
+        const session = getSession();
+        if (session && session.isAuthenticated) {
+          saveRewardClaim('play_and_win', allocated.deal.dealId);
+          trackGa4Event(GA4_EVENTS.GAME_REWARD_CLAIMED, {
+            game_type: 'shuffle_card',
+            deal_id: allocated.deal.dealId
+          });
+          sendLeadToLeadSquared({
+            mobileNumber: session.mobile,
+            activityType: 'Shuffle Card Reward Claimed',
+            rewardAllocated: allocated.deal.dealId,
+            contentSlug: 'play-shuffle'
+          });
+        }
 
-      setTimeout(() => {
-        openRewardModal(allocated.deal, {
-          onVerified: () => renderShuffleCardGame(container, onNavigate),
-          onNavigate
-        });
-      }, 700);
+        setTimeout(() => {
+          openRewardModal(allocated.deal, {
+            activityKey: 'play_and_win',
+            onVerified: () => renderShuffleCardGame(container, onNavigate),
+            onNavigate
+          });
+        }, 700);
+      });
     });
   });
 }
+

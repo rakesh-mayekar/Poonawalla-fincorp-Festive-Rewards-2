@@ -3,6 +3,7 @@
 
 import { FESTIVE_BLOGS } from '../data/blogsData.js';
 import { renderTopOffersSection } from './topOffersScroller.js';
+import { renderBreadcrumbs } from './breadcrumbs.js';
 
 export function renderBlogsSection(container, onNavigate) {
   const wrapper = document.createElement('div');
@@ -13,9 +14,6 @@ export function renderBlogsSection(container, onNavigate) {
   wrapper.innerHTML = `
     <!-- Header -->
     <div class="section-header align-left">
-      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-        <a href="#home" class="breadcrumb-back-link" id="blogs-back-home">&larr; Back to Home</a>
-      </div>
       <span class="section-kicker" style="color: var(--wf-text-secondary); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">• KNOWLEDGE & INSIGHTS HUB</span>
       <h2 style="margin-top: 4px;">
         Festive Financial <span style="font-style: italic; font-weight: 500; color: var(--wf-text-secondary); margin-left: 6px;">Articles & Guides</span>
@@ -39,6 +37,8 @@ export function renderBlogsSection(container, onNavigate) {
     <!-- Articles Grid -->
     <div class="blogs-catalog-grid" id="blogs-grid-container"></div>
   `;
+
+  renderBreadcrumbs(wrapper, [{ label: 'Smart Festive Guides', route: 'blogs' }], onNavigate);
 
   const gridContainer = wrapper.querySelector('#blogs-grid-container');
   const searchInput = wrapper.querySelector('#blogs-search');
